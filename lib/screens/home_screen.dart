@@ -18,104 +18,71 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  late AnimationController _slideController;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+    _slideController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
+    
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
     );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
+    
     _animationController.forward();
+    _slideController.forward();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _slideController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
-          // Modern App Bar
-          SliverAppBar(
-            expandedHeight: 120,
-            floating: false,
-            pinned: true,
-            elevation: 0,
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            flexibleSpace: FlexibleSpaceBar(
-              title: const Text(
-                "Inkwise PDF",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              ),
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppColors.primaryBlue.withOpacity(0.1),
-                      AppColors.secondaryBlue.withOpacity(0.05),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  _showSearchDialog();
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/settings');
-                },
-              ),
-            ],
-          ),
-          
-          // Main Content
+          _buildModernAppBar(),
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 FadeTransition(
                   opacity: _fadeAnimation,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Welcome Section
-                      _buildWelcomeSection(),
-                      const SizedBox(height: 24),
-                      
-                      // Featured AI Tools
-                      _buildFeaturedSection(),
-                      const SizedBox(height: 24),
-                      
-                      // Quick Actions
-                      _buildQuickActions(),
-                      const SizedBox(height: 24),
-                      
-                      // Tool Categories
-                      _buildToolCategories(),
-                      const SizedBox(height: 24),
-                      
-                      // Recent Files
-                      _buildRecentFilesSection(),
-                    ],
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildWelcomeSection(),
+                        const SizedBox(height: AppSpacing.xl),
+                        _buildFeaturedSection(),
+                        const SizedBox(height: AppSpacing.xl),
+                        _buildQuickActions(),
+                        const SizedBox(height: AppSpacing.xl),
+                        _buildToolCategories(),
+                        const SizedBox(height: AppSpacing.xl),
+                        _buildRecentFilesSection(),
+                        const SizedBox(height: AppSpacing.xxl),
+                      ],
+                    ),
                   ),
                 ),
               ]),
@@ -126,57 +93,215 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildWelcomeSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.secondaryBlue.withOpacity(0.05),
+  Widget _buildModernAppBar() {
+    return SliverAppBar(
+      expandedHeight: 140,
+      floating: false,
+      pinned: true,
+      elevation: 0,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.sm),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              child: const Icon(
+                Icons.auto_awesome,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Text(
+              "Inkwise PDF",
+              style: AppTypography.headlineMedium.copyWith(
+                fontWeight: FontWeight.w700,
+                background: Paint()
+                  ..shader = const LinearGradient(
+                    colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                  ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+              ),
+            ),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryBlue,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.auto_awesome,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Welcome to Inkwise PDF",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Your all-in-one offline PDF solution with AI-powered features",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+        background: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.gradientStart.withOpacity(0.05),
+                AppColors.gradientEnd.withOpacity(0.02),
               ],
             ),
           ),
+        ),
+      ),
+      actions: [
+        Container(
+          margin: const EdgeInsets.only(right: AppSpacing.sm),
+          decoration: BoxDecoration(
+            color: AppColors.glassLight,
+            borderRadius: BorderRadius.circular(AppRadius.full),
+            border: Border.all(
+              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              width: 1,
+            ),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.search, size: 20),
+            onPressed: _showSearchDialog,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: AppColors.textPrimaryLight,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(right: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: AppColors.glassLight,
+            borderRadius: BorderRadius.circular(AppRadius.full),
+            border: Border.all(
+              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              width: 1,
+            ),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.settings, size: 20),
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: AppColors.textPrimaryLight,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWelcomeSection() {
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.xl),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.gradientStart.withOpacity(0.1),
+            AppColors.gradientEnd.withOpacity(0.05),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        border: Border.all(
+          color: AppColors.gradientStart.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.gradientStart.withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome to the Future",
+                      style: AppTypography.headlineMedium.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimaryLight,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      "Transform your PDFs with AI-powered tools",
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.textSecondaryLight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Row(
+            children: [
+              _buildStatCard("25+", "Tools", AppColors.primaryBlue),
+              const SizedBox(width: AppSpacing.md),
+              _buildStatCard("AI", "Powered", AppColors.primaryPurple),
+              const SizedBox(width: AppSpacing.md),
+              _buildStatCard("100%", "Offline", AppColors.primaryGreen),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String value, String label, Color color) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(
+            color: color.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: AppTypography.titleLarge.copyWith(
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
+            ),
+            Text(
+              label,
+              style: AppTypography.labelMedium.copyWith(
+                color: AppColors.textSecondaryLight,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -186,45 +311,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Featured AI Tools",
-          style: Theme.of(context).textTheme.titleLarge,
+          "Featured Tools",
+          style: AppTypography.headlineMedium.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimaryLight,
+          ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         SizedBox(
           height: 200,
           child: ListView(
             scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
             children: [
               FeaturedToolCard(
-                title: "Smart PDF Summarizer",
-                subtitle: "AI-powered document summarization",
-                icon: Icons.summarize,
-                gradient: [AppColors.primaryPurple, AppColors.primaryBlue],
+                title: "AI Summarizer",
+                subtitle: "Extract key insights instantly",
+                icon: Icons.auto_awesome,
+                gradient: const LinearGradient(
+                  colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AIToolsScreen()),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.md),
               FeaturedToolCard(
-                title: "Offline Translator",
-                subtitle: "Translate PDFs without internet",
+                title: "Smart Translator",
+                subtitle: "Translate PDFs offline",
                 icon: Icons.translate,
-                gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
+                gradient: const LinearGradient(
+                  colors: [AppColors.primaryTeal, AppColors.primaryIndigo],
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AIToolsScreen()),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.md),
               FeaturedToolCard(
-                title: "Voice-to-Text Notes",
-                subtitle: "Record and embed voice annotations",
-                icon: Icons.mic,
-                gradient: [AppColors.primaryOrange, AppColors.primaryRed],
+                title: "Advanced Tools",
+                subtitle: "Professional PDF editing",
+                icon: Icons.tune,
+                gradient: const LinearGradient(
+                  colors: [AppColors.primaryOrange, AppColors.primaryRed],
+                ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AIToolsScreen()),
+                  MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
                 ),
               ),
             ],
@@ -240,36 +375,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       children: [
         Text(
           "Quick Actions",
-          style: Theme.of(context).textTheme.titleLarge,
+          style: AppTypography.headlineMedium.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimaryLight,
+          ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         StaggeredGrid.count(
           crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
           children: [
             ToolCard(
               title: "Merge PDFs",
-              icon: Icons.merge_type,
+              icon: Icons.merge,
               color: AppColors.primaryBlue,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ToolsScreen()),
-              ),
-            ),
-            ToolCard(
-              title: "Compress PDF",
-              icon: Icons.compress,
-              color: AppColors.primaryGreen,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ToolsScreen()),
-              ),
-            ),
-            ToolCard(
-              title: "OCR Tool",
-              icon: Icons.text_snippet,
-              color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
@@ -278,7 +398,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ToolCard(
               title: "Split PDF",
               icon: Icons.content_cut,
+              color: AppColors.primaryGreen,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ToolsScreen()),
+              ),
+            ),
+            ToolCard(
+              title: "Compress",
+              icon: Icons.compress,
               color: AppColors.primaryOrange,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ToolsScreen()),
+              ),
+            ),
+            ToolCard(
+              title: "Add Password",
+              icon: Icons.lock,
+              color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
@@ -295,54 +433,123 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Advanced Tools",
-          style: Theme.of(context).textTheme.titleLarge,
+          "Tool Categories",
+          style: AppTypography.headlineMedium.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimaryLight,
+          ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         StaggeredGrid.count(
           crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
           children: [
-            ToolCard(
-              title: "AI Tools",
-              icon: Icons.psychology,
-              color: AppColors.primaryPurple,
-              onTap: () => Navigator.push(
+            _buildCategoryCard(
+              "Core Tools",
+              "Essential PDF operations",
+              Icons.build,
+              AppColors.primaryBlue,
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ToolsScreen()),
+              ),
+            ),
+            _buildCategoryCard(
+              "AI Tools",
+              "Smart AI-powered features",
+              Icons.psychology,
+              AppColors.primaryPurple,
+              () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AIToolsScreen()),
               ),
             ),
-            ToolCard(
-              title: "Advanced Editing",
-              icon: Icons.edit_note,
-              color: AppColors.primaryBlue,
-              onTap: () => Navigator.push(
+            _buildCategoryCard(
+              "Advanced",
+              "Professional features",
+              Icons.tune,
+              AppColors.primaryOrange,
+              () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
               ),
             ),
-            ToolCard(
-              title: "Security Tools",
-              icon: Icons.security,
-              color: AppColors.primaryRed,
-              onTap: () => Navigator.push(
+            _buildCategoryCard(
+              "Security",
+              "Protect your documents",
+              Icons.security,
+              AppColors.primaryRed,
+              () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
-              ),
-            ),
-            ToolCard(
-              title: "Analytics",
-              icon: Icons.analytics,
-              color: AppColors.primaryGreen,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
+                MaterialPageRoute(builder: (context) => const ToolsScreen()),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildCategoryCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(
+          color: color.withOpacity(0.1),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadowLight,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  title,
+                  style: AppTypography.titleMedium.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimaryLight,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  subtitle,
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textSecondaryLight,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -355,42 +562,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           children: [
             Text(
               "Recent Files",
-              style: Theme.of(context).textTheme.titleLarge,
+              style: AppTypography.headlineMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimaryLight,
+              ),
             ),
-            TextButton(
+            TextButton.icon(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const RecentFilesScreen()),
               ),
-              child: const Text("View All"),
+              icon: const Icon(Icons.arrow_forward, size: 16),
+              label: const Text("View All"),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryBlue,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         Container(
           height: 120,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              width: 1,
             ),
           ),
-          child: const Center(
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.folder_open,
-                  size: 48,
-                  color: AppColors.textSecondaryLight,
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBlue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  child: Icon(
+                    Icons.folder_open,
+                    size: 32,
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   "No recent files",
-                  style: TextStyle(
+                  style: AppTypography.bodyMedium.copyWith(
                     color: AppColors.textSecondaryLight,
-                    fontSize: 16,
                   ),
                 ),
               ],
@@ -411,14 +632,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text("Search Tools"),
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              title: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                      ),
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                    child: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text(
+                    "Search Tools",
+                    style: AppTypography.titleMedium.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Search for tools...",
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                      ),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -427,14 +679,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       });
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   if (searchQuery.isNotEmpty) ...[
                     if (searchResults.isEmpty)
-                      const Text(
+                      Text(
                         "No tools found",
-                        style: TextStyle(
+                        style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textSecondaryLight,
-                          fontSize: 14,
                         ),
                       )
                     else
@@ -446,9 +697,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           itemBuilder: (context, index) {
                             final result = searchResults[index];
                             return ListTile(
-                              leading: Icon(result['icon']),
-                              title: Text(result['title']),
-                              subtitle: Text(result['subtitle']),
+                              leading: Container(
+                                padding: const EdgeInsets.all(AppSpacing.sm),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryBlue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                                ),
+                                child: Icon(
+                                  result['icon'],
+                                  color: AppColors.primaryBlue,
+                                  size: 16,
+                                ),
+                              ),
+                              title: Text(
+                                result['title'],
+                                style: AppTypography.bodyMedium.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              subtitle: Text(
+                                result['subtitle'],
+                                style: AppTypography.labelMedium.copyWith(
+                                  color: AppColors.textSecondaryLight,
+                                ),
+                              ),
                               onTap: () {
                                 Navigator.of(context).pop();
                                 _navigateToTool(result['route']);
@@ -458,11 +730,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                       ),
                   ] else
-                    const Text(
+                    Text(
                       "Search for tools, features, and functions",
-                      style: TextStyle(
+                      style: AppTypography.bodyMedium.copyWith(
                         color: AppColors.textSecondaryLight,
-                        fontSize: 14,
                       ),
                     ),
                 ],
@@ -524,12 +795,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _navigateToTool(String route) {
-    // This would navigate to the specific tool based on the route
-    // For now, we'll show a snackbar indicating the tool was selected
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Selected: $route'),
         duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.primaryBlue,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
       ),
     );
   }
