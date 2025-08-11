@@ -14,6 +14,8 @@ dependencies:
   # PDF tools
   pdf: ^3.10.4
   pdf_render: ^1.4.0
+  syncfusion_flutter_pdf: ^24.2.8
+  syncfusion_flutter_pdfviewer: ^24.2.8
 
   # OCR and permissions
   flutter_tesseract_ocr: ^0.3.4
@@ -41,10 +43,58 @@ dependencies:
   url_launcher: ^6.2.6
   intl: ^0.20.2
 
+  # AI and ML capabilities
+  tflite_flutter: ^0.10.4
+  tflite_flutter_helper: ^0.3.1
+  
+  # Translation and language processing
+  translator: ^0.1.7
+  language_detector: ^0.0.2
+  
+  # Voice and speech
+  speech_to_text: ^6.6.0
+  flutter_tts: ^3.8.5
+  
+  # Advanced image processing
+  image: ^4.1.3
+  image_editor_plus: ^0.1.6
+  
+  # Database and storage
+  sqflite: ^2.3.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Encryption and security
+  encrypt: ^5.0.3
+  crypto: ^3.0.3
+  
+  # Advanced UI components
+  flutter_staggered_grid_view: ^0.7.0
+  flutter_slidable: ^3.0.1
+  shimmer: ^3.0.0
+  
+  # Charts and analytics
+  fl_chart: ^0.66.0
+  
+  # Handwriting recognition
+  google_ml_kit: ^0.16.3
+  
+  # Advanced file operations
+  archive: ^3.4.9
+  mime: ^1.0.4
+  
+  # State management
+  provider: ^6.1.1
+  
+  # Local notifications
+  flutter_local_notifications: ^16.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.8
 
 flutter:
   uses-material-design: true
@@ -53,6 +103,8 @@ flutter:
     - assets/icons/
     - assets/fonts/
     - assets/images/
+    - assets/models/
+    - assets/translations/
 
   fonts:
     - family: Roboto
