@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter_clipboard/flutter_clipboard.dart';
+import 'performance_service.dart';
 
 class FileService {
   static Future<String> getAppDirectoryPath() async {
@@ -16,9 +17,19 @@ class FileService {
   }
 
   static Future<File> writeFile(String filename, List<int> bytes) async {
-    final path = await getAppDirectoryPath();
-    final file = File('$path/$filename');
-    return file.writeAsBytes(bytes, flush: true);
+    return await PerformanceService().withOperationLimit(() async {
+      PerformanceService().startOperation('file_write');
+      
+      final path = await getAppDirectoryPath();
+      final file = File('$path/$filename');
+      final result = await file.writeAsBytes(bytes, flush: true);
+      
+      // Cache the file data for faster subsequent access
+      PerformanceService().setCache('file_$filename', bytes);
+      
+      PerformanceService().endOperation('file_write');
+      return result;
+    });
   }
 
   static Future<File?> pickFile({List<String>? allowedExtensions}) async {

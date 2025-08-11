@@ -4,6 +4,7 @@ import '../theme.dart';
 import '../widgets/tool_card.dart';
 import '../widgets/featured_tool_card.dart';
 import '../services/local_analytics_service.dart';
+import '../services/performance_service.dart';
 import 'tools_screen.dart';
 import 'recent_files_screen.dart';
 import 'ai_tools_screen.dart';
@@ -26,11 +27,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
+      duration: const Duration(milliseconds: 800), // Faster animation
       vsync: this,
     );
     _slideController = AnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 600), // Faster animation
       vsync: this,
     );
     
@@ -42,11 +43,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
     
+    // Start animations immediately for faster perceived performance
     _animationController.forward();
     _slideController.forward();
     
+    // Preload essential data for faster navigation
+    _preloadData();
+    
     // Log screen view with local analytics
     LocalAnalyticsService().logScreenView('home_screen');
+  }
+
+  // Preload essential data for faster performance
+  Future<void> _preloadData() async {
+    // Preload tool data in background
+    await Future.microtask(() {
+      // Warm up tool lists and search data
+      _performSearch('');
+    });
+    
+    // Preload common services
+    await Future.microtask(() {
+      PerformanceService().getPerformanceStats();
+    });
   }
 
   @override

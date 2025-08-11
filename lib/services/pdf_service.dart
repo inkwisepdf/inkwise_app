@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
+import 'performance_service.dart';
 
 class PDFService {
   static final PDFService _instance = PDFService._internal();
@@ -15,105 +16,176 @@ class PDFService {
 
   /// Merge multiple PDF files into one
   Future<File> mergePDFs(List<File> pdfFiles, {String? outputName}) async {
-    try {
-      final PdfDocument document = PdfDocument();
-      
-      for (final file in pdfFiles) {
-        final PdfDocument sourceDoc = PdfDocument(inputBytes: await file.readAsBytes());
-        document.importPages(sourceDoc);
-        sourceDoc.dispose();
+    return await PerformanceService().withOperationLimit(() async {
+      try {
+        PerformanceService().startOperation('pdf_merge');
+        
+        final PdfDocument document = PdfDocument();
+        
+        // Process files in parallel for better performance
+        final futures = pdfFiles.map((file) async {
+          final cacheKey = 'pdf_merge_${file.path}_${file.lastModifiedSync().millisecondsSinceEpoch}';
+          final cachedBytes = PerformanceService().getFromCache<Uint8List>(cacheKey);
+          
+          if (cachedBytes != null) {
+            return PdfDocument(inputBytes: cachedBytes);
+          }
+          
+          final bytes = await file.readAsBytes();
+          PerformanceService().setCache(cacheKey, bytes);
+          return PdfDocument(inputBytes: bytes);
+        });
+        
+        final documents = await Future.wait(futures);
+        
+        for (final sourceDoc in documents) {
+          document.importPages(sourceDoc);
+          sourceDoc.dispose();
+        }
+        
+        final List<int> bytes = await document.save();
+        document.dispose();
+        
+        final outputPath = await _getOutputPath(outputName ?? 'merged_${DateTime.now().millisecondsSinceEpoch}.pdf');
+        final outputFile = File(outputPath);
+        await outputFile.writeAsBytes(bytes);
+        
+        PerformanceService().endOperation('pdf_merge');
+        return outputFile;
+      } catch (e) {
+        PerformanceService().endOperation('pdf_merge');
+        throw Exception('Failed to merge PDFs: $e');
       }
-      
-      final List<int> bytes = await document.save();
-      document.dispose();
-      
-      final outputPath = await _getOutputPath(outputName ?? 'merged_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      final outputFile = File(outputPath);
-      await outputFile.writeAsBytes(bytes);
-      
-      return outputFile;
-    } catch (e) {
-      throw Exception('Failed to merge PDFs: $e');
-    }
+    });
   }
 
   /// Split PDF into multiple files
   Future<List<File>> splitPDF(File pdfFile, {List<int>? pageRanges}) async {
-    try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      final List<File> outputFiles = [];
-      
-      if (pageRanges != null) {
-        // Split based on specified page ranges
-        for (int i = 0; i < pageRanges.length; i++) {
-          final PdfDocument newDoc = PdfDocument();
-          newDoc.importPage(document, pageRanges[i]);
-          
-          final List<int> bytes = await newDoc.save();
-          newDoc.dispose();
-          
-          final outputPath = await _getOutputPath('split_${i + 1}_${DateTime.now().millisecondsSinceEpoch}.pdf');
-          final outputFile = File(outputPath);
-          await outputFile.writeAsBytes(bytes);
-          outputFiles.add(outputFile);
+    return await PerformanceService().withOperationLimit(() async {
+      try {
+        PerformanceService().startOperation('pdf_split');
+        
+        // Check cache for document
+        final cacheKey = 'pdf_split_${pdfFile.path}_${pdfFile.lastModifiedSync().millisecondsSinceEpoch}';
+        final cachedBytes = PerformanceService().getFromCache<Uint8List>(cacheKey);
+        
+        final PdfDocument document = PdfDocument(
+          inputBytes: cachedBytes ?? await pdfFile.readAsBytes()
+        );
+        
+        if (cachedBytes == null) {
+          PerformanceService().setCache(cacheKey, await pdfFile.readAsBytes());
         }
-      } else {
-        // Split each page into separate file
-        for (int i = 0; i < document.pages.count; i++) {
-          final PdfDocument newDoc = PdfDocument();
-          newDoc.importPage(document, i);
+        
+        final List<File> outputFiles = [];
+        
+        if (pageRanges != null) {
+          // Split based on specified page ranges - process in parallel
+          final futures = pageRanges.asMap().entries.map((entry) async {
+            final i = entry.key;
+            final pageIndex = entry.value;
+            
+            final PdfDocument newDoc = PdfDocument();
+            newDoc.importPage(document, pageIndex);
+            
+            final List<int> bytes = await newDoc.save();
+            newDoc.dispose();
+            
+            final outputPath = await _getOutputPath('split_${i + 1}_${DateTime.now().millisecondsSinceEpoch}.pdf');
+            final outputFile = File(outputPath);
+            await outputFile.writeAsBytes(bytes);
+            return outputFile;
+          });
           
-          final List<int> bytes = await newDoc.save();
-          newDoc.dispose();
+          outputFiles.addAll(await Future.wait(futures));
+        } else {
+          // Split each page into separate file - process in parallel
+          final futures = List.generate(document.pages.count, (i) async {
+            final PdfDocument newDoc = PdfDocument();
+            newDoc.importPage(document, i);
+            
+            final List<int> bytes = await newDoc.save();
+            newDoc.dispose();
+            
+            final outputPath = await _getOutputPath('page_${i + 1}_${DateTime.now().millisecondsSinceEpoch}.pdf');
+            final outputFile = File(outputPath);
+            await outputFile.writeAsBytes(bytes);
+            return outputFile;
+          });
           
-          final outputPath = await _getOutputPath('page_${i + 1}_${DateTime.now().millisecondsSinceEpoch}.pdf');
-          final outputFile = File(outputPath);
-          await outputFile.writeAsBytes(bytes);
-          outputFiles.add(outputFile);
+          outputFiles.addAll(await Future.wait(futures));
         }
+        
+        document.dispose();
+        PerformanceService().endOperation('pdf_split');
+        return outputFiles;
+      } catch (e) {
+        PerformanceService().endOperation('pdf_split');
+        throw Exception('Failed to split PDF: $e');
       }
-      
-      document.dispose();
-      return outputFiles;
-    } catch (e) {
-      throw Exception('Failed to split PDF: $e');
-    }
+    });
   }
 
   /// Compress PDF to reduce file size
   Future<File> compressPDF(File pdfFile, {double quality = 0.8}) async {
-    try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      
-      // Set compression options
-      document.compressionLevel = PdfCompressionLevel.best;
-      
-      // Compress images in the document
-      for (int i = 0; i < document.pages.count; i++) {
-        final PdfPage page = document.pages[i];
-        final List<PdfImage> images = page.extractImages();
+    return await PerformanceService().withOperationLimit(() async {
+      try {
+        PerformanceService().startOperation('pdf_compress');
         
-        for (final image in images) {
-          // Compress image if it's too large
-          if (image.width > 800 || image.height > 800) {
-            final Uint8List compressedBytes = await _compressImage(image.data, quality);
-            // Replace image with compressed version
-            // Note: This is a simplified implementation
-          }
+        // Check cache for document
+        final cacheKey = 'pdf_compress_${pdfFile.path}_${pdfFile.lastModifiedSync().millisecondsSinceEpoch}_$quality';
+        final cachedBytes = PerformanceService().getFromCache<Uint8List>(cacheKey);
+        
+        if (cachedBytes != null) {
+          final outputPath = await _getOutputPath('compressed_${DateTime.now().millisecondsSinceEpoch}.pdf');
+          final outputFile = File(outputPath);
+          await outputFile.writeAsBytes(cachedBytes);
+          PerformanceService().endOperation('pdf_compress');
+          return outputFile;
         }
+        
+        final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+        
+        // Set compression options
+        document.compressionLevel = PdfCompressionLevel.best;
+        
+        // Compress images in the document - process in parallel
+        final pageFutures = List.generate(document.pages.count, (i) async {
+          final PdfPage page = document.pages[i];
+          final List<PdfImage> images = page.extractImages();
+          
+          // Process images in parallel
+          final imageFutures = images.map((image) async {
+            if (image.width > 800 || image.height > 800) {
+              final Uint8List compressedBytes = await _compressImage(image.data, quality);
+              // Replace image with compressed version
+              return compressedBytes;
+            }
+            return image.data;
+          });
+          
+          await Future.wait(imageFutures);
+        });
+        
+        await Future.wait(pageFutures);
+        
+        final List<int> bytes = await document.save();
+        document.dispose();
+        
+        // Cache the compressed result
+        PerformanceService().setCache(cacheKey, bytes);
+        
+        final outputPath = await _getOutputPath('compressed_${DateTime.now().millisecondsSinceEpoch}.pdf');
+        final outputFile = File(outputPath);
+        await outputFile.writeAsBytes(bytes);
+        
+        PerformanceService().endOperation('pdf_compress');
+        return outputFile;
+      } catch (e) {
+        PerformanceService().endOperation('pdf_compress');
+        throw Exception('Failed to compress PDF: $e');
       }
-      
-      final List<int> bytes = await document.save();
-      document.dispose();
-      
-      final outputPath = await _getOutputPath('compressed_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      final outputFile = File(outputPath);
-      await outputFile.writeAsBytes(bytes);
-      
-      return outputFile;
-    } catch (e) {
-      throw Exception('Failed to compress PDF: $e');
-    }
+    });
   }
 
   /// Remove specific pages from PDF

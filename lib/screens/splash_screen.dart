@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import '../routes.dart';
 import '../theme.dart';
+import '../services/performance_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -59,19 +61,35 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    // Start animations immediately for faster perceived performance
     _logoController.forward();
-    
-    await Future.delayed(const Duration(milliseconds: 800));
     _textController.forward();
-    
-    await Future.delayed(const Duration(milliseconds: 500));
     _gradientController.forward();
     
+    // Preload essential services for faster app startup
+    await _preloadServices();
+    
+    // Navigate to home after shorter delay for better performance
     await Future.delayed(const Duration(milliseconds: 1500));
     if (mounted) {
       Navigator.pushReplacementNamed(context, Routes.home);
     }
+  }
+
+  // Preload essential services for faster performance
+  Future<void> _preloadServices() async {
+    // Preload performance service
+    await PerformanceService().initialize();
+    
+    // Preload common directories
+    await getApplicationDocumentsDirectory();
+    
+    // Preload theme data
+    await Future.microtask(() {
+      // Warm up theme calculations
+      AppColors.gradientStart;
+      AppColors.gradientEnd;
+    });
   }
 
   @override
