@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'theme.dart';
+import 'services/local_analytics_service.dart';
+import 'services/performance_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  // Initialize performance service for optimal speed
+  await PerformanceService().initialize();
+  
+  // Initialize local analytics instead of Firebase
+  await LocalAnalyticsService().initialize();
 
   runApp(const InkwisePDFApp());
 }
