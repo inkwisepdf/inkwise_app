@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Welcome to the Future",
+                      "Welcome to Inkwise PDF",
                       style: AppTypography.headlineMedium.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimaryLight,
@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      "Transform your PDFs with AI-powered tools",
+                      "Professional PDF editing with AI-powered tools",
                       style: AppTypography.bodyMedium.copyWith(
                         color: AppColors.textSecondaryLight,
                       ),
@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
-              _buildStatCard("25+", "Tools", AppColors.primaryBlue),
+              _buildStatCard("25+", "Professional Tools", AppColors.primaryBlue),
               const SizedBox(width: AppSpacing.md),
               _buildStatCard("AI", "Powered", AppColors.primaryPurple),
               const SizedBox(width: AppSpacing.md),
@@ -330,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             children: [
               FeaturedToolCard(
                 title: "AI Summarizer",
-                subtitle: "Extract key insights instantly",
+                subtitle: "Extract key insights from documents",
                 icon: Icons.auto_awesome,
                 gradient: const LinearGradient(
                   colors: [AppColors.gradientStart, AppColors.gradientEnd],
@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               const SizedBox(width: AppSpacing.md),
               FeaturedToolCard(
                 title: "Smart Translator",
-                subtitle: "Translate PDFs offline",
+                subtitle: "Translate documents offline",
                 icon: Icons.translate,
                 gradient: const LinearGradient(
                   colors: [AppColors.primaryTeal, AppColors.primaryIndigo],
@@ -356,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               const SizedBox(width: AppSpacing.md),
               FeaturedToolCard(
                 title: "Advanced Tools",
-                subtitle: "Professional PDF editing",
+                subtitle: "Professional PDF editing suite",
                 icon: Icons.tune,
                 gradient: const LinearGradient(
                   colors: [AppColors.primaryOrange, AppColors.primaryRed],
@@ -670,7 +670,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   TextField(
                     decoration: InputDecoration(
-                      hintText: "Search for tools...",
+                      hintText: "Search for tools",
                       prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -735,7 +735,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                   ] else
                     Text(
-                      "Search for tools, features, and functions",
+                      "Search for tools and features",
                       style: AppTypography.bodyMedium.copyWith(
                         color: AppColors.textSecondaryLight,
                       ),
@@ -761,35 +761,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final allTools = [
       // Core PDF Tools
       {'title': 'Merge PDFs', 'subtitle': 'Combine multiple PDF files', 'icon': Icons.merge, 'route': '/tools/merge'},
-      {'title': 'Split PDF', 'subtitle': 'Divide PDF into multiple files', 'icon': Icons.content_cut, 'route': '/tools/split'},
-      {'title': 'Compress PDF', 'subtitle': 'Reduce file size', 'icon': Icons.compress, 'route': '/tools/compress'},
-      {'title': 'Rotate PDF', 'subtitle': 'Rotate pages', 'icon': Icons.rotate_right, 'route': '/tools/rotate'},
-      {'title': 'PDF OCR', 'subtitle': 'Extract text from scanned PDFs', 'icon': Icons.text_fields, 'route': '/tools/ocr'},
+      {'title': 'Split PDF', 'subtitle': 'Divide PDF into separate files', 'icon': Icons.content_cut, 'route': '/tools/split'},
+      {'title': 'Compress PDF', 'subtitle': 'Reduce PDF file size', 'icon': Icons.compress, 'route': '/tools/compress'},
+      {'title': 'Rotate PDF', 'subtitle': 'Rotate page orientation', 'icon': Icons.rotate_right, 'route': '/tools/rotate'},
+      {'title': 'PDF OCR', 'subtitle': 'Extract text from scanned documents', 'icon': Icons.text_fields, 'route': '/tools/ocr'},
       {'title': 'Add Password', 'subtitle': 'Protect PDF with password', 'icon': Icons.lock, 'route': '/tools/password'},
-      {'title': 'Add Watermark', 'subtitle': 'Add text or image watermark', 'icon': Icons.water_drop, 'route': '/tools/watermark'},
-      {'title': 'PDF to Images', 'subtitle': 'Convert PDF to images', 'icon': Icons.image, 'route': '/tools/images'},
+      {'title': 'Add Watermark', 'subtitle': 'Add text or image watermarks', 'icon': Icons.water_drop, 'route': '/tools/watermark'},
+      {'title': 'PDF to Images', 'subtitle': 'Convert PDF pages to images', 'icon': Icons.image, 'route': '/tools/images'},
       {'title': 'Grayscale PDF', 'subtitle': 'Convert to black and white', 'icon': Icons.filter_b_and_w, 'route': '/tools/grayscale'},
       
       // AI Tools
-      {'title': 'Smart Summarizer', 'subtitle': 'AI-powered document summarization', 'icon': Icons.auto_awesome, 'route': '/ai/summarizer'},
-      {'title': 'Offline Translator', 'subtitle': 'Translate PDF content', 'icon': Icons.translate, 'route': '/ai/translator'},
-      {'title': 'Voice to Text', 'subtitle': 'Convert voice to text notes', 'icon': Icons.mic, 'route': '/ai/voice'},
-      {'title': 'Form Detector', 'subtitle': 'Detect and fill forms', 'icon': Icons.assignment, 'route': '/ai/form'},
+      {'title': 'Smart Summarizer', 'subtitle': 'Extract key insights from documents', 'icon': Icons.auto_awesome, 'route': '/ai/summarizer'},
+      {'title': 'Offline Translator', 'subtitle': 'Translate documents offline', 'icon': Icons.translate, 'route': '/ai/translator'},
+      {'title': 'Voice to Text', 'subtitle': 'Convert speech to text notes', 'icon': Icons.mic, 'route': '/ai/voice'},
+      {'title': 'Form Detector', 'subtitle': 'Detect and fill form fields', 'icon': Icons.assignment, 'route': '/ai/form'},
       {'title': 'Redaction Tool', 'subtitle': 'Remove sensitive information', 'icon': Icons.block, 'route': '/ai/redaction'},
-      {'title': 'Keyword Analytics', 'subtitle': 'Analyze document keywords', 'icon': Icons.analytics, 'route': '/ai/analytics'},
-      {'title': 'Handwriting Recognition', 'subtitle': 'Convert handwriting to text', 'icon': Icons.edit, 'route': '/ai/handwriting'},
-      {'title': 'Content Cleanup', 'subtitle': 'Clean up document content', 'icon': Icons.cleaning_services, 'route': '/ai/cleanup'},
+      {'title': 'Keyword Analytics', 'subtitle': 'Analyze document keywords and frequency', 'icon': Icons.analytics, 'route': '/ai/analytics'},
+      {'title': 'Handwriting Recognition', 'subtitle': 'Convert handwritten text to digital', 'icon': Icons.edit, 'route': '/ai/handwriting'},
+      {'title': 'Content Cleanup', 'subtitle': 'Clean and enhance document content', 'icon': Icons.cleaning_services, 'route': '/ai/cleanup'},
       
       // Advanced Tools
       {'title': 'Layout Designer', 'subtitle': 'Design custom page layouts', 'icon': Icons.design_services, 'route': '/advanced/layout'},
       {'title': 'Color Converter', 'subtitle': 'Convert colors with threshold control', 'icon': Icons.palette, 'route': '/advanced/color'},
       {'title': 'Dual Page View', 'subtitle': 'View two pages side by side', 'icon': Icons.view_column, 'route': '/advanced/dual'},
-      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to PDFs', 'icon': Icons.stamp, 'route': '/advanced/stamps'},
+      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents', 'icon': Icons.stamp, 'route': '/advanced/stamps'},
       {'title': 'Version History', 'subtitle': 'Track document versions', 'icon': Icons.history, 'route': '/advanced/version'},
-      {'title': 'PDF Indexer', 'subtitle': 'Index and search PDFs', 'icon': Icons.search, 'route': '/advanced/indexer'},
+      {'title': 'PDF Indexer', 'subtitle': 'Index and search documents', 'icon': Icons.search, 'route': '/advanced/indexer'},
       {'title': 'Auto Tagging', 'subtitle': 'Automatically tag documents', 'icon': Icons.local_offer, 'route': '/advanced/tagging'},
-      {'title': 'Batch Tool Chain', 'subtitle': 'Process multiple files', 'icon': Icons.settings_suggest, 'route': '/advanced/batch'},
-      {'title': 'Table Extractor', 'subtitle': 'Extract tables from PDFs', 'icon': Icons.table_chart, 'route': '/advanced/table'},
+      {'title': 'Batch Tool Chain', 'subtitle': 'Process multiple files efficiently', 'icon': Icons.settings_suggest, 'route': '/advanced/batch'},
+      {'title': 'Table Extractor', 'subtitle': 'Extract tables from documents', 'icon': Icons.table_chart, 'route': '/advanced/table'},
     ];
     
     return allTools.where((tool) {

@@ -94,7 +94,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Detect and fill form fields in scanned PDFs",
+                  "Detect and fill form fields in scanned documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

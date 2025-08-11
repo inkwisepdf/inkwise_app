@@ -116,7 +116,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Extract text from scanned PDF documents using OCR",
+                  "Extract text from scanned documents using OCR technology",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

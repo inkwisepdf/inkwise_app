@@ -132,7 +132,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Permanently remove sensitive information from PDFs",
+                  "Permanently remove sensitive information from documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

@@ -99,7 +99,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Convert PDF to black and white with advanced threshold control",
+                  "Convert documents to black and white with advanced threshold control",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

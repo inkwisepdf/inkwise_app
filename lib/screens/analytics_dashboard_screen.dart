@@ -135,7 +135,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  "Offline analytics and usage statistics",
+                  "Local analytics and usage statistics",
                   style: AppTypography.bodyMedium.copyWith(
                     color: AppColors.textSecondaryLight,
                   ),

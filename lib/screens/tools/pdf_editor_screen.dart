@@ -118,7 +118,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  "Add text, images, and annotations to your PDFs",
+                  "Add text, images, and annotations to your documents",
                   style: AppTypography.bodyMedium.copyWith(
                     color: AppColors.textSecondaryLight,
                   ),
@@ -326,7 +326,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               controller: _textController,
               decoration: const InputDecoration(
                 labelText: "Enter text to add",
-                hintText: "Type your text here...",
+                hintText: "Type your text here",
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,

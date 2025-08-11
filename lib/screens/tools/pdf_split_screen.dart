@@ -91,7 +91,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Divide PDF into multiple files by pages or custom ranges",
+                  "Divide PDF into separate files by pages or custom ranges",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

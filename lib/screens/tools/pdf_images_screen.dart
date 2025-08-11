@@ -105,7 +105,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Convert PDF pages to high-quality images",
+                  "Convert PDF pages to high-quality image files",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

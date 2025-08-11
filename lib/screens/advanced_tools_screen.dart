@@ -123,7 +123,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Professional-grade tools for advanced PDF manipulation and analysis",
+                  "Professional-grade tools for advanced document editing and analysis",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -172,7 +172,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               const SizedBox(width: 16),
               FeaturedToolCard(
                 title: "PDF Indexer",
-                subtitle: "Instant search across all PDFs",
+                subtitle: "Instant search across all documents",
                 icon: Icons.search,
                 gradient: [AppColors.primaryBlue, AppColors.primaryGreen],
                 onTap: () => Navigator.push(

@@ -90,7 +90,7 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Combine multiple PDF files into one document",
+                  "Combine multiple PDF files into a single document",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -161,11 +161,11 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        "${_selectedFiles.length} file(s) selected",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                      "${_selectedFiles.length} file${_selectedFiles.length == 1 ? '' : 's'} selected",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
+                    ),
                     ),
                     TextButton.icon(
                       onPressed: _pickFiles,

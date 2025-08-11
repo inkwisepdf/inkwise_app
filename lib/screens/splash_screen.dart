@@ -174,7 +174,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           const SizedBox(height: AppSpacing.md),
                           Text(
-                            "AI-Powered PDF Editor",
+                            "Professional PDF Editor",
                             style: AppTypography.titleMedium.copyWith(
                               color: AppColors.textSecondaryLight,
                               fontWeight: FontWeight.w500,

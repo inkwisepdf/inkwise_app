@@ -25,21 +25,21 @@ class ToolsScreen extends StatelessWidget {
         "icon": Icons.merge_type,
         "color": AppColors.primaryBlue,
         "route": const PDFMergeScreen(),
-        "description": "Combine multiple PDFs",
+        "description": "Combine multiple PDF files",
       },
       {
         "title": "Split PDF",
         "icon": Icons.content_cut,
         "color": AppColors.primaryGreen,
         "route": const PDFSplitScreen(),
-        "description": "Divide PDF into parts",
+        "description": "Divide PDF into separate files",
       },
       {
         "title": "Compress PDF",
         "icon": Icons.compress,
         "color": AppColors.primaryOrange,
         "route": const PDFCompressorScreen(),
-        "description": "Reduce file size",
+        "description": "Reduce PDF file size",
       },
       {
         "title": "Rotate Pages",
@@ -55,14 +55,14 @@ class ToolsScreen extends StatelessWidget {
         "icon": Icons.text_snippet,
         "color": AppColors.primaryPurple,
         "route": const PDFOCRScreen(),
-        "description": "Extract text from images",
+        "description": "Extract text from scanned documents",
       },
       {
         "title": "PDF Editor",
         "icon": Icons.edit,
         "color": AppColors.primaryBlue,
         "route": const PDFEditorScreen(),
-        "description": "Edit PDF content",
+        "description": "Edit PDF content and layout",
       },
       
       // Conversion Tools
@@ -71,14 +71,14 @@ class ToolsScreen extends StatelessWidget {
         "icon": Icons.image,
         "color": AppColors.primaryGreen,
         "route": const PDFImagesScreen(),
-        "description": "Convert pages to images",
+        "description": "Convert PDF pages to images",
       },
       {
         "title": "Grayscale PDF",
         "icon": Icons.filter_bw,
         "color": AppColors.primaryOrange,
         "route": const PDFGrayscaleScreen(),
-        "description": "Convert to black & white",
+        "description": "Convert to black and white",
       },
       
       // Security Tools
@@ -87,14 +87,14 @@ class ToolsScreen extends StatelessWidget {
         "icon": Icons.lock,
         "color": AppColors.primaryRed,
         "route": const PDFPasswordScreen(),
-        "description": "Protect with password",
+        "description": "Protect PDF with password",
       },
       {
         "title": "Add Watermark",
         "icon": Icons.water_drop,
         "color": AppColors.primaryBlue,
         "route": const PDFWatermarkScreen(),
-        "description": "Add text/image watermark",
+        "description": "Add text or image watermarks",
       },
     ];
 
@@ -162,7 +162,7 @@ class ToolsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Professional PDF manipulation tools for all your needs",
+                  "Professional PDF editing tools for all your needs",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

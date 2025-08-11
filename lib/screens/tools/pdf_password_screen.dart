@@ -103,7 +103,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Add or remove password protection from your PDF",
+                  "Add or remove password protection from your documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

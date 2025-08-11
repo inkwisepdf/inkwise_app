@@ -453,7 +453,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
             controller: _textController,
             maxLines: 8,
             decoration: InputDecoration(
-              hintText: "Your transcribed text will appear here...",
+              hintText: "Your transcribed text will appear here",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

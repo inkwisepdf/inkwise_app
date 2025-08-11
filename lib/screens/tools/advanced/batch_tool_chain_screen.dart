@@ -702,7 +702,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       {
         'id': 'merge',
         'name': 'Merge PDFs',
-        'description': 'Combine multiple PDFs into one',
+        'description': 'Combine multiple PDF files into one',
         'icon': Icons.merge,
         'category': 'editing',
       },
@@ -716,7 +716,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       {
         'id': 'ocr',
         'name': 'OCR Processing',
-        'description': 'Extract text from scanned PDFs',
+        'description': 'Extract text from scanned documents',
         'icon': Icons.text_fields,
         'category': 'extraction',
       },

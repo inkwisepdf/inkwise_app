@@ -129,7 +129,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
-          hintText: 'Search recent files...',
+          hintText: 'Search recent files',
           prefixIcon: const Icon(Icons.search),
           suffixIcon: _searchQuery.isNotEmpty
               ? IconButton(

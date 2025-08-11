@@ -92,7 +92,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Reduce PDF file size while maintaining quality",
+                  "Reduce PDF file size while preserving quality",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

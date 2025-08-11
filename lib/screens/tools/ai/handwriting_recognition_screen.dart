@@ -482,7 +482,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               maxLines: null,
               expands: true,
               decoration: InputDecoration(
-                hintText: "Recognized text will appear here...",
+                hintText: "Recognized text will appear here",
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.all(16),
               ),

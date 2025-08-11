@@ -129,7 +129,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Add text or image watermarks to your PDF",
+                  "Add text or image watermarks to your documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

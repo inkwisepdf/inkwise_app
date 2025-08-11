@@ -114,7 +114,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Add offline pre-designed and user-made stamps to PDFs",
+                  "Add offline pre-designed and custom stamps to documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

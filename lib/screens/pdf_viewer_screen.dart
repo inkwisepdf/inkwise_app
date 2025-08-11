@@ -140,7 +140,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            "Select a PDF file to view",
+            "Select a PDF file to view and edit",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondaryLight,
             ),
@@ -149,7 +149,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           ElevatedButton.icon(
             onPressed: _pickPdfFile,
             icon: const Icon(Icons.upload_file),
-            label: const Text("Choose PDF File"),
+            label: const Text("Select PDF File"),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
               foregroundColor: Colors.white,

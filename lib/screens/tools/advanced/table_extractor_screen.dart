@@ -100,7 +100,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Extract tables from PDFs using AI-powered detection",
+                  "Extract tables from documents using AI-powered detection",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

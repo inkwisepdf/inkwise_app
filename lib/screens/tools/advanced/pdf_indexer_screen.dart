@@ -116,7 +116,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Local PDF indexing and instant search across all PDFs",
+                  "Local document indexing and instant search across all files",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -259,7 +259,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Search PDFs",
+            "Search Documents",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
@@ -267,7 +267,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: "Search in indexed PDFs...",
+              hintText: "Search in indexed documents",
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchQuery.isNotEmpty
                   ? IconButton(

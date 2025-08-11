@@ -284,7 +284,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                hintText: "Enter page number (e.g., 1, 2, 3...)",
+                hintText: "Enter page number (e.g., 1, 2, 3)",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

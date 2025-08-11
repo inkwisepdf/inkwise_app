@@ -115,7 +115,7 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Advanced offline AI capabilities powered by on-device models",
+                  "Advanced AI capabilities powered by on-device models",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -142,7 +142,7 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
             children: [
               FeaturedToolCard(
                 title: "Smart PDF Summarizer",
-                subtitle: "Extract key points automatically",
+                subtitle: "Extract key points from documents",
                 icon: Icons.summarize,
                 gradient: [AppColors.primaryPurple, AppColors.primaryBlue],
                 onTap: () => Navigator.push(
@@ -153,7 +153,7 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               const SizedBox(width: 16),
               FeaturedToolCard(
                 title: "Offline Translator",
-                subtitle: "Translate PDFs without internet",
+                subtitle: "Translate documents without internet",
                 icon: Icons.translate,
                 gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
                 onTap: () => Navigator.push(
