@@ -5,6 +5,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:image/image.dart' as img;
+import 'package:flutter/material.dart';
 
 class PDFService {
   static final PDFService _instance = PDFService._internal();
@@ -114,36 +115,6 @@ class PDFService {
     }
   }
 
-  /// Rotate PDF pages
-  Future<File> rotatePDF(File pdfFile, {int? pageNumber, PdfPageRotateAngle angle = PdfPageRotateAngle.rotateAngle90}) async {
-    try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      
-      if (pageNumber != null) {
-        // Rotate specific page
-        if (pageNumber > 0 && pageNumber <= document.pages.count) {
-          document.pages[pageNumber - 1].rotation = angle;
-        }
-      } else {
-        // Rotate all pages
-        for (int i = 0; i < document.pages.count; i++) {
-          document.pages[i].rotation = angle;
-        }
-      }
-      
-      final List<int> bytes = await document.save();
-      document.dispose();
-      
-      final outputPath = await _getOutputPath('rotated_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      final outputFile = File(outputPath);
-      await outputFile.writeAsBytes(bytes);
-      
-      return outputFile;
-    } catch (e) {
-      throw Exception('Failed to rotate PDF: $e');
-    }
-  }
-
   /// Remove specific pages from PDF
   Future<File> removePages(File pdfFile, List<int> pageNumbers) async {
     try {
@@ -197,41 +168,6 @@ class PDFService {
       return outputFile;
     } catch (e) {
       throw Exception('Failed to add blank pages: $e');
-    }
-  }
-
-  /// Convert PDF to grayscale
-  Future<File> convertToGrayscale(File pdfFile) async {
-    try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      
-      // Process each page
-      for (int i = 0; i < document.pages.count; i++) {
-        final PdfPage page = document.pages[i];
-        final List<PdfImage> images = page.extractImages();
-        
-        for (final image in images) {
-          // Convert image to grayscale
-          final img.Image? decodedImage = img.decodeImage(image.data);
-          if (decodedImage != null) {
-            final img.Image grayscaleImage = img.grayscale(decodedImage);
-            final Uint8List grayscaleBytes = Uint8List.fromList(img.encodePng(grayscaleImage));
-            // Replace image with grayscale version
-            // Note: This is a simplified implementation
-          }
-        }
-      }
-      
-      final List<int> bytes = await document.save();
-      document.dispose();
-      
-      final outputPath = await _getOutputPath('grayscale_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      final outputFile = File(outputPath);
-      await outputFile.writeAsBytes(bytes);
-      
-      return outputFile;
-    } catch (e) {
-      throw Exception('Failed to convert to grayscale: $e');
     }
   }
 
@@ -348,6 +284,306 @@ class PDFService {
       return outputFile;
     } catch (e) {
       throw Exception('Failed to remove password: $e');
+    }
+  }
+
+  /// Rotate PDF pages
+  Future<File> rotatePDF(File pdfFile, {int? pageNumber, dynamic angle}) async {
+    try {
+      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      
+      if (pageNumber != null) {
+        // Rotate specific page
+        if (pageNumber > 0 && pageNumber <= document.pages.count) {
+          final PdfPage page = document.pages[pageNumber - 1];
+          page.rotation = angle;
+        }
+      } else {
+        // Rotate all pages
+        for (int i = 0; i < document.pages.count; i++) {
+          final PdfPage page = document.pages[i];
+          page.rotation = angle;
+        }
+      }
+      
+      final List<int> bytes = await document.save();
+      document.dispose();
+      
+      final outputPath = await _getOutputPath('rotated_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputFile = File(outputPath);
+      await outputFile.writeAsBytes(bytes);
+      
+      return outputFile;
+    } catch (e) {
+      throw Exception('Failed to rotate PDF: $e');
+    }
+  }
+
+  /// Add text watermark to PDF
+  Future<File> addTextWatermark(
+    File pdfFile,
+    String text, {
+    String position = 'center',
+    double opacity = 0.5,
+    double rotation = 0.0,
+    double fontSize = 24.0,
+    Color color = Colors.red,
+    String fontFamily = 'Arial',
+  }) async {
+    try {
+      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      
+      for (int i = 0; i < document.pages.count; i++) {
+        final PdfPage page = document.pages[i];
+        final PdfGraphics graphics = page.graphics;
+        
+        // Calculate position
+        double x, y;
+        final PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, fontSize);
+        final PdfStringFormat format = PdfStringFormat();
+        final Size textSize = font.measureString(text, format);
+        
+        switch (position) {
+          case 'center':
+            x = (page.size.width - textSize.width) / 2;
+            y = (page.size.height - textSize.height) / 2;
+            break;
+          case 'top-left':
+            x = 50;
+            y = 50;
+            break;
+          case 'top-right':
+            x = page.size.width - textSize.width - 50;
+            y = 50;
+            break;
+          case 'bottom-left':
+            x = 50;
+            y = page.size.height - textSize.height - 50;
+            break;
+          case 'bottom-right':
+            x = page.size.width - textSize.width - 50;
+            y = page.size.height - textSize.height - 50;
+            break;
+          default:
+            x = (page.size.width - textSize.width) / 2;
+            y = (page.size.height - textSize.height) / 2;
+        }
+        
+        // Apply rotation and opacity
+        graphics.save();
+        graphics.translateTransform(x + textSize.width / 2, y + textSize.height / 2);
+        graphics.rotateTransform(rotation);
+        graphics.translateTransform(-(x + textSize.width / 2), -(y + textSize.height / 2));
+        
+        // Draw watermark
+        final PdfBrush brush = PdfSolidBrush(PdfColor.fromArgb(
+          (opacity * 255).round(),
+          color.red,
+          color.green,
+          color.blue,
+        ));
+        
+        graphics.drawString(text, font, brush, Offset(x, y), format);
+        graphics.restore();
+      }
+      
+      final List<int> bytes = await document.save();
+      document.dispose();
+      
+      final outputPath = await _getOutputPath('watermarked_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputFile = File(outputPath);
+      await outputFile.writeAsBytes(bytes);
+      
+      return outputFile;
+    } catch (e) {
+      throw Exception('Failed to add text watermark: $e');
+    }
+  }
+
+  /// Add image watermark to PDF
+  Future<File> addImageWatermark(
+    File pdfFile,
+    File imageFile, {
+    String position = 'center',
+    double opacity = 0.5,
+    double rotation = 0.0,
+  }) async {
+    try {
+      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      final PdfBitmap image = PdfBitmap(imageBytes);
+      
+      for (int i = 0; i < document.pages.count; i++) {
+        final PdfPage page = document.pages[i];
+        final PdfGraphics graphics = page.graphics;
+        
+        // Calculate position
+        double x, y;
+        final double imageWidth = image.width.toDouble();
+        final double imageHeight = image.height.toDouble();
+        
+        switch (position) {
+          case 'center':
+            x = (page.size.width - imageWidth) / 2;
+            y = (page.size.height - imageHeight) / 2;
+            break;
+          case 'top-left':
+            x = 50;
+            y = 50;
+            break;
+          case 'top-right':
+            x = page.size.width - imageWidth - 50;
+            y = 50;
+            break;
+          case 'bottom-left':
+            x = 50;
+            y = page.size.height - imageHeight - 50;
+            break;
+          case 'bottom-right':
+            x = page.size.width - imageWidth - 50;
+            y = page.size.height - imageHeight - 50;
+            break;
+          default:
+            x = (page.size.width - imageWidth) / 2;
+            y = (page.size.height - imageHeight) / 2;
+        }
+        
+        // Apply rotation and opacity
+        graphics.save();
+        graphics.translateTransform(x + imageWidth / 2, y + imageHeight / 2);
+        graphics.rotateTransform(rotation);
+        graphics.translateTransform(-(x + imageWidth / 2), -(y + imageHeight / 2));
+        
+        // Draw watermark with opacity
+        final PdfBrush brush = PdfSolidBrush(PdfColor.fromArgb(
+          (opacity * 255).round(),
+          255,
+          255,
+          255,
+        ));
+        
+        graphics.drawImage(image, Rect.fromLTWH(x, y, imageWidth, imageHeight));
+        graphics.restore();
+      }
+      
+      final List<int> bytes = await document.save();
+      document.dispose();
+      
+      final outputPath = await _getOutputPath('watermarked_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputFile = File(outputPath);
+      await outputFile.writeAsBytes(bytes);
+      
+      return outputFile;
+    } catch (e) {
+      throw Exception('Failed to add image watermark: $e');
+    }
+  }
+
+  /// Convert PDF to images
+  Future<List<File>> convertPDFToImages(
+    File pdfFile, {
+    String format = 'png',
+    double quality = 0.8,
+    double scale = 2.0,
+    List<int>? pageNumbers,
+  }) async {
+    try {
+      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final List<File> imageFiles = [];
+      
+      final pagesToConvert = pageNumbers ?? List.generate(document.pages.count, (i) => i + 1);
+      
+      for (final pageNum in pagesToConvert) {
+        if (pageNum > 0 && pageNum <= document.pages.count) {
+          final PdfPage page = document.pages[pageNum - 1];
+          final PdfPageImage pageImage = page.createImage();
+          
+          // Scale the image
+          final int width = (pageImage.width * scale).round();
+          final int height = (pageImage.height * scale).round();
+          
+          // Convert to image bytes
+          Uint8List imageBytes;
+          if (format.toLowerCase() == 'png') {
+            imageBytes = pageImage.toByteData(format: PdfImageFormat.png);
+          } else {
+            imageBytes = pageImage.toByteData(format: PdfImageFormat.jpeg, quality: (quality * 100).round());
+          }
+          
+          // Save image file
+          final outputPath = await _getOutputPath('page_${pageNum}_${DateTime.now().millisecondsSinceEpoch}.$format');
+          final outputFile = File(outputPath);
+          await outputFile.writeAsBytes(imageBytes);
+          imageFiles.add(outputFile);
+        }
+      }
+      
+      document.dispose();
+      return imageFiles;
+    } catch (e) {
+      throw Exception('Failed to convert PDF to images: $e');
+    }
+  }
+
+  /// Convert PDF to grayscale
+  Future<File> convertToGrayscale(
+    File pdfFile, {
+    double threshold = 0.5,
+    bool preserveText = true,
+    bool enhanceContrast = false,
+    List<int>? pageNumbers,
+  }) async {
+    try {
+      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      
+      final pagesToConvert = pageNumbers ?? List.generate(document.pages.count, (i) => i + 1);
+      
+      for (final pageNum in pagesToConvert) {
+        if (pageNum > 0 && pageNum <= document.pages.count) {
+          final PdfPage page = document.pages[pageNum - 1];
+          final PdfGraphics graphics = page.graphics;
+          
+          // Convert page to image first
+          final PdfPageImage pageImage = page.createImage();
+          final Uint8List imageBytes = pageImage.toByteData(format: PdfImageFormat.png);
+          
+          // Process image to grayscale
+          final img.Image? image = img.decodeImage(imageBytes);
+          if (image != null) {
+            // Convert to grayscale
+            img.Image grayscaleImage = img.grayscale(image);
+            
+            // Apply threshold if needed
+            if (threshold != 0.5) {
+              grayscaleImage = img.threshold(grayscaleImage, threshold: (threshold * 255).round());
+            }
+            
+            // Enhance contrast if requested
+            if (enhanceContrast) {
+              grayscaleImage = img.contrast(grayscaleImage, contrast: 1.5);
+            }
+            
+            // Convert back to bytes
+            final Uint8List processedBytes = Uint8List.fromList(img.encodePng(grayscaleImage));
+            
+            // Replace page content with processed image
+            final PdfBitmap bitmap = PdfBitmap(processedBytes);
+            graphics.clear(PdfColor.white);
+            graphics.drawImage(bitmap, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
+          }
+        }
+      }
+      
+      final List<int> bytes = await document.save();
+      document.dispose();
+      
+      final outputPath = await _getOutputPath('grayscale_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputFile = File(outputPath);
+      await outputFile.writeAsBytes(bytes);
+      
+      return outputFile;
+    } catch (e) {
+      throw Exception('Failed to convert to grayscale: $e');
     }
   }
 
