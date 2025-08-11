@@ -402,41 +402,135 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _showSearchDialog() {
+    String searchQuery = '';
+    List<Map<String, dynamic>> searchResults = [];
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Search Tools"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  hintText: "Search for tools...",
-                  prefixIcon: Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  // TODO: Implement search functionality
-                },
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Search Tools"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      hintText: "Search for tools...",
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value;
+                        searchResults = _performSearch(value);
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  if (searchQuery.isNotEmpty) ...[
+                    if (searchResults.isEmpty)
+                      const Text(
+                        "No tools found",
+                        style: TextStyle(
+                          color: AppColors.textSecondaryLight,
+                          fontSize: 14,
+                        ),
+                      )
+                    else
+                      Container(
+                        constraints: const BoxConstraints(maxHeight: 200),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: searchResults.length,
+                          itemBuilder: (context, index) {
+                            final result = searchResults[index];
+                            return ListTile(
+                              leading: Icon(result['icon']),
+                              title: Text(result['title']),
+                              subtitle: Text(result['subtitle']),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                _navigateToTool(result['route']);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ] else
+                    const Text(
+                      "Search for tools, features, and functions",
+                      style: TextStyle(
+                        color: AppColors.textSecondaryLight,
+                        fontSize: 14,
+                      ),
+                    ),
+                ],
               ),
-              const SizedBox(height: 16),
-              const Text(
-                "Search functionality coming soon!",
-                style: TextStyle(
-                  color: AppColors.textSecondaryLight,
-                  fontSize: 14,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Close"),
                 ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Close"),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
+    );
+  }
+
+  List<Map<String, dynamic>> _performSearch(String query) {
+    if (query.isEmpty) return [];
+    
+    final allTools = [
+      // Core PDF Tools
+      {'title': 'Merge PDFs', 'subtitle': 'Combine multiple PDF files', 'icon': Icons.merge, 'route': '/tools/merge'},
+      {'title': 'Split PDF', 'subtitle': 'Divide PDF into multiple files', 'icon': Icons.content_cut, 'route': '/tools/split'},
+      {'title': 'Compress PDF', 'subtitle': 'Reduce file size', 'icon': Icons.compress, 'route': '/tools/compress'},
+      {'title': 'Rotate PDF', 'subtitle': 'Rotate pages', 'icon': Icons.rotate_right, 'route': '/tools/rotate'},
+      {'title': 'PDF OCR', 'subtitle': 'Extract text from scanned PDFs', 'icon': Icons.text_fields, 'route': '/tools/ocr'},
+      {'title': 'Add Password', 'subtitle': 'Protect PDF with password', 'icon': Icons.lock, 'route': '/tools/password'},
+      {'title': 'Add Watermark', 'subtitle': 'Add text or image watermark', 'icon': Icons.water_drop, 'route': '/tools/watermark'},
+      {'title': 'PDF to Images', 'subtitle': 'Convert PDF to images', 'icon': Icons.image, 'route': '/tools/images'},
+      {'title': 'Grayscale PDF', 'subtitle': 'Convert to black and white', 'icon': Icons.filter_b_and_w, 'route': '/tools/grayscale'},
+      
+      // AI Tools
+      {'title': 'Smart Summarizer', 'subtitle': 'AI-powered document summarization', 'icon': Icons.auto_awesome, 'route': '/ai/summarizer'},
+      {'title': 'Offline Translator', 'subtitle': 'Translate PDF content', 'icon': Icons.translate, 'route': '/ai/translator'},
+      {'title': 'Voice to Text', 'subtitle': 'Convert voice to text notes', 'icon': Icons.mic, 'route': '/ai/voice'},
+      {'title': 'Form Detector', 'subtitle': 'Detect and fill forms', 'icon': Icons.assignment, 'route': '/ai/form'},
+      {'title': 'Redaction Tool', 'subtitle': 'Remove sensitive information', 'icon': Icons.block, 'route': '/ai/redaction'},
+      {'title': 'Keyword Analytics', 'subtitle': 'Analyze document keywords', 'icon': Icons.analytics, 'route': '/ai/analytics'},
+      {'title': 'Handwriting Recognition', 'subtitle': 'Convert handwriting to text', 'icon': Icons.edit, 'route': '/ai/handwriting'},
+      {'title': 'Content Cleanup', 'subtitle': 'Clean up document content', 'icon': Icons.cleaning_services, 'route': '/ai/cleanup'},
+      
+      // Advanced Tools
+      {'title': 'Layout Designer', 'subtitle': 'Design custom page layouts', 'icon': Icons.design_services, 'route': '/advanced/layout'},
+      {'title': 'Color Converter', 'subtitle': 'Convert colors with threshold control', 'icon': Icons.palette, 'route': '/advanced/color'},
+      {'title': 'Dual Page View', 'subtitle': 'View two pages side by side', 'icon': Icons.view_column, 'route': '/advanced/dual'},
+      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to PDFs', 'icon': Icons.stamp, 'route': '/advanced/stamps'},
+      {'title': 'Version History', 'subtitle': 'Track document versions', 'icon': Icons.history, 'route': '/advanced/version'},
+      {'title': 'PDF Indexer', 'subtitle': 'Index and search PDFs', 'icon': Icons.search, 'route': '/advanced/indexer'},
+      {'title': 'Auto Tagging', 'subtitle': 'Automatically tag documents', 'icon': Icons.local_offer, 'route': '/advanced/tagging'},
+      {'title': 'Batch Tool Chain', 'subtitle': 'Process multiple files', 'icon': Icons.settings_suggest, 'route': '/advanced/batch'},
+      {'title': 'Table Extractor', 'subtitle': 'Extract tables from PDFs', 'icon': Icons.table_chart, 'route': '/advanced/table'},
+    ];
+    
+    return allTools.where((tool) {
+      return tool['title'].toString().toLowerCase().contains(query.toLowerCase()) ||
+             tool['subtitle'].toString().toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
+
+  void _navigateToTool(String route) {
+    // This would navigate to the specific tool based on the route
+    // For now, we'll show a snackbar indicating the tool was selected
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Selected: $route'),
+        duration: const Duration(seconds: 2),
+      ),
     );
   }
 }
