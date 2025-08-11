@@ -354,7 +354,11 @@ class PDFService {
   // Helper methods
   Future<String> _getOutputPath(String filename) async {
     final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/inkwise_pdf/$filename';
+    final appDir = Directory('${directory.path}/inkwise_pdf');
+    if (!await appDir.exists()) {
+      await appDir.create(recursive: true);
+    }
+    return '${appDir.path}/$filename';
   }
 
   Future<Uint8List> _compressImage(Uint8List imageBytes, double quality) async {

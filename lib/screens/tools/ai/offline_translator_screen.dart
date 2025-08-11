@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/offline_translator_service.dart';
+import '../../../services/file_service.dart';
 
 class OfflineTranslatorScreen extends StatefulWidget {
   const OfflineTranslatorScreen({super.key});
@@ -453,8 +454,23 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Copy to clipboard
+                  onPressed: () async {
+                    try {
+                      await FileService().copyToClipboard(_translatedText!);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Translation copied to clipboard'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error copying translation: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.copy),
                   label: const Text("Copy"),
@@ -467,8 +483,24 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Save translated PDF
+                  onPressed: () async {
+                    try {
+                      final filename = 'translated_${DateTime.now().millisecondsSinceEpoch}.txt';
+                      await FileService().saveTextAsFile(_translatedText!, filename);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Translation saved as $filename'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error saving translation: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.save),
                   label: const Text("Save PDF"),

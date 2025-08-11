@@ -414,7 +414,10 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  // TODO: Navigate to analytics screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
+                  );
                 },
                 icon: const Icon(Icons.analytics),
                 label: const Text("View Analytics"),

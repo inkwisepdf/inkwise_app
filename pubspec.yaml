@@ -88,6 +88,9 @@ dependencies:
   
   # Local notifications
   flutter_local_notifications: ^16.3.2
+  
+  # Clipboard
+  flutter_clipboard: ^0.0.3
 
 dev_dependencies:
   flutter_test:

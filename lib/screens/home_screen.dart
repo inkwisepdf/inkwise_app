@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                  // TODO: Implement global search
+                  _showSearchDialog();
                 },
               ),
               IconButton(
@@ -398,6 +398,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ),
       ],
+    );
+  }
+
+  void _showSearchDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Search Tools"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: "Search for tools...",
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onChanged: (value) {
+                  // TODO: Implement search functionality
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Search functionality coming soon!",
+                style: TextStyle(
+                  color: AppColors.textSecondaryLight,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

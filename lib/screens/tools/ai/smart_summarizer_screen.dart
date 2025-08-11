@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/ai_summarizer_service.dart';
+import '../../../services/file_service.dart';
 
 class SmartSummarizerScreen extends StatefulWidget {
   const SmartSummarizerScreen({super.key});
@@ -394,8 +395,23 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Copy to clipboard
+                  onPressed: () async {
+                    try {
+                      await FileService().copyToClipboard(_summary!);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Summary copied to clipboard'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error copying summary: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.copy),
                   label: const Text("Copy"),
@@ -408,8 +424,24 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Save summary
+                  onPressed: () async {
+                    try {
+                      final filename = 'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
+                      await FileService().saveTextAsFile(_summary!, filename);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Summary saved as $filename'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error saving summary: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.save),
                   label: const Text("Save"),

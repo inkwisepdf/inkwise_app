@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/pdf_service.dart';
+import '../../../services/file_service.dart';
 
 class PDFSplitScreen extends StatefulWidget {
   const PDFSplitScreen({Key? key}) : super(key: key);
@@ -413,8 +414,18 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Open folder with split files
+                  onPressed: () async {
+                    try {
+                      final appDir = await FileService().getAppDirectoryPath();
+                      await FileService().openFile(File(appDir));
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error opening folder: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.folder_open),
                   label: const Text("Open Folder"),
@@ -427,8 +438,20 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Share all split files
+                  onPressed: () async {
+                    try {
+                      // Share the first file as an example
+                      if (_splitFiles!.isNotEmpty) {
+                        await FileService().shareFile(_splitFiles!.first);
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error sharing files: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.share),
                   label: const Text("Share All"),

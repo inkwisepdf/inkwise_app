@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/ocr_service.dart';
+import '../../../services/file_service.dart';
 
 class PDFOCRScreen extends StatefulWidget {
   const PDFOCRScreen({Key? key}) : super(key: key);
@@ -476,8 +477,23 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Copy to clipboard
+                  onPressed: () async {
+                    try {
+                      await FileService().copyToClipboard(_extractedText!);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Text copied to clipboard'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error copying text: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.copy),
                   label: const Text("Copy Text"),
@@ -490,8 +506,24 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Save as text file
+                  onPressed: () async {
+                    try {
+                      final filename = 'ocr_extracted_${DateTime.now().millisecondsSinceEpoch}.txt';
+                      await FileService().saveTextAsFile(_extractedText!, filename);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Text saved as $filename'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error saving text: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.save),
                   label: const Text("Save as TXT"),

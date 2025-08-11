@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/pdf_service.dart';
+import '../../../services/file_service.dart';
 
 class PDFMergeScreen extends StatefulWidget {
   const PDFMergeScreen({Key? key}) : super(key: key);
@@ -417,8 +418,18 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Open merged file
+                  onPressed: () async {
+                    try {
+                      final file = File(_outputPath!);
+                      await FileService().openFile(file);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error opening file: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.open_in_new),
                   label: const Text("Open File"),
@@ -431,8 +442,18 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Share merged file
+                  onPressed: () async {
+                    try {
+                      final file = File(_outputPath!);
+                      await FileService().shareFile(file);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error sharing file: $e'),
+                          backgroundColor: AppColors.primaryRed,
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.share),
                   label: const Text("Share"),
