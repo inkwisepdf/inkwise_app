@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:pdf_render/pdf_render.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 
@@ -419,8 +420,8 @@ class PDFService {
         
         // Calculate position
         double x, y;
-        final double imageWidth = image.width.toDouble();
-        final double imageHeight = image.height.toDouble();
+        final double imageWidth = 200.0; // Default watermark size
+        final double imageHeight = 200.0; // Default watermark size
         
         switch (position) {
           case 'center':
@@ -496,25 +497,23 @@ class PDFService {
       for (final pageNum in pagesToConvert) {
         if (pageNum > 0 && pageNum <= document.pages.count) {
           final PdfPage page = document.pages[pageNum - 1];
-          final PdfPageImage pageImage = page.createImage();
           
-          // Scale the image
-          final int width = (pageImage.width * scale).round();
-          final int height = (pageImage.height * scale).round();
+          // Convert page to image using pdf_render
+          final pageImage = await page.render(
+            width: (page.size.width * scale).round(),
+            height: (page.size.height * scale).round(),
+          );
           
-          // Convert to image bytes
-          Uint8List imageBytes;
-          if (format.toLowerCase() == 'png') {
-            imageBytes = pageImage.toByteData(format: PdfImageFormat.png);
-          } else {
-            imageBytes = pageImage.toByteData(format: PdfImageFormat.jpeg, quality: (quality * 100).round());
+          if (pageImage != null) {
+            // Convert to image bytes
+            Uint8List imageBytes = pageImage.toByteData()!.buffer.asUint8List();
+            
+            // Save image file
+            final outputPath = await _getOutputPath('page_${pageNum}_${DateTime.now().millisecondsSinceEpoch}.$format');
+            final outputFile = File(outputPath);
+            await outputFile.writeAsBytes(imageBytes);
+            imageFiles.add(outputFile);
           }
-          
-          // Save image file
-          final outputPath = await _getOutputPath('page_${pageNum}_${DateTime.now().millisecondsSinceEpoch}.$format');
-          final outputFile = File(outputPath);
-          await outputFile.writeAsBytes(imageBytes);
-          imageFiles.add(outputFile);
         }
       }
       
@@ -544,8 +543,13 @@ class PDFService {
           final PdfGraphics graphics = page.graphics;
           
           // Convert page to image first
-          final PdfPageImage pageImage = page.createImage();
-          final Uint8List imageBytes = pageImage.toByteData(format: PdfImageFormat.png);
+          final pageImage = await page.render(
+            width: page.size.width.round(),
+            height: page.size.height.round(),
+          );
+          
+          if (pageImage != null) {
+            final Uint8List imageBytes = pageImage.toByteData()!.buffer.asUint8List();
           
           // Process image to grayscale
           final img.Image? image = img.decodeImage(imageBytes);
@@ -566,13 +570,14 @@ class PDFService {
             // Convert back to bytes
             final Uint8List processedBytes = Uint8List.fromList(img.encodePng(grayscaleImage));
             
-            // Replace page content with processed image
-            final PdfBitmap bitmap = PdfBitmap(processedBytes);
-            graphics.clear(PdfColor.white);
-            graphics.drawImage(bitmap, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
-          }
-        }
-      }
+                         // Replace page content with processed image
+             final PdfBitmap bitmap = PdfBitmap(processedBytes);
+             graphics.clear(PdfColor.white);
+             graphics.drawImage(bitmap, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
+           }
+         }
+       }
+     }
       
       final List<int> bytes = await document.save();
       document.dispose();
