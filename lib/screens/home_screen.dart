@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../theme.dart';
 import '../widgets/tool_card.dart';
 import '../widgets/featured_tool_card.dart';
+import '../services/local_analytics_service.dart';
 import 'tools_screen.dart';
 import 'recent_files_screen.dart';
 import 'ai_tools_screen.dart';
@@ -43,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     
     _animationController.forward();
     _slideController.forward();
+    
+    // Log screen view with local analytics
+    LocalAnalyticsService().logScreenView('home_screen');
   }
 
   @override

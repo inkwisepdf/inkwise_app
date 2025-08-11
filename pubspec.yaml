@@ -27,12 +27,12 @@ dependencies:
   path_provider: ^2.1.2
   path: ^1.9.0
 
-  # Firebase & Google Sign-In
-  firebase_core: ^2.31.0
-  firebase_auth: ^4.17.4
-  firebase_analytics: ^10.10.4
-  firebase_crashlytics: ^3.5.4
-  google_sign_in: ^6.2.1
+  # Local Analytics (replaces Firebase)
+  # firebase_core: ^2.31.0
+  # firebase_auth: ^4.17.4
+  # firebase_analytics: ^10.10.4
+  # firebase_crashlytics: ^3.5.4
+  # google_sign_in: ^6.2.1
 
   # Image and sharing
   image_picker: ^1.0.7
@@ -47,8 +47,8 @@ dependencies:
   tflite_flutter: ^0.10.4
   tflite_flutter_helper: ^0.3.1
   
-  # Translation and language processing
-  translator: ^0.1.7
+  # Translation and language processing (offline-first)
+  # translator: ^0.1.7  # Commented out - using offline translation
   language_detector: ^0.0.2
   
   # Voice and speech

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
-import '../../../services/offline_translator_service.dart';
+import '../../../services/offline_translation_service.dart';
 import '../../../services/file_service.dart';
 
 class OfflineTranslatorScreen extends StatefulWidget {
@@ -548,7 +548,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
     });
 
     try {
-      final translatorService = OfflineTranslatorService();
+      final translatorService = OfflineTranslationService();
       final translatedText = await translatorService.translatePDF(
         _selectedFile!,
         sourceLanguage: _sourceLanguage == 'Auto Detect' ? null : _languages[_sourceLanguage]!,

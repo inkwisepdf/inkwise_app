@@ -7,6 +7,7 @@ import 'screens/find_replace_screen.dart';
 import 'screens/metadata_editor_screen.dart';
 import 'screens/ai_tools_screen.dart';
 import 'screens/advanced_tools_screen.dart';
+import 'screens/analytics_dashboard_screen.dart';
 
 class Routes {
   static const splash = '/';
@@ -17,6 +18,7 @@ class Routes {
   static const metadataEditor = '/metadata_editor';
   static const aiTools = '/ai_tools';
   static const advancedTools = '/advanced_tools';
+  static const analyticsDashboard = '/analytics_dashboard';
 }
 
 final Map<String, WidgetBuilder> appRoutes = {
@@ -28,4 +30,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   Routes.metadataEditor: (context) => const MetadataEditorScreen(),
   Routes.aiTools: (context) => const AIToolsScreen(),
   Routes.advancedTools: (context) => const AdvancedToolsScreen(),
+  Routes.analyticsDashboard: (context) => const AnalyticsDashboardScreen(),
 };
