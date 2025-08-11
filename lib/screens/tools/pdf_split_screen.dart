@@ -2,49 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
-import '../../../services/ocr_service.dart';
+import '../../../services/pdf_service.dart';
 
-class PDFOCRScreen extends StatefulWidget {
-  const PDFOCRScreen({Key? key}) : super(key: key);
+class PDFSplitScreen extends StatefulWidget {
+  const PDFSplitScreen({Key? key}) : super(key: key);
 
   @override
-  State<PDFOCRScreen> createState() => _PDFOCRScreenState();
+  State<PDFSplitScreen> createState() => _PDFSplitScreenState();
 }
 
-class _PDFOCRScreenState extends State<PDFOCRScreen> {
+class _PDFSplitScreenState extends State<PDFSplitScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
-  String? _extractedText;
-  String _selectedLanguage = 'eng';
-  bool _isOCRAvailable = true;
-
-  final Map<String, String> _languages = {
-    'eng': 'English',
-    'spa': 'Spanish',
-    'fra': 'French',
-    'deu': 'German',
-    'ita': 'Italian',
-    'por': 'Portuguese',
-    'rus': 'Russian',
-    'chi_sim': 'Chinese Simplified',
-    'chi_tra': 'Chinese Traditional',
-    'jpn': 'Japanese',
-    'kor': 'Korean',
-    'ara': 'Arabic',
-    'hin': 'Hindi',
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    _checkOCRAvailability();
-  }
+  List<File>? _splitFiles;
+  String _splitMode = 'all_pages'; // 'all_pages', 'custom_ranges'
+  List<int> _pageRanges = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("OCR Tool"),
+        title: const Text("Split PDF"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
@@ -55,16 +33,13 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
           children: [
             _buildHeader(),
             const SizedBox(height: 24),
-            if (!_isOCRAvailable) _buildOCRError(),
-            if (_isOCRAvailable) ...[
-              _buildFileSelector(),
-              const SizedBox(height: 24),
-              if (_selectedFile != null) _buildLanguageOptions(),
-              const SizedBox(height: 24),
-              if (_selectedFile != null) _buildProcessButton(),
-              const SizedBox(height: 24),
-              if (_extractedText != null) _buildResult(),
-            ],
+            _buildFileSelector(),
+            const SizedBox(height: 24),
+            if (_selectedFile != null) _buildSplitOptions(),
+            const SizedBox(height: 24),
+            if (_selectedFile != null) _buildProcessButton(),
+            const SizedBox(height: 24),
+            if (_splitFiles != null) _buildResult(),
           ],
         ),
       ),
@@ -77,13 +52,13 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
+            AppColors.primaryGreen.withOpacity(0.1),
             AppColors.primaryBlue.withOpacity(0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryGreen.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -92,11 +67,11 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryPurple,
+              color: AppColors.primaryGreen,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.text_snippet,
+              Icons.content_cut,
               color: Colors.white,
               size: 24,
             ),
@@ -107,57 +82,15 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "OCR Text Extraction",
+                  "Split PDF",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Extract text from scanned PDF documents using OCR",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOCRError() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.primaryRed.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.primaryRed.withOpacity(0.3),
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.error_outline,
-            color: AppColors.primaryRed,
-            size: 24,
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "OCR Not Available",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Tesseract OCR is not available on this device. Please install the required language packs.",
+                  "Divide PDF into multiple files by pages or custom ranges",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -193,7 +126,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withOpacity(0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -205,13 +138,13 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                     Icon(
                       Icons.upload_file,
                       size: 48,
-                      color: AppColors.primaryPurple,
+                      color: AppColors.primaryGreen,
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Tap to select PDF file",
                       style: TextStyle(
-                        color: AppColors.primaryPurple,
+                        color: AppColors.primaryGreen,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -224,17 +157,17 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryGreen.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withOpacity(0.3),
                 ),
               ),
               child: Row(
                 children: [
                   const Icon(
                     Icons.description,
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryGreen,
                     size: 32,
                   ),
                   const SizedBox(width: 16),
@@ -263,7 +196,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                     onPressed: () {
                       setState(() {
                         _selectedFile = null;
-                        _extractedText = null;
+                        _splitFiles = null;
                       });
                     },
                     icon: const Icon(Icons.close),
@@ -277,7 +210,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     );
   }
 
-  Widget _buildLanguageOptions() {
+  Widget _buildSplitOptions() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -291,70 +224,68 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "OCR Options",
+            "Split Options",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           
+          // Split Mode Selection
           Text(
-            "Document Language",
+            "Split Mode",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<String>(
-            value: _selectedLanguage,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            items: _languages.entries.map((entry) {
-              return DropdownMenuItem(
-                value: entry.key,
-                child: Text(entry.value),
-              );
-            }).toList(),
+          
+          RadioListTile<String>(
+            title: const Text("Split each page"),
+            subtitle: const Text("Create separate file for each page"),
+            value: 'all_pages',
+            groupValue: _splitMode,
             onChanged: (value) {
               setState(() {
-                _selectedLanguage = value!;
+                _splitMode = value!;
               });
             },
+            activeColor: AppColors.primaryGreen,
           ),
           
-          const SizedBox(height: 16),
+          RadioListTile<String>(
+            title: const Text("Custom ranges"),
+            subtitle: const Text("Split by specific page ranges"),
+            value: 'custom_ranges',
+            groupValue: _splitMode,
+            onChanged: (value) {
+              setState(() {
+                _splitMode = value!;
+              });
+            },
+            activeColor: AppColors.primaryGreen,
+          ),
           
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryPurple.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.primaryPurple.withOpacity(0.3),
+          if (_splitMode == 'custom_ranges') ...[
+            const SizedBox(height: 16),
+            Text(
+              "Page Ranges (e.g., 1-3, 5, 7-9)",
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w500,
               ),
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.info_outline,
-                  color: AppColors.primaryPurple,
-                  size: 20,
+            const SizedBox(height: 8),
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Enter page ranges separated by commas",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    "Select the language of the text in your document for better OCR accuracy",
-                    style: TextStyle(
-                      color: AppColors.primaryPurple,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              onChanged: (value) {
+                // Parse page ranges
+                _parsePageRanges(value);
+              },
             ),
-          ),
+          ],
         ],
       ),
     );
@@ -364,7 +295,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _performOCR,
+        onPressed: _isProcessing ? null : _splitPDF,
         icon: _isProcessing
             ? const SizedBox(
                 width: 20,
@@ -374,10 +305,10 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.text_snippet),
-        label: Text(_isProcessing ? "Processing..." : "Extract Text"),
+            : const Icon(Icons.content_cut),
+        label: Text(_isProcessing ? "Splitting..." : "Split PDF"),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryPurple,
+          backgroundColor: AppColors.primaryGreen,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
@@ -392,10 +323,10 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryBlue.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryBlue.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -406,20 +337,20 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryBlue.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
                   Icons.check_circle,
-                  color: AppColors.primaryGreen,
+                  color: AppColors.primaryBlue,
                   size: 20,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                "Text Extraction Complete",
+                "Split Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
+                  color: AppColors.primaryBlue,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -427,29 +358,45 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
           ),
           const SizedBox(height: 16),
           
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-              ),
+          Text(
+            "Created ${_splitFiles!.length} file(s):",
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w600,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          ),
+          const SizedBox(height: 12),
+          
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _splitFiles!.length,
+            itemBuilder: (context, index) {
+              final file = _splitFiles![index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
                   children: [
                     Text(
-                      "Extracted Text",
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      "${index + 1}.",
+                      style: TextStyle(
+                        color: AppColors.primaryBlue,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        file.path.split('/').last,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
                     Text(
-                      "${_extractedText!.split(' ').length} words",
+                      "${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                         fontSize: 12,
@@ -457,18 +404,8 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  constraints: const BoxConstraints(maxHeight: 200),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      _extractedText!,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
           
           const SizedBox(height: 16),
@@ -477,13 +414,13 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    // TODO: Copy to clipboard
+                    // TODO: Open folder with split files
                   },
-                  icon: const Icon(Icons.copy),
-                  label: const Text("Copy Text"),
+                  icon: const Icon(Icons.folder_open),
+                  label: const Text("Open Folder"),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    foregroundColor: AppColors.primaryBlue,
+                    side: BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -491,12 +428,12 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // TODO: Save as text file
+                    // TODO: Share all split files
                   },
-                  icon: const Icon(Icons.save),
-                  label: const Text("Save as TXT"),
+                  icon: const Icon(Icons.share),
+                  label: const Text("Share All"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryGreen,
+                    backgroundColor: AppColors.primaryBlue,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -508,17 +445,31 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     );
   }
 
-  Future<void> _checkOCRAvailability() async {
-    try {
-      final ocrService = OCRService();
-      final isAvailable = await ocrService.isOCRAvailable();
-      setState(() {
-        _isOCRAvailable = isAvailable;
-      });
-    } catch (e) {
-      setState(() {
-        _isOCRAvailable = false;
-      });
+  void _parsePageRanges(String input) {
+    // Simple page range parsing
+    // This is a basic implementation - could be enhanced
+    final ranges = input.split(',');
+    _pageRanges.clear();
+    
+    for (final range in ranges) {
+      final trimmed = range.trim();
+      if (trimmed.contains('-')) {
+        final parts = trimmed.split('-');
+        if (parts.length == 2) {
+          final start = int.tryParse(parts[0]);
+          final end = int.tryParse(parts[1]);
+          if (start != null && end != null && start <= end) {
+            for (int i = start; i <= end; i++) {
+              _pageRanges.add(i);
+            }
+          }
+        }
+      } else {
+        final page = int.tryParse(trimmed);
+        if (page != null) {
+          _pageRanges.add(page);
+        }
+      }
     }
   }
 
@@ -532,7 +483,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          _extractedText = null;
+          _splitFiles = null;
         });
       }
     } catch (e) {
@@ -545,7 +496,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     }
   }
 
-  Future<void> _performOCR() async {
+  Future<void> _splitPDF() async {
     if (_selectedFile == null) return;
 
     setState(() {
@@ -553,20 +504,23 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     });
 
     try {
-      final ocrService = OCRService();
-      final extractedText = await ocrService.extractTextFromScannedPDF(
-        _selectedFile!,
-        language: _selectedLanguage,
-      );
+      final pdfService = PDFService();
+      List<File> splitFiles;
+      
+      if (_splitMode == 'all_pages') {
+        splitFiles = await pdfService.splitPDF(_selectedFile!);
+      } else {
+        splitFiles = await pdfService.splitPDF(_selectedFile!, pageRanges: _pageRanges);
+      }
 
       setState(() {
-        _extractedText = extractedText;
+        _splitFiles = splitFiles;
         _isProcessing = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Text extracted successfully!'),
+          content: Text('PDF split successfully into ${splitFiles.length} files!'),
           backgroundColor: AppColors.primaryGreen,
         ),
       );
@@ -577,7 +531,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error extracting text: $e'),
+          content: Text('Error splitting PDF: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
