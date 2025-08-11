@@ -1,0 +1,67 @@
+name: inkwise_pdf
+description: A powerful PDF editor app built with Flutter.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # PDF tools
+  pdf: ^3.10.4
+  pdf_render: ^1.4.0
+
+  # OCR and permissions
+  flutter_tesseract_ocr: ^0.3.4
+  permission_handler: ^11.3.1
+
+  # File handling
+  file_picker: ^6.1.1
+  open_filex: ^4.3.4
+  path_provider: ^2.1.2
+  path: ^1.9.0
+
+  # Firebase & Google Sign-In
+  firebase_core: ^2.31.0
+  firebase_auth: ^4.17.4
+  firebase_analytics: ^10.10.4
+  firebase_crashlytics: ^3.5.4
+  google_sign_in: ^6.2.1
+
+  # Image and sharing
+  image_picker: ^1.0.7
+  share_plus: ^7.2.1
+
+  # UI and utilities
+  flutter_svg: ^2.0.10+1
+  url_launcher: ^6.2.6
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/fonts/
+    - assets/images/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700

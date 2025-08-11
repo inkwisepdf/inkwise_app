@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    avoid_print: true
+    unused_import: true
+    unnecessary_null_checks: true
+    avoid_unnecessary_containers: true
+    prefer_final_fields: true
+    always_use_package_imports: true

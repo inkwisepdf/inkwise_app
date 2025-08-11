@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "532024755861",
+    "project_id": "inkwisepdf",
+    "storage_bucket": "inkwisepdf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532024755861:android:7c57baa1d99e78adefbd9c",
+        "android_client_info": {
+          "package_name": "com.example.inkwise_pdf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532024755861-rvol3a8aio6logboiflnucbpk2ei7jpa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.inkwise_pdf",
+            "certificate_hash": "d33d09066ae565fad0fa910c5b839b52d3d2de2b"
+          }
+        },
+        {
+          "client_id": "532024755861-bb0mupgnmdftfhc6mfk10jicdctbaad1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmFj_H9pRwKWf83XtxwdS5fI0pPVW_rMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532024755861-bb0mupgnmdftfhc6mfk10jicdctbaad1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
