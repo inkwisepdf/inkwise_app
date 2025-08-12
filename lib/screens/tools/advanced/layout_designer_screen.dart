@@ -350,7 +350,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -387,7 +387,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
             ),
             child: Stack(
               children: [
@@ -408,12 +408,12 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                         height: element['height'].toDouble(),
                         decoration: BoxDecoration(
                           color: _selectedElementIndex == index 
-                              ? AppColors.primaryPurple.withOpacity(0.2)
+                              ? AppColors.primaryPurple.withValues(alpha: 0.2)
                               : Colors.transparent,
                           border: Border.all(
                             color: _selectedElementIndex == index 
                                 ? AppColors.primaryPurple
-                                : Colors.grey.withOpacity(0.5),
+                                : Colors.grey.withValues(alpha: 0.5),
                             width: _selectedElementIndex == index ? 2 : 1,
                           ),
                           borderRadius: BorderRadius.circular(4),

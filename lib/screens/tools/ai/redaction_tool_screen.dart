@@ -150,7 +150,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -227,7 +227,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -260,7 +260,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -405,7 +405,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Text(
             "Add keywords or patterns to redact from the document",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 16),
@@ -449,7 +449,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   label: Text(keyword),
                   deleteIcon: const Icon(Icons.close, size: 18),
                   onDeleted: () => _removeKeyword(keyword),
-                  backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+                  backgroundColor: AppColors.primaryRed.withValues(alpha: 0.1),
                   deleteIconColor: AppColors.primaryRed,
                 );
               }).toList(),
@@ -610,7 +610,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryRed.withOpacity(0.1),
+                      color: AppColors.primaryRed.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -626,7 +626,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   subtitle: Text(
                     "Page ${item['page']} • ${item['type']} • Confidence: ${(item['confidence'] * 100).toInt()}%",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),
