@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
-import '../../../services/file_service.dart';
+
 
 class SecureVaultScreen extends StatefulWidget {
   const SecureVaultScreen({super.key});
@@ -17,7 +17,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _showPassword = false;
-  bool _showConfirmPassword = false;
   List<Map<String, dynamic>> _vaultFiles = [];
   bool _isProcessing = false;
 

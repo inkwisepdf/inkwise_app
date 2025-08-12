@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../theme.dart';
 import '../../services/file_service.dart';
-import '../../services/pdf_service.dart';
+
 
 class PDFEditorScreen extends StatefulWidget {
   const PDFEditorScreen({super.key});
@@ -18,7 +18,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
   String? _outputPath;
   String _editMode = 'text'; // 'text', 'image', 'draw'
   String _textContent = '';
-  bool _isTextVisible = true;
   double _textOpacity = 1.0;
   double _textSize = 16.0;
   Color _textColor = AppColors.textPrimaryLight;
