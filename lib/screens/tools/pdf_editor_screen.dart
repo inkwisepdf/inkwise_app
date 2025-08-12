@@ -137,7 +137,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -158,7 +158,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               padding: const EdgeInsets.all(AppSpacing.xl),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.textSecondaryLight.withOpacity(0.2),
+                  color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
                   width: 2,
                   style: BorderStyle.solid,
                 ),
@@ -185,10 +185,10 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: AppColors.primaryBlue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(0.2),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -311,7 +311,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(
-            color: AppColors.textSecondaryLight.withOpacity(0.1),
+            color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -396,7 +396,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -418,7 +418,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               color: AppColors.backgroundLight,
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
-                color: AppColors.textSecondaryLight.withOpacity(0.2),
+                color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
