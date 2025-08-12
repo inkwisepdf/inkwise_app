@@ -44,8 +44,11 @@ dependencies:
   intl: ^0.20.2
 
   # AI and ML capabilities
-  tflite_flutter: ^0.10.4
-  tflite_flutter_helper: ^0.3.1
+  # tflite_flutter: ^0.10.4  # Deprecated - replaced with modern alternatives
+  # tflite_flutter_helper: ^0.3.1  # Deprecated - replaced with modern alternatives
+  ml_algo: ^16.17.6  # Modern ML algorithms library
+  ml_dataframe: ^1.6.0  # Data manipulation for ML
+  ml_preprocessing: ^7.0.0  # Data preprocessing for ML
   
   # Translation and language processing (offline-first)
   # translator: ^0.1.7  # Commented out - using offline translation
