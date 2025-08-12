@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
+import 'package:pdf/pdf.dart' as pdf_package;
 import 'package:pdf/widgets.dart' as pw;
-import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:pdf_render/pdf_render.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
+import 'package:pdf_render/pdf_render.dart' as pdf_render;
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'performance_service.dart';
@@ -20,7 +21,7 @@ class PDFService {
       try {
         PerformanceService().startOperation('pdf_merge');
         
-        final PdfDocument document = PdfDocument();
+        final sf_pdf.PdfDocument document = sf_pdf.PdfDocument();
         
         // Process files in parallel for better performance
         final futures = pdfFiles.map((file) async {
@@ -28,12 +29,12 @@ class PDFService {
           final cachedBytes = PerformanceService().getFromCache<Uint8List>(cacheKey);
           
           if (cachedBytes != null) {
-            return PdfDocument(inputBytes: cachedBytes);
+            return sf_pdf.PdfDocument(inputBytes: cachedBytes);
           }
           
           final bytes = await file.readAsBytes();
           PerformanceService().setCache(cacheKey, bytes);
-          return PdfDocument(inputBytes: bytes);
+          return sf_pdf.PdfDocument(inputBytes: bytes);
         });
         
         final documents = await Future.wait(futures);
@@ -69,7 +70,7 @@ class PDFService {
         final cacheKey = 'pdf_split_${pdfFile.path}_${pdfFile.lastModifiedSync().millisecondsSinceEpoch}';
         final cachedBytes = PerformanceService().getFromCache<Uint8List>(cacheKey);
         
-        final PdfDocument document = PdfDocument(
+        final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(
           inputBytes: cachedBytes ?? await pdfFile.readAsBytes()
         );
         
@@ -101,7 +102,7 @@ class PDFService {
         } else {
           // Split each page into separate file - process in parallel
           final futures = List.generate(document.pages.count, (i) async {
-            final PdfDocument newDoc = PdfDocument();
+            final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
             newDoc.importPage(document, i);
             
             final List<int> bytes = await newDoc.save();
@@ -144,24 +145,24 @@ class PDFService {
           return outputFile;
         }
         
-        final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+        final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
         
         // Set compression options
         document.compressionLevel = PdfCompressionLevel.best;
         
         // Compress images in the document - process in parallel
         final pageFutures = List.generate(document.pages.count, (i) async {
-          final PdfPage page = document.pages[i];
-          final List<PdfImage> images = page.extractImages();
+          final sf_pdf.PdfPage page = document.pages[i];
+          final List<sf_pdf.PdfImage> images = page.extractImages();
           
           // Process images in parallel
           final imageFutures = images.map((image) async {
-            if (image.width > 800 || image.height > 800) {
-              final Uint8List compressedBytes = await _compressImage(image.data, quality);
+            if ((image.width ?? 0) > 800 || (image.height ?? 0) > 800) {
+              final Uint8List compressedBytes = await _compressImage(image.data ?? Uint8List(0), quality);
               // Replace image with compressed version
               return compressedBytes;
             }
-            return image.data;
+            return image.data ?? Uint8List(0);
           });
           
           await Future.wait(imageFutures);
@@ -191,8 +192,8 @@ class PDFService {
   /// Remove specific pages from PDF
   Future<File> removePages(File pdfFile, List<int> pageNumbers) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      final PdfDocument newDoc = PdfDocument();
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
       
       // Sort page numbers in descending order to avoid index issues
       pageNumbers.sort((a, b) => b.compareTo(a));
@@ -221,10 +222,10 @@ class PDFService {
   /// Add blank pages to PDF
   Future<File> addBlankPages(File pdfFile, {int count = 1, int? afterPage}) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       for (int i = 0; i < count; i++) {
-        final PdfPage newPage = document.pages.add();
+        final sf_pdf.PdfPage newPage = document.pages.add();
         // Set page size to match existing pages
         if (document.pages.count > 1) {
           newPage.size = document.pages[0].size;
@@ -279,8 +280,8 @@ class PDFService {
   /// Extract text from PDF
   Future<String> extractText(File pdfFile) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
-      final PdfTextExtractor extractor = PdfTextExtractor(document);
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfTextExtractor extractor = sf_pdf.PdfTextExtractor(document);
       final String text = extractor.extractText();
       document.dispose();
       return text;
@@ -292,7 +293,7 @@ class PDFService {
   /// Get PDF information
   Future<Map<String, dynamic>> getPDFInfo(File pdfFile) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       final info = {
         'pageCount': document.pages.count,
@@ -316,14 +317,14 @@ class PDFService {
   /// Add password protection to PDF
   Future<File> addPassword(File pdfFile, String password) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       // Set security
-      final PdfSecurity security = document.security;
+      final sf_pdf.PdfSecurity security = document.security;
       security.userPassword = password;
       security.ownerPassword = password;
-      security.permissions.add(PdfPermissions.print);
-      security.permissions.add(PdfPermissions.copyContent);
+      security.permissions.add(sf_pdf.PdfPermissions.print);
+      security.permissions.add(sf_pdf.PdfPermissions.copyContent);
       
       final List<int> bytes = await document.save();
       document.dispose();
@@ -341,7 +342,7 @@ class PDFService {
   /// Remove password from PDF (if known)
   Future<File> removePassword(File pdfFile, String password) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes(), password: password);
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes(), password: password);
       
       // Remove security
       document.security.userPassword = '';
@@ -363,18 +364,18 @@ class PDFService {
   /// Rotate PDF pages
   Future<File> rotatePDF(File pdfFile, {int? pageNumber, dynamic angle}) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       if (pageNumber != null) {
         // Rotate specific page
         if (pageNumber > 0 && pageNumber <= document.pages.count) {
-          final PdfPage page = document.pages[pageNumber - 1];
+          final sf_pdf.PdfPage page = document.pages[pageNumber - 1];
           page.rotation = angle;
         }
       } else {
         // Rotate all pages
         for (int i = 0; i < document.pages.count; i++) {
-          final PdfPage page = document.pages[i];
+          final sf_pdf.PdfPage page = document.pages[i];
           page.rotation = angle;
         }
       }
@@ -404,16 +405,16 @@ class PDFService {
     String fontFamily = 'Arial',
   }) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       for (int i = 0; i < document.pages.count; i++) {
-        final PdfPage page = document.pages[i];
-        final PdfGraphics graphics = page.graphics;
+        final sf_pdf.PdfPage page = document.pages[i];
+        final sf_pdf.PdfGraphics graphics = page.graphics;
         
         // Calculate position
         double x, y;
-        final PdfFont font = PdfStandardFont(PdfFontFamily.helvetica, fontSize);
-        final PdfStringFormat format = PdfStringFormat();
+        final sf_pdf.PdfFont font = sf_pdf.PdfStandardFont(sf_pdf.PdfFontFamily.helvetica, fontSize);
+        final sf_pdf.PdfStringFormat format = sf_pdf.PdfStringFormat();
         final Size textSize = font.measureString(text, format);
         
         switch (position) {
@@ -449,7 +450,7 @@ class PDFService {
         graphics.translateTransform(-(x + textSize.width / 2), -(y + textSize.height / 2));
         
         // Draw watermark
-        final PdfBrush brush = PdfSolidBrush(PdfColor.fromArgb(
+        final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor.fromArgb(
           (opacity * 255).round(),
           color.red,
           color.green,
@@ -482,13 +483,13 @@ class PDFService {
     double rotation = 0.0,
   }) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       final Uint8List imageBytes = await imageFile.readAsBytes();
-      final PdfBitmap image = PdfBitmap(imageBytes);
+      final sf_pdf.PdfBitmap image = sf_pdf.PdfBitmap(imageBytes);
       
       for (int i = 0; i < document.pages.count; i++) {
-        final PdfPage page = document.pages[i];
-        final PdfGraphics graphics = page.graphics;
+        final sf_pdf.PdfPage page = document.pages[i];
+        final sf_pdf.PdfGraphics graphics = page.graphics;
         
         // Calculate position
         double x, y;
@@ -528,7 +529,7 @@ class PDFService {
         graphics.translateTransform(-(x + imageWidth / 2), -(y + imageHeight / 2));
         
         // Draw watermark with opacity
-        final PdfBrush brush = PdfSolidBrush(PdfColor.fromArgb(
+        final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor.fromArgb(
           (opacity * 255).round(),
           255,
           255,
@@ -561,14 +562,14 @@ class PDFService {
     List<int>? pageNumbers,
   }) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       final List<File> imageFiles = [];
       
       final pagesToConvert = pageNumbers ?? List.generate(document.pages.count, (i) => i + 1);
       
       for (final pageNum in pagesToConvert) {
         if (pageNum > 0 && pageNum <= document.pages.count) {
-          final PdfPage page = document.pages[pageNum - 1];
+          final sf_pdf.PdfPage page = document.pages[pageNum - 1];
           
           // Convert page to image using pdf_render
           final pageImage = await page.render(
@@ -578,7 +579,7 @@ class PDFService {
           
           if (pageImage != null) {
             // Convert to image bytes
-            Uint8List imageBytes = pageImage.toByteData()!.buffer.asUint8List();
+            Uint8List imageBytes = pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List();
             
             // Save image file
             final outputPath = await _getOutputPath('page_${pageNum}_${DateTime.now().millisecondsSinceEpoch}.$format');
@@ -605,14 +606,14 @@ class PDFService {
     List<int>? pageNumbers,
   }) async {
     try {
-      final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
+      final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
       
       final pagesToConvert = pageNumbers ?? List.generate(document.pages.count, (i) => i + 1);
       
       for (final pageNum in pagesToConvert) {
         if (pageNum > 0 && pageNum <= document.pages.count) {
-          final PdfPage page = document.pages[pageNum - 1];
-          final PdfGraphics graphics = page.graphics;
+          final sf_pdf.PdfPage page = document.pages[pageNum - 1];
+          final sf_pdf.PdfGraphics graphics = page.graphics;
           
           // Convert page to image first
           final pageImage = await page.render(
@@ -621,7 +622,7 @@ class PDFService {
           );
           
           if (pageImage != null) {
-            final Uint8List imageBytes = pageImage.toByteData()!.buffer.asUint8List();
+            final Uint8List imageBytes = pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List();
           
           // Process image to grayscale
           final img.Image? image = img.decodeImage(imageBytes);
@@ -643,8 +644,8 @@ class PDFService {
             final Uint8List processedBytes = Uint8List.fromList(img.encodePng(grayscaleImage));
             
                          // Replace page content with processed image
-             final PdfBitmap bitmap = PdfBitmap(processedBytes);
-             graphics.clear(PdfColor.white);
+             final sf_pdf.PdfBitmap bitmap = sf_pdf.PdfBitmap(processedBytes);
+             graphics.clear(sf_pdf.PdfColor.white);
              graphics.drawImage(bitmap, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
            }
          }
