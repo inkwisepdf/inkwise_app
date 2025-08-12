@@ -1,114 +1,278 @@
 (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF'
-diff --git a/all_dart_files.txt b/all_dart_files.txt
---- a/all_dart_files.txt
-+++ b/all_dart_files.txt
-@@ -0,0 +1,107 @@
-+# COMPLETE LIST OF ALL 70 DART FILES IN INKWISE PDF PROJECT
+diff --git a/pubspec.yaml b/pubspec.yaml
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -1,133 +1,138 @@
+-name: inkwise_pdf
+-description: A powerful PDF editor app built with Flutter.
+-version: 1.0.0+1
+-
+-environment:
+-  sdk: ">=3.3.0 <4.0.0"
+-
+-dependencies:
+-  flutter:
+-    sdk: flutter
+-  flutter_localizations:
+-    sdk: flutter
+-
+-  # PDF tools
+-  pdf: ^3.10.4
+-  pdf_render: ^1.4.0
+-  syncfusion_flutter_pdf: ^24.2.8
+-  syncfusion_flutter_pdfviewer: ^24.2.8
+-
+-  # OCR and permissions
+-  flutter_tesseract_ocr: ^0.3.4
+-  permission_handler: ^11.3.1
+-
+-  # File handling
+-  file_picker: ^6.1.1
+-  open_filex: ^4.3.4
+-  path_provider: ^2.1.2
+-  path: ^1.9.0
+-
+-  # Local Analytics (replaces Firebase)
+-  # firebase_core: ^2.31.0
+-  # firebase_auth: ^4.17.4
+-  # firebase_analytics: ^10.10.4
+-  # firebase_crashlytics: ^3.5.4
+-  # google_sign_in: ^6.2.1
+-
+-  # Image and sharing
+-  image_picker: ^1.0.7
+-  share_plus: ^7.2.1
+-
+-  # UI and utilities
+-  flutter_svg: ^2.0.10+1
+-  url_launcher: ^6.2.6
+-  intl: ^0.20.2
+-
+-  # AI and ML capabilities
+-  tflite_flutter: ^0.10.4
+-  tflite_flutter_helper: ^0.3.1
+-  
+-  # Translation and language processing (offline-first)
+-  # translator: ^0.1.7  # Commented out - using offline translation
+-  language_detector: ^0.0.2
+-  
+-  # Voice and speech
+-  speech_to_text: ^6.6.0
+-  flutter_tts: ^3.8.5
+-  
+-  # Advanced image processing
+-  image: ^4.1.3
+-  image_editor_plus: ^0.1.6
+-  
+-  # Database and storage
+-  sqflite: ^2.3.0
+-  hive: ^2.2.3
+-  hive_flutter: ^1.1.0
+-  
+-  # Encryption and security
+-  encrypt: ^5.0.3
+-  crypto: ^3.0.3
+-  
+-  # Advanced UI components
+-  flutter_staggered_grid_view: ^0.7.0
+-  flutter_slidable: ^3.0.1
+-  shimmer: ^3.0.0
+-  
+-  # Charts and analytics
+-  fl_chart: ^0.66.0
+-  
+-  # Handwriting recognition
+-  google_ml_kit: ^0.16.3
+-  
+-  # Advanced file operations
+-  archive: ^3.4.9
+-  mime: ^1.0.4
+-  
+-  # State management
+-  provider: ^6.1.1
+-  
+-  # Local notifications
+-  flutter_local_notifications: ^16.3.2
+-  
+-  # Clipboard
+-  flutter_clipboard: ^0.0.3
+-
+-dev_dependencies:
+-  flutter_test:
+-    sdk: flutter
+-  flutter_lints: ^3.0.1
+-  hive_generator: ^2.0.1
+-  build_runner: ^2.4.8
+-
+-flutter:
+-  uses-material-design: true
+-
+-  assets:
+-    - assets/icons/
+-    - assets/fonts/
+-    - assets/images/
+-    - assets/models/
+-    - assets/translations/
+-
+-  fonts:
+-    - family: Inter
+-      fonts:
+-        - asset: assets/fonts/Inter-Regular.ttf
+-        - asset: assets/fonts/Inter-Medium.ttf
+-          weight: 500
+-        - asset: assets/fonts/Inter-SemiBold.ttf
+-          weight: 600
+-        - asset: assets/fonts/Inter-Bold.ttf
+-          weight: 700
+-        - asset: assets/fonts/Inter-ExtraBold.ttf
+-          weight: 800
+-    - family: Roboto
+-      fonts:
+-        - asset: assets/fonts/Roboto-Regular.ttf
+-        - asset: assets/fonts/Roboto-Bold.ttf
+-          weight: 700
+-    - family: Poppins
+-      fonts:
+-        - asset: assets/fonts/Poppins-Regular.ttf
+-        - asset: assets/fonts/Poppins-Bold.ttf
+-          weight: 700
++name: inkwise_pdf
++description: A powerful PDF editor app built with Flutter.
++version: 1.0.0+1
 +
-+## 📁 MAIN FILES (3 files)
-+/workspace/lib/main.dart
-+/workspace/lib/routes.dart
-+/workspace/lib/theme.dart
++environment:
++  sdk: ">=3.3.0 <4.0.0"
 +
-+## 📁 MAIN SCREENS (12 files)
-+/workspace/lib/screens/splash_screen.dart
-+/workspace/lib/screens/home_screen.dart
-+/workspace/lib/screens/tools_screen.dart
-+/workspace/lib/screens/ai_tools_screen.dart
-+/workspace/lib/screens/advanced_tools_screen.dart
-+/workspace/lib/screens/pdf_viewer_screen.dart
-+/workspace/lib/screens/recent_files_screen.dart
-+/workspace/lib/screens/settings_screen.dart
-+/workspace/lib/screens/find_replace_screen.dart
-+/workspace/lib/screens/metadata_editor_screen.dart
-+/workspace/lib/screens/analytics_dashboard_screen.dart
-+/workspace/lib/screens/performance_monitor_screen.dart
++dependencies:
++  flutter:
++    sdk: flutter
++  flutter_localizations:
++    sdk: flutter
 +
-+## 📁 PDF TOOLS (10 files)
-+/workspace/lib/screens/tools/pdf_merge_screen.dart
-+/workspace/lib/screens/tools/pdf_split_screen.dart
-+/workspace/lib/screens/tools/pdf_compressor_screen.dart
-+/workspace/lib/screens/tools/pdf_rotate_screen.dart
-+/workspace/lib/screens/tools/pdf_ocr_screen.dart
-+/workspace/lib/screens/tools/pdf_editor_screen.dart
-+/workspace/lib/screens/tools/pdf_images_screen.dart
-+/workspace/lib/screens/tools/pdf_grayscale_screen.dart
-+/workspace/lib/screens/tools/pdf_password_screen.dart
-+/workspace/lib/screens/tools/pdf_watermark_screen.dart
++  # PDF tools
++  pdf: ^3.10.4
++  pdf_render: ^1.4.0
++  syncfusion_flutter_pdf: ^24.2.8
++  syncfusion_flutter_pdfviewer: ^24.2.8
 +
-+## 📁 SECURITY TOOLS (3 files)
-+/workspace/lib/screens/tools/security/encryption_screen.dart
-+/workspace/lib/screens/tools/security/password_protection_screen.dart
-+/workspace/lib/screens/tools/security/secure_vault_screen.dart
++  # OCR and permissions
++  flutter_tesseract_ocr: ^0.3.4
++  permission_handler: ^11.3.1
 +
-+## 📁 AI TOOLS (8 files)
-+/workspace/lib/screens/tools/ai/smart_summarizer_screen.dart
-+/workspace/lib/screens/tools/ai/offline_translator_screen.dart
-+/workspace/lib/screens/tools/ai/voice_to_text_screen.dart
-+/workspace/lib/screens/tools/ai/form_detector_screen.dart
-+/workspace/lib/screens/tools/ai/redaction_tool_screen.dart
-+/workspace/lib/screens/tools/ai/keyword_analytics_screen.dart
-+/workspace/lib/screens/tools/ai/handwriting_recognition_screen.dart
-+/workspace/lib/screens/tools/ai/content_cleanup_screen.dart
++  # File handling
++  file_picker: ^6.1.1
++  open_filex: ^4.3.4
++  path_provider: ^2.1.2
++  path: ^1.9.0
 +
-+## 📁 ADVANCED TOOLS (9 files)
-+/workspace/lib/screens/tools/advanced/table_extractor_screen.dart
-+/workspace/lib/screens/tools/advanced/layout_designer_screen.dart
-+/workspace/lib/screens/tools/advanced/color_converter_screen.dart
-+/workspace/lib/screens/tools/advanced/dual_page_view_screen.dart
-+/workspace/lib/screens/tools/advanced/custom_stamps_screen.dart
-+/workspace/lib/screens/tools/advanced/version_history_screen.dart
-+/workspace/lib/screens/tools/advanced/pdf_indexer_screen.dart
-+/workspace/lib/screens/tools/advanced/auto_tagging_screen.dart
-+/workspace/lib/screens/tools/advanced/batch_tool_chain_screen.dart
++  # Local Analytics (replaces Firebase)
++  # firebase_core: ^2.31.0
++  # firebase_auth: ^4.17.4
++  # firebase_analytics: ^10.10.4
++  # firebase_crashlytics: ^3.5.4
++  # google_sign_in: ^6.2.1
 +
-+## 📁 SERVICES (9 files)
-+/workspace/lib/services/pdf_service.dart
-+/workspace/lib/services/file_service.dart
-+/workspace/lib/services/ocr_service.dart
-+/workspace/lib/services/performance_service.dart
-+/workspace/lib/services/image_optimization_service.dart
-+/workspace/lib/services/local_analytics_service.dart
-+/workspace/lib/services/offline_translation_service.dart
-+/workspace/lib/services/ai_summarizer_service.dart
-+/workspace/lib/services/find_replace_service.dart
++  # Image and sharing
++  image_picker: ^1.0.7
++  share_plus: ^7.2.1
 +
-+## 📁 WIDGETS (8 files)
-+/workspace/lib/widgets/tool_card.dart
-+/workspace/lib/widgets/featured_tool_card.dart
-+/workspace/lib/widgets/optimized_list_view.dart
-+/workspace/lib/widgets/custom_app_bar.dart
-+/workspace/lib/widgets/custom_button.dart
-+/workspace/lib/widgets/floating_toolbox.dart
-+/workspace/lib/widgets/pdf_page_viewer.dart
-+/workspace/lib/widgets/recent_files_panel.dart
++  # UI and utilities
++  flutter_svg: ^2.0.10+1
++  url_launcher: ^6.2.6
++  intl: ^0.20.2
 +
-+## 📁 UTILS (2 files)
-+/workspace/lib/utils/constants.dart
-+/workspace/lib/utils/helpers.dart
++  # AI and ML capabilities
++  # tflite_flutter: ^0.10.4  # Deprecated - replaced with modern alternatives
++  # tflite_flutter_helper: ^0.3.1  # Deprecated - replaced with modern alternatives
++  ml_algo: ^16.17.6  # Modern ML algorithms library
++  ml_dataframe: ^1.6.0  # Data manipulation for ML
++  ml_preprocessing: ^7.0.0  # Data preprocessing for ML
++  
++  # Translation and language processing (offline-first)
++  # translator: ^0.1.7  # Commented out - using offline translation
++  # language_detector: ^0.0.2  # Not used in current implementation
++  
++  # Voice and speech
++  speech_to_text: ^6.6.0
++  flutter_tts: ^3.8.5
++  
++  # Advanced image processing
++  image: ^4.1.3
++  # image_editor_plus: ^0.1.6  # Not used in current implementation
++  
++  # Database and storage
++  sqflite: ^2.3.0
++  hive: ^2.2.3
++  hive_flutter: ^1.1.0
++  
++  # Encryption and security
++  encrypt: ^5.0.3
++  crypto: ^3.0.3
++  
++  # Advanced UI components
++  flutter_staggered_grid_view: ^0.7.0
++  # flutter_slidable: ^3.0.1  # Not used in current implementation
++  # shimmer: ^3.0.0  # Not used in current implementation
++  
++  # Charts and analytics
++  fl_chart: ^0.66.0
++  
++  # Handwriting recognition
++  google_ml_kit: ^0.16.3
++  
++  # Advanced file operations
++  archive: ^3.4.9
++  mime: ^1.0.4
++  
++  # State management
++  provider: ^6.1.1
++  
++  # Local notifications
++  flutter_local_notifications: ^16.3.2
++  
++  # Clipboard
++  # flutter_clipboard: ^0.0.3  # Deprecated - using Flutter's built-in clipboard
 +
-+## 📁 FEATURES (5 files)
-+/workspace/lib/features/edit/overlay_text_widget.dart
-+/workspace/lib/features/edit/simulated_edit.dart
-+/workspace/lib/features/find_replace/find_replace.dart
-+/workspace/lib/features/metadata/metadata_editor.dart
-+/workspace/lib/features/ocr/ocr_tool.dart
++dev_dependencies:
++  flutter_test:
++    sdk: flutter
++  flutter_lints: ^3.0.1
++  hive_generator: ^2.0.1
++  build_runner: ^2.4.8
 +
-+## 📁 TEST (1 file)
-+/workspace/test/widget_test.dart
++flutter:
++  uses-material-design: true
 +
-+## 📊 SUMMARY
-+TOTAL: 70 Dart files
-+- Main files: 3
-+- Main screens: 12
-+- PDF tools: 10
-+- Security tools: 3
-+- AI tools: 8
-+- Advanced tools: 9
-+- Services: 9
-+- Widgets: 8
-+- Utils: 2
-+- Features: 5
-+- Test: 1
++  assets:
++    - assets/icons/
++    - assets/fonts/
++    - assets/images/
++    - assets/models/
++    - assets/translations/
++
++  fonts:
++    - family: Inter
++      fonts:
++        - asset: assets/fonts/Inter-Regular.ttf
++        - asset: assets/fonts/Inter-Medium.ttf
++          weight: 500
++        - asset: assets/fonts/Inter-SemiBold.ttf
++          weight: 600
++        - asset: assets/fonts/Inter-Bold.ttf
++          weight: 700
++        - asset: assets/fonts/Inter-ExtraBold.ttf
++          weight: 800
++    - family: Roboto
++      fonts:
++        - asset: assets/fonts/Roboto-Regular.ttf
++        - asset: assets/fonts/Roboto-Bold.ttf
++          weight: 700
++    - family: Poppins
++      fonts:
++        - asset: assets/fonts/Poppins-Regular.ttf
++        - asset: assets/fonts/Poppins-Bold.ttf
++          weight: 700
++
++
 EOF
 )
