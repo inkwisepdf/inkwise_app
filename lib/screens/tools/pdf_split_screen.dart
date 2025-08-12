@@ -416,8 +416,8 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      final appDir = await FileService().getAppDirectoryPath();
-                      await FileService().openFile(File(appDir));
+                      final appDir = await FileService.getAppDirectoryPath();
+                      await FileService.openFile(File(appDir));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -442,7 +442,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                     try {
                       // Share the first file as an example
                       if (_splitFiles!.isNotEmpty) {
-                        await FileService().shareFile(_splitFiles!.first);
+                        await FileService.shareFile(_splitFiles!.first);
                       }
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
