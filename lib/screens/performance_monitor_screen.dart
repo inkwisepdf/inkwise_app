@@ -263,7 +263,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
                       if (value.toInt() < operations.length) {
                         return Text(
                           operations[value.toInt()].split('_').last,
-                          style: AppTypography.labelSmall,
+                          style: AppTypography.labelMedium,
                         );
                       }
                       return const Text('');
@@ -277,7 +277,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
                     getTitlesWidget: (value, meta) {
                       return Text(
                         "${value.toInt()}ms",
-                        style: AppTypography.labelSmall,
+                        style: AppTypography.labelMedium,
                       );
                     },
                   ),
@@ -311,7 +311,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         barRods: [
           BarChartRodData(
             toY: average,
-            color: _getOperationColor(operation['operation'] as String),
+            color: _getOperationColor(entry.value.key),
             width: 20,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
@@ -534,7 +534,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
             ),
             child: Text(
               suggestion['priority'] as String,
-              style: AppTypography.labelSmall.copyWith(
+              style: AppTypography.labelMedium.copyWith(
                 color: suggestion['color'] as Color,
                 fontWeight: FontWeight.w600,
               ),
