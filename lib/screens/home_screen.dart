@@ -624,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     color: AppColors.primaryBlue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.folder_open,
                     size: 32,
                     color: AppColors.primaryBlue,
@@ -723,7 +723,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               leading: Container(
                                 padding: const EdgeInsets.all(AppSpacing.sm),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue.withOpacity(0.1),
+                                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(AppRadius.sm),
                                 ),
                                 child: Icon(

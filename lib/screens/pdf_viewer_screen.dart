@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../theme.dart';
-import '../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   const PdfViewerScreen({super.key});
@@ -14,7 +14,7 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   File? _pdfFile;
-  GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool _isLoading = false;
   int _currentPage = 1;
   int _totalPages = 0;
