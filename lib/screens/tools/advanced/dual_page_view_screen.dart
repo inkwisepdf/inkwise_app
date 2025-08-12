@@ -186,7 +186,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
         color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
       ),
@@ -367,7 +367,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
           ),
           Container(
             width: 2,
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
           ),
           Expanded(
             child: _buildPageView('right', _rightPage, _rightZoom),
@@ -382,7 +382,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
           ),
           Container(
             height: 2,
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
           ),
           Expanded(
             child: _buildPageView('right', _rightPage, _rightZoom),
@@ -445,7 +445,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Stack(
@@ -458,7 +458,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 Icon(
                   Icons.description,
                   size: 64,
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -466,7 +466,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -474,16 +474,16 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                   "PDF Viewer",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Zoom: ${(zoom * 100).toInt()}%",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-                  ),
+                                      "Zoom: ${(zoom * 100).toInt()}%",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                    ),
                 ),
               ],
             ),
@@ -497,7 +497,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryOrange.withOpacity(0.9),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(

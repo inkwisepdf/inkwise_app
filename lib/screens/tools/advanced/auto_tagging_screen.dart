@@ -492,7 +492,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -513,7 +513,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                     const Icon(
                       Icons.label_off,
                       size: 64,
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -521,7 +521,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -529,7 +529,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                       "Start tagging files to see them here",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -549,7 +549,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryOrange.withOpacity(0.1),
+                        color: AppColors.primaryOrange.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
@@ -568,7 +568,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                         Text(
                           file['path'],
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -580,7 +580,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: AppColors.primaryOrange.withOpacity(0.1),
+                                color: AppColors.primaryOrange.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(

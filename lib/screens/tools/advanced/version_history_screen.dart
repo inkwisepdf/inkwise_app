@@ -335,7 +335,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -356,7 +356,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     Icon(
                       Icons.history,
                       size: 64,
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -364,7 +364,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -372,7 +372,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       "Create your first snapshot to start tracking changes",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -394,7 +394,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _getVersionColor(version['type']).withOpacity(0.1),
+                        color: _getVersionColor(version['type']).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -415,14 +415,14 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                         Text(
                           "Created: ${version['date']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           "Size: ${version['size']} • Type: ${version['type']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -435,7 +435,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withOpacity(0.1),
+                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
