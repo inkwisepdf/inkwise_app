@@ -262,7 +262,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+                          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),

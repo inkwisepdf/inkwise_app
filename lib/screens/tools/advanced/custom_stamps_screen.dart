@@ -76,13 +76,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryGreen.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -181,10 +181,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -209,7 +209,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -243,7 +243,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -311,13 +311,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected 
-                          ? AppColors.primaryGreen.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
+                          ? AppColors.primaryGreen.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected 
                             ? AppColors.primaryGreen
-                            : Colors.grey.withOpacity(0.3),
+                            : Colors.grey.withValues(alpha: 0.3),
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -362,7 +362,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -467,7 +467,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -484,7 +484,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
             ),
             child: Stack(
               children: [
@@ -496,7 +496,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                       const Icon(
                         Icons.description,
                         size: 64,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 16),
                       const Text(
@@ -504,7 +504,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -525,10 +525,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withOpacity(0.1),
+                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: AppColors.primaryGreen.withOpacity(0.3),
+                                color: AppColors.primaryGreen.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Icon(
@@ -566,10 +566,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.1),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: AppColors.primaryGreen.withOpacity(0.3),
+                        color: AppColors.primaryGreen.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(

@@ -74,13 +74,13 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryOrange.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryOrange.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryOrange.withOpacity(0.2),
+          color: AppColors.primaryOrange.withValues(alpha: 0.2),
           width: 1,
         ),
       ),

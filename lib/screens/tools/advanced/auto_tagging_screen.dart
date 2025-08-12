@@ -69,13 +69,13 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryOrange.withOpacity(0.1),
-            AppColors.primaryPurple.withOpacity(0.05),
+            AppColors.primaryOrange.withValues(alpha: 0.1),
+            AppColors.primaryPurple.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryOrange.withOpacity(0.2),
+          color: AppColors.primaryOrange.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -125,7 +125,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -174,10 +174,10 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryOrange.withOpacity(0.1),
+                color: AppColors.primaryOrange.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryOrange.withOpacity(0.3),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -234,7 +234,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -367,10 +367,10 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -381,7 +381,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -416,9 +416,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: color.withOpacity(0.3)),
+                  border: Border.all(color: color.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -441,7 +441,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                     Text(
                       "${(confidence * 100).toInt()}%",
                       style: TextStyle(
-                        color: color.withOpacity(0.8),
+                        color: color.withValues(alpha: 0.8),
                         fontSize: 10,
                       ),
                     ),

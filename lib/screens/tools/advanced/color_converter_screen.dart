@@ -78,13 +78,13 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -134,7 +134,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
