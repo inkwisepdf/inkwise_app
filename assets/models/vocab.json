@@ -1,0 +1,18 @@
+{
+  "<PAD>": 0,
+  "<UNK>": 1,
+  "<START>": 2,
+  "<END>": 3,
+  "summary": 4,
+  "document": 5,
+  "text": 6,
+  "important": 7,
+  "key": 8,
+  "point": 9,
+  "main": 10,
+  "idea": 11,
+  "concept": 12,
+  "information": 13,
+  "data": 14,
+  "analysis": 15
+}

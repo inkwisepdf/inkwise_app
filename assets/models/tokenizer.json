@@ -1,0 +1,12 @@
+{
+  "word": 1,
+  "token": 2,
+  "split": 3,
+  "join": 4,
+  "encode": 5,
+  "decode": 6,
+  "sequence": 7,
+  "padding": 8,
+  "truncation": 9,
+  "max_length": 10
+}

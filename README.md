@@ -193,7 +193,7 @@ A powerful, feature-rich PDF editor app built with Flutter that offers professio
 - **Offline-First Design** with cloud sync capabilities
 
 ### AI & ML Integration
-- **TensorFlow Lite** for on-device AI models
+- **Modern ML Algorithms** for on-device AI models (ml_algo, ml_dataframe, ml_preprocessing)
 - **Tesseract OCR** for text extraction
 - **Custom ML Models** for summarization and translation
 - **Computer Vision** for form detection and image processing
@@ -274,7 +274,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Flutter Team** for the amazing framework
 - **Tesseract OCR** for text recognition capabilities
-- **TensorFlow** for machine learning support
+- **Modern ML Libraries** for machine learning support (ml_algo, ml_dataframe, ml_preprocessing)
 - **Open Source Community** for various libraries and tools
 
 ## 📞 Support
