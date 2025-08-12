@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_render/pdf_render.dart';
 
-class FindReplaceScreen extends StatefulWidget {
-  const FindReplaceScreen({Key? key}) : super(key: key);
+class FindReplaceFeature extends StatefulWidget {
+  const FindReplaceFeature({Key? key}) : super(key: key);
 
   @override
-  State<FindReplaceScreen> createState() => _FindReplaceScreenState();
+  State<FindReplaceFeature> createState() => _FindReplaceFeatureState();
 }
 
-class _FindReplaceScreenState extends State<FindReplaceScreen> {
+class _FindReplaceFeatureState extends State<FindReplaceFeature> {
   PdfDocument? document;
   int currentPage = 1;
   String searchText = '';
