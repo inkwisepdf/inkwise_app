@@ -312,9 +312,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
             child: Row(
               children: [
-                Icon(Icons.bookmark, color: AppColors.primaryBlue),
+                const Icon(Icons.bookmark, color: AppColors.primaryBlue),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   "Bookmarks",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -481,9 +481,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error picking file: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking file: $e')),
+        );
+      }
     }
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../theme.dart';
-import '../services/performance_service.dart';
-import '../services/image_optimization_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
+import 'package:inkwise_pdf/services/image_optimization_service.dart';
 
 class PerformanceMonitorScreen extends StatefulWidget {
   const PerformanceMonitorScreen({super.key});
