@@ -456,7 +456,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_translatedText!);
+                      await FileService.copyToClipboard(_translatedText!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Translation copied to clipboard'),
@@ -486,7 +486,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'translated_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_translatedText!, filename);
+                      await FileService.saveTextAsFile(_translatedText!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Translation saved as $filename'),
