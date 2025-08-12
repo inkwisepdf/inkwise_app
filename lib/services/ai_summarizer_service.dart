@@ -23,10 +23,8 @@ class AISummarizerService {
       await _initializeWordEmbeddings();
       
       _isInitialized = true;
-      print('AI summarizer service initialized successfully');
       return true;
     } catch (e) {
-      print('Error initializing AI summarizer service: $e');
       return false;
     }
   }
@@ -402,7 +400,7 @@ class AISummarizerService {
       _wordEmbeddings = null;
       _isInitialized = false;
     } catch (e) {
-      print('Error disposing AI summarizer service: $e');
+      // Error disposing AI summarizer service
     }
   }
 }

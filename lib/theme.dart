@@ -284,13 +284,13 @@ final ThemeData lightTheme = ThemeData(
     primary: AppColors.primaryBlue,
     secondary: AppColors.secondaryBlue,
     surface: AppColors.surfaceLight,
-    background: AppColors.backgroundLight,
+    surface: AppColors.backgroundLight,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryLight,
-    onBackground: AppColors.textPrimaryLight,
-    outline: AppColors.textSecondaryLight.withOpacity(0.2),
-    outlineVariant: AppColors.textSecondaryLight.withOpacity(0.1),
+    onSurface: AppColors.textPrimaryLight,
+    outline: AppColors.textSecondaryLight.withValues(alpha: 0.2),
+    outlineVariant: AppColors.textSecondaryLight.withValues(alpha: 0.1),
   ),
   
   // Modern Input Decoration Theme
@@ -300,14 +300,14 @@ final ThemeData lightTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryLight.withOpacity(0.2),
+        color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryLight.withOpacity(0.2),
+        color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
@@ -333,7 +333,7 @@ final ThemeData lightTheme = ThemeData(
       color: AppColors.textSecondaryLight,
     ),
     hintStyle: AppTypography.bodyMedium.copyWith(
-      color: AppColors.textSecondaryLight.withOpacity(0.7),
+      color: AppColors.textSecondaryLight.withValues(alpha: 0.7),
     ),
   ),
   
@@ -345,33 +345,33 @@ final ThemeData lightTheme = ThemeData(
   
   // Modern Divider Theme
   dividerTheme: DividerThemeData(
-    color: AppColors.textSecondaryLight.withOpacity(0.1),
+    color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
   
   // Modern Switch Theme
   switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
         return AppColors.primaryBlue;
       }
       return AppColors.textSecondaryLight;
     }),
-    trackColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
-        return AppColors.primaryBlue.withOpacity(0.3);
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primaryBlue.withValues(alpha: 0.3);
       }
-      return AppColors.textSecondaryLight.withOpacity(0.2);
+      return AppColors.textSecondaryLight.withValues(alpha: 0.2);
     }),
   ),
   
   // Modern Slider Theme
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
-    inactiveTrackColor: AppColors.textSecondaryLight.withOpacity(0.2),
+    inactiveTrackColor: AppColors.textSecondaryLight.withValues(alpha: 0.2),
     thumbColor: AppColors.primaryBlue,
-    overlayColor: AppColors.primaryBlue.withOpacity(0.1),
+    overlayColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     valueIndicatorColor: AppColors.primaryBlue,
     valueIndicatorTextStyle: AppTypography.labelMedium.copyWith(
       color: Colors.white,
@@ -599,13 +599,13 @@ final ThemeData darkTheme = ThemeData(
     primary: AppColors.primaryBlue,
     secondary: AppColors.secondaryBlue,
     surface: AppColors.surfaceDark,
-    background: AppColors.backgroundDark,
+    surface: AppColors.backgroundDark,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryDark,
-    onBackground: AppColors.textPrimaryDark,
-    outline: AppColors.textSecondaryDark.withOpacity(0.2),
-    outlineVariant: AppColors.textSecondaryDark.withOpacity(0.1),
+    onSurface: AppColors.textPrimaryDark,
+    outline: AppColors.textSecondaryDark.withValues(alpha: 0.2),
+    outlineVariant: AppColors.textSecondaryDark.withValues(alpha: 0.1),
   ),
   
   // Modern Input Decoration Theme - Dark
@@ -615,14 +615,14 @@ final ThemeData darkTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryDark.withOpacity(0.2),
+        color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryDark.withOpacity(0.2),
+        color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
@@ -648,7 +648,7 @@ final ThemeData darkTheme = ThemeData(
       color: AppColors.textSecondaryDark,
     ),
     hintStyle: AppTypography.bodyMedium.copyWith(
-      color: AppColors.textSecondaryDark.withOpacity(0.7),
+      color: AppColors.textSecondaryDark.withValues(alpha: 0.7),
     ),
   ),
   
@@ -660,33 +660,33 @@ final ThemeData darkTheme = ThemeData(
   
   // Modern Divider Theme - Dark
   dividerTheme: DividerThemeData(
-    color: AppColors.textSecondaryDark.withOpacity(0.1),
+    color: AppColors.textSecondaryDark.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
   
   // Modern Switch Theme - Dark
   switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
         return AppColors.primaryBlue;
       }
       return AppColors.textSecondaryDark;
     }),
-    trackColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
-        return AppColors.primaryBlue.withOpacity(0.3);
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primaryBlue.withValues(alpha: 0.3);
       }
-      return AppColors.textSecondaryDark.withOpacity(0.2);
+      return AppColors.textSecondaryDark.withValues(alpha: 0.2);
     }),
   ),
   
   // Modern Slider Theme - Dark
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
-    inactiveTrackColor: AppColors.textSecondaryDark.withOpacity(0.2),
+    inactiveTrackColor: AppColors.textSecondaryDark.withValues(alpha: 0.2),
     thumbColor: AppColors.primaryBlue,
-    overlayColor: AppColors.primaryBlue.withOpacity(0.1),
+    overlayColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     valueIndicatorColor: AppColors.primaryBlue,
     valueIndicatorTextStyle: AppTypography.labelMedium.copyWith(
       color: Colors.white,

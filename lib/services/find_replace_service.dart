@@ -11,7 +11,6 @@ class FindReplaceService {
       );
       return extractedText;
     } catch (e) {
-      print('OCR Error: $e');
       return '';
     }
   }

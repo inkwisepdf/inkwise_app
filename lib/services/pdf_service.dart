@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
 import 'package:pdf_render/pdf_render.dart' as pdf_render;
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
-import 'performance_service.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
 
 class PDFService {
   static final PDFService _instance = PDFService._internal();
@@ -452,9 +452,9 @@ class PDFService {
         // Draw watermark
         final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor.fromArgb(
           (opacity * 255).round(),
-          color.red,
-          color.green,
-          color.blue,
+          (color.r * 255.0).round() & 0xff,
+          (color.g * 255.0).round() & 0xff,
+          (color.b * 255.0).round() & 0xff,
         ));
         
         graphics.drawString(text, font, brush, Offset(x, y), format);

@@ -49,10 +49,8 @@ class OfflineTranslationService {
       await _loadTokenizer();
       
       _isInitialized = true;
-      print('Offline translation service initialized successfully');
       return true;
     } catch (e) {
-      print('Error initializing offline translation service: $e');
       return false;
     }
   }
@@ -85,7 +83,6 @@ class OfflineTranslationService {
       // final modelFile = await rootBundle.loadString(_modelPath);
       // _translationModel = json.decode(modelFile);
     } catch (e) {
-      print('Error loading translation model: $e');
       rethrow;
     }
   }
@@ -198,7 +195,6 @@ class OfflineTranslationService {
         'pipeline': 100,
       };
     } catch (e) {
-      print('Error loading vocabulary: $e');
       rethrow;
     }
   }
@@ -221,7 +217,6 @@ class OfflineTranslationService {
         'max_length': 10,
       };
     } catch (e) {
-      print('Error loading tokenizer: $e');
       rethrow;
     }
   }
@@ -793,7 +788,7 @@ class OfflineTranslationService {
       _wordEmbeddings = null;
       _isInitialized = false;
     } catch (e) {
-      print('Error disposing translation service: $e');
+      // Error disposing translation service
     }
   }
 }

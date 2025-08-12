@@ -31,7 +31,7 @@ class OCRService {
         
         // Perform OCR
         final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
-        extractedText += pageText + '\n';
+        extractedText += '$pageText\n';
         
         // Clean up
         await imageFile.delete();

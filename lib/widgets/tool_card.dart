@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 class ToolCard extends StatelessWidget {
   final String title;
@@ -22,7 +22,7 @@ class ToolCard extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: [
@@ -50,19 +50,19 @@ class ToolCard extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        color.withOpacity(0.1),
-                        color.withOpacity(0.05),
+                        color.withValues(alpha: 0.1),
+                        color.withValues(alpha: 0.05),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(
-                      color: color.withOpacity(0.2),
+                      color: color.withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     icon,
-                    color: color,
+                    color: AppColors.primaryBlue,
                     size: 32,
                   ),
                 ),
@@ -84,10 +84,10 @@ class ToolCard extends StatelessWidget {
                     vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.full),
                     border: Border.all(
-                      color: color.withOpacity(0.2),
+                      color: color.withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
