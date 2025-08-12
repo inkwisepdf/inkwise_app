@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import '../../../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 class PDFIndexerScreen extends StatefulWidget {
   const PDFIndexerScreen({super.key});
@@ -76,13 +76,13 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -194,11 +194,11 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             const SizedBox(height: 16),
             LinearProgressIndicator(
               value: _indexingProgress,
-              backgroundColor: Colors.grey.withOpacity(0.3),
+              backgroundColor: Colors.grey.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               "Indexing files... Please wait",
               style: TextStyle(
                 color: AppColors.primaryBlue,
@@ -215,9 +215,9 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -235,7 +235,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             title,
             style: TextStyle(
               fontSize: 12,
-              color: color.withOpacity(0.8),
+              color: color.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -360,10 +360,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.05),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+                      color: AppColors.primaryBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -435,10 +435,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -519,7 +519,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         result['size'],
                         style: TextStyle(
                           fontSize: 12,
@@ -759,12 +759,14 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
       _indexingProgress = 1.0;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Indexing completed! $_totalFiles files indexed.'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Indexing completed! $_totalFiles files indexed.'),
+          backgroundColor: AppColors.primaryGreen,
+        ),
+      );
+    }
   }
 
   Future<void> _performSearch() async {
@@ -784,7 +786,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     }).map((file) {
       return {
         ...file,
-        'snippet': 'Found "${_searchQuery}" in ${file['name']}',
+        'snippet': 'Found "$_searchQuery" in ${file['name']}',
       };
     }).toList();
 
@@ -793,12 +795,14 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     });
 
     if (_searchResults.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('No results found for "$_searchQuery"'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No results found for "$_searchQuery"'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
     }
   }
 
