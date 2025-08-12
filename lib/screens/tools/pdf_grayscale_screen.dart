@@ -79,8 +79,8 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               color: AppColors.primaryOrange,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
-              Icons.filter_bw,
+            child: Icon(
+              Icons.filter_alt,
               color: Colors.white,
               size: 24,
             ),
@@ -494,7 +494,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.filter_bw),
+            : Icon(Icons.filter_alt),
         label: Text(_isProcessing ? "Converting..." : "Convert to Grayscale"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryOrange,
@@ -555,8 +555,8 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.filter_bw,
+                Icon(
+                  Icons.filter_alt,
                   color: AppColors.primaryGreen,
                   size: 20,
                 ),
@@ -594,7 +594,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -618,7 +618,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

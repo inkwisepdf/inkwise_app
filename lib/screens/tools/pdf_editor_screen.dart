@@ -212,11 +212,16 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                             color: AppColors.textPrimaryLight,
                           ),
                         ),
-                        Text(
-                          "Size: ${FileService.getFileSize(_selectedFile!.lengthSync())}",
-                          style: AppTypography.labelMedium.copyWith(
-                            color: AppColors.textSecondaryLight,
-                          ),
+                        FutureBuilder<String>(
+                          future: FileService.getFileSize(_selectedFile!),
+                          builder: (context, snapshot) {
+                            return Text(
+                              "Size: ${snapshot.data ?? 'Loading...'}",
+                              style: AppTypography.labelMedium.copyWith(
+                                color: AppColors.textSecondaryLight,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -534,7 +539,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => FileService.openFile(_outputPath!),
+                  onPressed: () => FileService.openFile(File(_outputPath!)),
                   icon: const Icon(Icons.open_in_new),
                   label: const Text("Open File"),
                 ),
@@ -542,7 +547,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => FileService.shareFile(_outputPath!),
+                  onPressed: () => FileService.shareFile(File(_outputPath!)),
                   icon: const Icon(Icons.share),
                   label: const Text("Share"),
                 ),
@@ -585,7 +590,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
       // Mock processing for now
       await Future.delayed(const Duration(seconds: 2));
       
-      final outputPath = await FileService.getOutputPath('edited_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final directory = await FileService.getAppDirectoryPath();
+      final outputPath = '$directory/edited_${DateTime.now().millisecondsSinceEpoch}.pdf';
       
       setState(() {
         _outputPath = outputPath;
