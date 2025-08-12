@@ -551,7 +551,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       child: Center(
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.analytics_outlined,
               size: 64,
               color: AppColors.textSecondaryLight,
