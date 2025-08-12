@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
-import '../../../services/pdf_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
+import 'package:inkwise_pdf/services/pdf_service.dart';
 
 class PasswordProtectionScreen extends StatefulWidget {
   const PasswordProtectionScreen({super.key});
@@ -86,7 +86,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.primaryRed.withOpacity(0.1), AppColors.primaryRed.withOpacity(0.05)],
+          colors: [AppColors.primaryRed.withValues(alpha: 0.1), AppColors.primaryRed.withValues(alpha: 0.05)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -144,7 +144,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.file_present, color: AppColors.primaryBlue),
+                const Icon(Icons.file_present, color: AppColors.primaryBlue),
                 const SizedBox(width: 12),
                 Text(
                   "Select PDF File",
@@ -170,13 +170,13 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.lightBlue.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryBlue.withOpacity(0.3)),
+                                  color: AppColors.lightBlue.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.picture_as_pdf, color: AppColors.primaryBlue),
+                    const Icon(Icons.picture_as_pdf, color: AppColors.primaryBlue),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -226,11 +226,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.security, color: AppColors.primaryBlue),
+                const Icon(Icons.security, color: AppColors.primaryBlue),
                 const SizedBox(width: 12),
-                Text(
+                const Text(
                   "Protection Mode",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -261,11 +261,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.key, color: AppColors.primaryBlue),
+                const Icon(Icons.key, color: AppColors.primaryBlue),
                 const SizedBox(width: 12),
-                Text(
+                const Text(
                   "Password Settings",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -331,11 +331,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.settings, color: AppColors.primaryBlue),
+                const Icon(Icons.settings, color: AppColors.primaryBlue),
                 const SizedBox(width: 12),
-                Text(
+                const Text(
                   "Security Options",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -414,11 +414,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.check_circle, color: AppColors.primaryGreen),
+                const Icon(Icons.check_circle, color: AppColors.primaryGreen),
                 const SizedBox(width: 12),
-                Text(
+                const Text(
                   "Success!",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: TextStyle(
                     color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w600,
                   ),
@@ -429,9 +429,9 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryGreen.withOpacity(0.3)),
+                border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -499,9 +499,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error picking file: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking file: $e')),
+        );
+      }
     }
   }
 
@@ -535,20 +537,24 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Password protection applied successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Password protection applied successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() => _isProcessing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }
