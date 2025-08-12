@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:flutter_clipboard/flutter_clipboard.dart';
 import 'performance_service.dart';
 
 class FileService {
@@ -151,7 +151,7 @@ class FileService {
 
   static Future<void> copyToClipboard(String text) async {
     try {
-      await FlutterClipboard.copy(text);
+      await Clipboard.setData(ClipboardData(text: text));
     } catch (e) {
       throw Exception('Error copying to clipboard: $e');
     }
