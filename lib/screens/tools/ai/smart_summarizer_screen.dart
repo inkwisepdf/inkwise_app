@@ -397,7 +397,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_summary!);
+                      await FileService.copyToClipboard(_summary!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Summary copied to clipboard'),
@@ -427,7 +427,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_summary!, filename);
+                      await FileService.saveTextAsFile(_summary!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Summary saved as $filename'),

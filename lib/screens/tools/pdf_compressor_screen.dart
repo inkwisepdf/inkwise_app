@@ -436,7 +436,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -460,7 +460,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
