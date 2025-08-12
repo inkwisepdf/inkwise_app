@@ -535,7 +535,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                       
                       final filename = 'tables_${DateTime.now().millisecondsSinceEpoch}.json';
                       final jsonString = data.toString(); // Simplified for demo
-                      await FileService().saveTextAsFile(jsonString, filename);
+                      await FileService.saveTextAsFile(jsonString, filename);
                       
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -570,7 +570,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                         final tableData = _extractedTables!.first;
                         final csvData = _convertToCSV(tableData);
                         final filename = 'table_1_${DateTime.now().millisecondsSinceEpoch}.csv';
-                        await FileService().saveTextAsFile(csvData, filename);
+                        await FileService.saveTextAsFile(csvData, filename);
                         
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
