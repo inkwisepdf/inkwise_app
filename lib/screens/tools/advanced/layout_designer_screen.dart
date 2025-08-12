@@ -803,7 +803,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -819,7 +819,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -831,7 +831,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();
     return '$directory/$filename';
   }
 }
