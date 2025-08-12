@@ -382,7 +382,7 @@ final ThemeData lightTheme = ThemeData(
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.lightBlue,
     selectedColor: AppColors.primaryBlue,
-    disabledColor: AppColors.textSecondaryLight.withOpacity(0.1),
+    disabledColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
     labelStyle: AppTypography.labelMedium.copyWith(
       color: AppColors.primaryBlue,
     ),
@@ -695,9 +695,9 @@ final ThemeData darkTheme = ThemeData(
   
   // Modern Chip Theme - Dark
   chipTheme: ChipThemeData(
-    backgroundColor: AppColors.primaryBlue.withOpacity(0.1),
+    backgroundColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     selectedColor: AppColors.primaryBlue,
-    disabledColor: AppColors.textSecondaryDark.withOpacity(0.1),
+    disabledColor: AppColors.textSecondaryDark.withValues(alpha: 0.1),
     labelStyle: AppTypography.labelMedium.copyWith(
       color: AppColors.primaryBlue,
     ),

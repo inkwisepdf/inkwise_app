@@ -122,7 +122,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
@@ -222,7 +222,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
@@ -302,7 +302,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
