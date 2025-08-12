@@ -5,32 +5,25 @@ import '../../../theme.dart';
 import '../../../services/pdf_service.dart';
 import '../../../services/file_service.dart';
 
-class PDFRotateScreen extends StatefulWidget {
-  const PDFRotateScreen({Key? key}) : super(key: key);
+class PDFSplitScreen extends StatefulWidget {
+  const PDFSplitScreen({Key? key}) : super(key: key);
 
   @override
-  State<PDFRotateScreen> createState() => _PDFRotateScreenState();
+  State<PDFSplitScreen> createState() => _PDFSplitScreenState();
 }
 
-class _PDFRotateScreenState extends State<PDFRotateScreen> {
+class _PDFSplitScreenState extends State<PDFSplitScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
-  String? _outputPath;
-  String _rotationAngle = '90';
-  String _rotationMode = 'all_pages'; // 'all_pages' or 'specific_page'
-  int? _specificPage;
-
-  final Map<String, String> _rotationOptions = {
-    '90': '90° Clockwise',
-    '180': '180°',
-    '270': '90° Counter-clockwise',
-  };
+  List<File>? _splitFiles;
+  String _splitMode = 'all_pages'; // 'all_pages', 'custom_ranges'
+  List<int> _pageRanges = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rotate PDF"),
+        title: const Text("Split PDF"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
@@ -43,11 +36,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 24),
             _buildFileSelector(),
             const SizedBox(height: 24),
-            if (_selectedFile != null) _buildRotationOptions(),
+            if (_selectedFile != null) _buildSplitOptions(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
-            if (_outputPath != null) _buildResult(),
+            if (_splitFiles != null) _buildResult(),
           ],
         ),
       ),
@@ -60,13 +53,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
+            AppColors.primaryGreen.withOpacity(0.1),
             AppColors.primaryBlue.withOpacity(0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryGreen.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -75,11 +68,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryPurple,
+              color: AppColors.primaryGreen,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.rotate_90_degrees_ccw,
+              Icons.content_cut,
               color: Colors.white,
               size: 24,
             ),
@@ -90,15 +83,15 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Rotate PDF Pages",
+                  "Split PDF",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Rotate all pages or specific pages in your PDF",
+                  "Divide PDF into separate files by pages or custom ranges",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -134,7 +127,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withOpacity(0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -146,13 +139,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     Icon(
                       Icons.upload_file,
                       size: 48,
-                      color: AppColors.primaryPurple,
+                      color: AppColors.primaryGreen,
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Tap to select PDF file",
                       style: TextStyle(
-                        color: AppColors.primaryPurple,
+                        color: AppColors.primaryGreen,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -165,17 +158,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryGreen.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withOpacity(0.3),
                 ),
               ),
               child: Row(
                 children: [
                   const Icon(
                     Icons.description,
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryGreen,
                     size: 32,
                   ),
                   const SizedBox(width: 16),
@@ -204,7 +197,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     onPressed: () {
                       setState(() {
                         _selectedFile = null;
-                        _outputPath = null;
+                        _splitFiles = null;
                       });
                     },
                     icon: const Icon(Icons.close),
@@ -218,7 +211,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildRotationOptions() {
+  Widget _buildSplitOptions() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -232,14 +225,14 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Rotation Options",
+            "Split Options",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           
-          // Rotation Mode Selection
+          // Split Mode Selection
           Text(
-            "Rotation Mode",
+            "Split Mode",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
             ),
@@ -247,36 +240,35 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           const SizedBox(height: 8),
           
           RadioListTile<String>(
-            title: const Text("Rotate all pages"),
-            subtitle: const Text("Apply rotation to every page"),
+            title: const Text("Split each page"),
+            subtitle: const Text("Create separate file for each page"),
             value: 'all_pages',
-            groupValue: _rotationMode,
+            groupValue: _splitMode,
             onChanged: (value) {
               setState(() {
-                _rotationMode = value!;
-                _specificPage = null;
+                _splitMode = value!;
               });
             },
-            activeColor: AppColors.primaryPurple,
+            activeColor: AppColors.primaryGreen,
           ),
           
           RadioListTile<String>(
-            title: const Text("Rotate specific page"),
-            subtitle: const Text("Apply rotation to a single page"),
-            value: 'specific_page',
-            groupValue: _rotationMode,
+            title: const Text("Custom ranges"),
+            subtitle: const Text("Split by specific page ranges"),
+            value: 'custom_ranges',
+            groupValue: _splitMode,
             onChanged: (value) {
               setState(() {
-                _rotationMode = value!;
+                _splitMode = value!;
               });
             },
-            activeColor: AppColors.primaryPurple,
+            activeColor: AppColors.primaryGreen,
           ),
           
-          if (_rotationMode == 'specific_page') ...[
+          if (_splitMode == 'custom_ranges') ...[
             const SizedBox(height: 16),
             Text(
-              "Page Number",
+              "Page Ranges (e.g., 1-3, 5, 7-9)",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -284,51 +276,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                hintText: "Enter page number (e.g., 1, 2, 3)",
+                hintText: "Enter page ranges separated by commas",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              keyboardType: TextInputType.number,
               onChanged: (value) {
-                setState(() {
-                  _specificPage = int.tryParse(value);
-                });
+                // Parse page ranges
+                _parsePageRanges(value);
               },
             ),
           ],
-          
-          const SizedBox(height: 16),
-          
-          // Rotation Angle Selection
-          Text(
-            "Rotation Angle",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          
-          DropdownButtonFormField<String>(
-            value: _rotationAngle,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            items: _rotationOptions.entries.map((entry) {
-              return DropdownMenuItem(
-                value: entry.key,
-                child: Text(entry.value),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _rotationAngle = value!;
-              });
-            },
-          ),
         ],
       ),
     );
@@ -338,7 +296,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _rotatePDF,
+        onPressed: _isProcessing ? null : _splitPDF,
         icon: _isProcessing
             ? const SizedBox(
                 width: 20,
@@ -348,10 +306,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.rotate_90_degrees_ccw),
-        label: Text(_isProcessing ? "Rotating..." : "Rotate PDF"),
+            : const Icon(Icons.content_cut),
+        label: Text(_isProcessing ? "Splitting..." : "Split PDF"),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryPurple,
+          backgroundColor: AppColors.primaryGreen,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
@@ -366,10 +324,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryBlue.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryBlue.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -380,20 +338,20 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryBlue.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
                   Icons.check_circle,
-                  color: AppColors.primaryGreen,
+                  color: AppColors.primaryBlue,
                   size: 20,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                "Rotation Complete",
+                "Split Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
+                  color: AppColors.primaryBlue,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -401,43 +359,54 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           ),
           const SizedBox(height: 16),
           
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+          Text(
+            "Created ${_splitFiles!.length} file(s):",
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w600,
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.description,
-                  color: AppColors.primaryGreen,
-                  size: 20,
+          ),
+          const SizedBox(height: 12),
+          
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _splitFiles!.length,
+            itemBuilder: (context, index) {
+              final file = _splitFiles![index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Rotated PDF",
-                        style: TextStyle(
-                          color: AppColors.primaryGreen,
-                          fontWeight: FontWeight.w600,
-                        ),
+                child: Row(
+                  children: [
+                    Text(
+                      "${index + 1}.",
+                      style: TextStyle(
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Text(
-                        "Rotation: ${_rotationOptions[_rotationAngle]}",
-                        style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
-                          fontSize: 12,
-                        ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        file.path.split('/').last,
+                        style: const TextStyle(fontSize: 14),
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      "${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
           
           const SizedBox(height: 16),
@@ -447,22 +416,22 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      final appDir = await FileService().getAppDirectoryPath();
+                      await FileService().openFile(File(appDir));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error opening file: $e'),
+                          content: Text('Error opening folder: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
-                  icon: const Icon(Icons.open_in_new),
-                  label: const Text("Open File"),
+                  icon: const Icon(Icons.folder_open),
+                  label: const Text("Open Folder"),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    foregroundColor: AppColors.primaryBlue,
+                    side: BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -471,21 +440,23 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      // Share the first file as an example
+                      if (_splitFiles!.isNotEmpty) {
+                        await FileService().shareFile(_splitFiles!.first);
+                      }
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error sharing file: $e'),
+                          content: Text('Error sharing files: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
                   icon: const Icon(Icons.share),
-                  label: const Text("Share"),
+                  label: const Text("Share All"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryGreen,
+                    backgroundColor: AppColors.primaryBlue,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -495,6 +466,34 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         ],
       ),
     );
+  }
+
+  void _parsePageRanges(String input) {
+    // Simple page range parsing
+    // This is a basic implementation - could be enhanced
+    final ranges = input.split(',');
+    _pageRanges.clear();
+    
+    for (final range in ranges) {
+      final trimmed = range.trim();
+      if (trimmed.contains('-')) {
+        final parts = trimmed.split('-');
+        if (parts.length == 2) {
+          final start = int.tryParse(parts[0]);
+          final end = int.tryParse(parts[1]);
+          if (start != null && end != null && start <= end) {
+            for (int i = start; i <= end; i++) {
+              _pageRanges.add(i);
+            }
+          }
+        }
+      } else {
+        final page = int.tryParse(trimmed);
+        if (page != null) {
+          _pageRanges.add(page);
+        }
+      }
+    }
   }
 
   Future<void> _pickFile() async {
@@ -507,7 +506,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          _outputPath = null;
+          _splitFiles = null;
         });
       }
     } catch (e) {
@@ -520,7 +519,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  Future<void> _rotatePDF() async {
+  Future<void> _splitPDF() async {
     if (_selectedFile == null) return;
 
     setState(() {
@@ -529,20 +528,22 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
 
     try {
       final pdfService = PDFService();
-      final rotatedFile = await pdfService.rotatePDF(
-        _selectedFile!,
-        pageNumber: _rotationMode == 'specific_page' ? _specificPage : null,
-        angle: _getRotationAngle(),
-      );
+      List<File> splitFiles;
+      
+      if (_splitMode == 'all_pages') {
+        splitFiles = await pdfService.splitPDF(_selectedFile!);
+      } else {
+        splitFiles = await pdfService.splitPDF(_selectedFile!, pageRanges: _pageRanges);
+      }
 
       setState(() {
-        _outputPath = rotatedFile.path;
+        _splitFiles = splitFiles;
         _isProcessing = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('PDF rotated successfully!'),
+          content: Text('PDF split successfully into ${splitFiles.length} files!'),
           backgroundColor: AppColors.primaryGreen,
         ),
       );
@@ -553,23 +554,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error rotating PDF: $e'),
+          content: Text('Error splitting PDF: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
-    }
-  }
-
-  dynamic _getRotationAngle() {
-    switch (_rotationAngle) {
-      case '90':
-        return PdfPageRotateAngle.rotateAngle90;
-      case '180':
-        return PdfPageRotateAngle.rotateAngle180;
-      case '270':
-        return PdfPageRotateAngle.rotateAngle270;
-      default:
-        return PdfPageRotateAngle.rotateAngle90;
     }
   }
 }

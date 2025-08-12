@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../../theme.dart';
-import '../../../services/pdf_service.dart';
+import '../../../services/ai_summarizer_service.dart';
 import '../../../services/file_service.dart';
 
-class PDFRotateScreen extends StatefulWidget {
-  const PDFRotateScreen({Key? key}) : super(key: key);
+class SmartSummarizerScreen extends StatefulWidget {
+  const SmartSummarizerScreen({super.key});
 
   @override
-  State<PDFRotateScreen> createState() => _PDFRotateScreenState();
+  State<SmartSummarizerScreen> createState() => _SmartSummarizerScreenState();
 }
 
-class _PDFRotateScreenState extends State<PDFRotateScreen> {
+class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
   File? _selectedFile;
+  String? _summary;
   bool _isProcessing = false;
-  String? _outputPath;
-  String _rotationAngle = '90';
-  String _rotationMode = 'all_pages'; // 'all_pages' or 'specific_page'
-  int? _specificPage;
+  String _selectedLanguage = 'English';
+  int _summaryLength = 3; // paragraphs
 
-  final Map<String, String> _rotationOptions = {
-    '90': '90° Clockwise',
-    '180': '180°',
-    '270': '90° Counter-clockwise',
-  };
+  final List<String> _languages = [
+    'English',
+    'Spanish',
+    'French',
+    'German',
+    'Italian',
+    'Portuguese',
+    'Russian',
+    'Chinese',
+    'Japanese',
+    'Korean',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rotate PDF"),
+        title: const Text("Smart PDF Summarizer"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
@@ -43,11 +50,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 24),
             _buildFileSelector(),
             const SizedBox(height: 24),
-            if (_selectedFile != null) _buildRotationOptions(),
+            if (_selectedFile != null) _buildOptions(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
-            if (_outputPath != null) _buildResult(),
+            if (_summary != null) _buildSummary(),
           ],
         ),
       ),
@@ -79,7 +86,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.rotate_90_degrees_ccw,
+              Icons.summarize,
               color: Colors.white,
               size: 24,
             ),
@@ -90,7 +97,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Rotate PDF Pages",
+                  "AI-Powered Summarization",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.primaryPurple,
                     fontWeight: FontWeight.w600,
@@ -98,7 +105,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Rotate all pages or specific pages in your PDF",
+                  "Extract key points and create intelligent summaries using offline AI models",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -134,7 +141,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryBlue.withOpacity(0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -146,13 +153,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     Icon(
                       Icons.upload_file,
                       size: 48,
-                      color: AppColors.primaryPurple,
+                      color: AppColors.primaryBlue,
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Tap to select PDF file",
                       style: TextStyle(
-                        color: AppColors.primaryPurple,
+                        color: AppColors.primaryBlue,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -165,17 +172,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryBlue.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryBlue.withOpacity(0.3),
                 ),
               ),
               child: Row(
                 children: [
                   const Icon(
                     Icons.description,
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryBlue,
                     size: 32,
                   ),
                   const SizedBox(width: 16),
@@ -204,7 +211,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     onPressed: () {
                       setState(() {
                         _selectedFile = null;
-                        _outputPath = null;
+                        _summary = null;
                       });
                     },
                     icon: const Icon(Icons.close),
@@ -218,7 +225,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildRotationOptions() {
+  Widget _buildOptions() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -232,102 +239,81 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Rotation Options",
+            "Summarization Options",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           
-          // Rotation Mode Selection
+          // Language Selection
           Text(
-            "Rotation Mode",
+            "Output Language",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 8),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate all pages"),
-            subtitle: const Text("Apply rotation to every page"),
-            value: 'all_pages',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-                _specificPage = null;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate specific page"),
-            subtitle: const Text("Apply rotation to a single page"),
-            value: 'specific_page',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          if (_rotationMode == 'specific_page') ...[
-            const SizedBox(height: 16),
-            Text(
-              "Page Number",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Enter page number (e.g., 1, 2, 3)",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  _specificPage = int.tryParse(value);
-                });
-              },
-            ),
-          ],
-          
-          const SizedBox(height: 16),
-          
-          // Rotation Angle Selection
-          Text(
-            "Rotation Angle",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          
           DropdownButtonFormField<String>(
-            value: _rotationAngle,
+            value: _selectedLanguage,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            items: _rotationOptions.entries.map((entry) {
+            items: _languages.map((language) {
               return DropdownMenuItem(
-                value: entry.key,
-                child: Text(entry.value),
+                value: language,
+                child: Text(language),
               );
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _rotationAngle = value!;
+                _selectedLanguage = value!;
               });
             },
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Summary Length
+          Text(
+            "Summary Length",
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Slider(
+                  value: _summaryLength.toDouble(),
+                  min: 1,
+                  max: 5,
+                  divisions: 4,
+                  activeColor: AppColors.primaryPurple,
+                  onChanged: (value) {
+                    setState(() {
+                      _summaryLength = value.round();
+                    });
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryPurple.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "$_summaryLength paragraphs",
+                  style: TextStyle(
+                    color: AppColors.primaryPurple,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -338,7 +324,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _rotatePDF,
+        onPressed: _isProcessing ? null : _processSummarization,
         icon: _isProcessing
             ? const SizedBox(
                 width: 20,
@@ -348,8 +334,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.rotate_90_degrees_ccw),
-        label: Text(_isProcessing ? "Rotating..." : "Rotate PDF"),
+            : const Icon(Icons.auto_awesome),
+        label: Text(_isProcessing ? "Processing..." : "Generate Summary"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryPurple,
           foregroundColor: Colors.white,
@@ -362,7 +348,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildResult() {
+  Widget _buildSummary() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -384,14 +370,14 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
-                  Icons.check_circle,
+                  Icons.summarize,
                   color: AppColors.primaryGreen,
                   size: 20,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                "Rotation Complete",
+                "Generated Summary",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.primaryGreen,
                   fontWeight: FontWeight.w600,
@@ -400,46 +386,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.description,
-                  color: AppColors.primaryGreen,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Rotated PDF",
-                        style: TextStyle(
-                          color: AppColors.primaryGreen,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        "Rotation: ${_rotationOptions[_rotationAngle]}",
-                        style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          Text(
+            _summary!,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -447,19 +397,24 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService().copyToClipboard(_summary!);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Summary copied to clipboard'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error opening file: $e'),
+                          content: Text('Error copying summary: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
-                  icon: const Icon(Icons.open_in_new),
-                  label: const Text("Open File"),
+                  icon: const Icon(Icons.copy),
+                  label: const Text("Copy"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
                     side: BorderSide(color: AppColors.primaryGreen),
@@ -471,19 +426,25 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      final filename = 'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
+                      await FileService().saveTextAsFile(_summary!, filename);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Summary saved as $filename'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error sharing file: $e'),
+                          content: Text('Error saving summary: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
-                  icon: const Icon(Icons.share),
-                  label: const Text("Share"),
+                  icon: const Icon(Icons.save),
+                  label: const Text("Save"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -507,7 +468,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          _outputPath = null;
+          _summary = null;
         });
       }
     } catch (e) {
@@ -520,7 +481,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  Future<void> _rotatePDF() async {
+  Future<void> _processSummarization() async {
     if (_selectedFile == null) return;
 
     setState(() {
@@ -528,24 +489,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     });
 
     try {
-      final pdfService = PDFService();
-      final rotatedFile = await pdfService.rotatePDF(
+      final summarizerService = AISummarizerService();
+      final summary = await summarizerService.summarizePDF(
         _selectedFile!,
-        pageNumber: _rotationMode == 'specific_page' ? _specificPage : null,
-        angle: _getRotationAngle(),
+        language: _selectedLanguage,
+        length: _summaryLength,
       );
 
       setState(() {
-        _outputPath = rotatedFile.path;
+        _summary = summary;
         _isProcessing = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('PDF rotated successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
     } catch (e) {
       setState(() {
         _isProcessing = false;
@@ -553,23 +507,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error rotating PDF: $e'),
+          content: Text('Error generating summary: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
-    }
-  }
-
-  dynamic _getRotationAngle() {
-    switch (_rotationAngle) {
-      case '90':
-        return PdfPageRotateAngle.rotateAngle90;
-      case '180':
-        return PdfPageRotateAngle.rotateAngle180;
-      case '270':
-        return PdfPageRotateAngle.rotateAngle270;
-      default:
-        return PdfPageRotateAngle.rotateAngle90;
     }
   }
 }

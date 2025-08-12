@@ -5,32 +5,35 @@ import '../../../theme.dart';
 import '../../../services/pdf_service.dart';
 import '../../../services/file_service.dart';
 
-class PDFRotateScreen extends StatefulWidget {
-  const PDFRotateScreen({Key? key}) : super(key: key);
+class PDFPasswordScreen extends StatefulWidget {
+  const PDFPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<PDFRotateScreen> createState() => _PDFRotateScreenState();
+  State<PDFPasswordScreen> createState() => _PDFPasswordScreenState();
 }
 
-class _PDFRotateScreenState extends State<PDFRotateScreen> {
+class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
   String? _outputPath;
-  String _rotationAngle = '90';
-  String _rotationMode = 'all_pages'; // 'all_pages' or 'specific_page'
-  int? _specificPage;
+  String _operation = 'add'; // 'add' or 'remove'
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
 
-  final Map<String, String> _rotationOptions = {
-    '90': '90° Clockwise',
-    '180': '180°',
-    '270': '90° Counter-clockwise',
-  };
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rotate PDF"),
+        title: const Text("Password Protection"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
@@ -43,7 +46,9 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 24),
             _buildFileSelector(),
             const SizedBox(height: 24),
-            if (_selectedFile != null) _buildRotationOptions(),
+            if (_selectedFile != null) _buildOperationSelector(),
+            const SizedBox(height: 24),
+            if (_selectedFile != null && _operation == 'add') _buildPasswordForm(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
@@ -60,13 +65,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryRed.withOpacity(0.1),
+            AppColors.primaryOrange.withOpacity(0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryRed.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -75,11 +80,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryPurple,
+              color: AppColors.primaryRed,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.rotate_90_degrees_ccw,
+              Icons.lock,
               color: Colors.white,
               size: 24,
             ),
@@ -90,15 +95,15 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Rotate PDF Pages",
+                  "Password Protection",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryRed,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Rotate all pages or specific pages in your PDF",
+                  "Add or remove password protection from your documents",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -134,7 +139,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryRed.withOpacity(0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -146,13 +151,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     Icon(
                       Icons.upload_file,
                       size: 48,
-                      color: AppColors.primaryPurple,
+                      color: AppColors.primaryRed,
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Tap to select PDF file",
                       style: TextStyle(
-                        color: AppColors.primaryPurple,
+                        color: AppColors.primaryRed,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -165,17 +170,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryRed.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryRed.withOpacity(0.3),
                 ),
               ),
               child: Row(
                 children: [
                   const Icon(
                     Icons.description,
-                    color: AppColors.primaryPurple,
+                    color: AppColors.primaryRed,
                     size: 32,
                   ),
                   const SizedBox(width: 16),
@@ -205,6 +210,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                       setState(() {
                         _selectedFile = null;
                         _outputPath = null;
+                        _passwordController.clear();
+                        _confirmPasswordController.clear();
                       });
                     },
                     icon: const Icon(Icons.close),
@@ -218,7 +225,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildRotationOptions() {
+  Widget _buildOperationSelector() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -232,102 +239,131 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Rotation Options",
+            "Operation Type",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           
-          // Rotation Mode Selection
+          RadioListTile<String>(
+            title: const Text("Add Password Protection"),
+            subtitle: const Text("Encrypt PDF with a password"),
+            value: 'add',
+            groupValue: _operation,
+            onChanged: (value) {
+              setState(() {
+                _operation = value!;
+                _outputPath = null;
+              });
+            },
+            activeColor: AppColors.primaryRed,
+          ),
+          
+          RadioListTile<String>(
+            title: const Text("Remove Password Protection"),
+            subtitle: const Text("Decrypt PDF (requires current password)"),
+            value: 'remove',
+            groupValue: _operation,
+            onChanged: (value) {
+              setState(() {
+                _operation = value!;
+                _outputPath = null;
+              });
+            },
+            activeColor: AppColors.primaryRed,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPasswordForm() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
-            "Rotation Mode",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            "Password Settings",
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate all pages"),
-            subtitle: const Text("Apply rotation to every page"),
-            value: 'all_pages',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-                _specificPage = null;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate specific page"),
-            subtitle: const Text("Apply rotation to a single page"),
-            value: 'specific_page',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          if (_rotationMode == 'specific_page') ...[
-            const SizedBox(height: 16),
-            Text(
-              "Page Number",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Enter page number (e.g., 1, 2, 3)",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  _specificPage = int.tryParse(value);
-                });
-              },
-            ),
-          ],
-          
           const SizedBox(height: 16),
           
-          // Rotation Angle Selection
-          Text(
-            "Rotation Angle",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          
-          DropdownButtonFormField<String>(
-            value: _rotationAngle,
+          TextField(
+            controller: _passwordController,
+            obscureText: !_showPassword,
             decoration: InputDecoration(
+              labelText: "Password",
+              hintText: "Enter password for PDF protection",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              suffixIcon: IconButton(
+                icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _showPassword = !_showPassword;
+                  });
+                },
+              ),
             ),
-            items: _rotationOptions.entries.map((entry) {
-              return DropdownMenuItem(
-                value: entry.key,
-                child: Text(entry.value),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _rotationAngle = value!;
-              });
-            },
+          ),
+          
+          const SizedBox(height: 16),
+          
+          TextField(
+            controller: _confirmPasswordController,
+            obscureText: !_showConfirmPassword,
+            decoration: InputDecoration(
+              labelText: "Confirm Password",
+              hintText: "Re-enter password to confirm",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _showConfirmPassword = !_showConfirmPassword;
+                  });
+                },
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 12),
+          
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primaryRed.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.primaryRed,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Use a strong password with at least 8 characters including letters, numbers, and symbols.",
+                    style: TextStyle(
+                      color: AppColors.primaryRed,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -335,10 +371,17 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
   }
 
   Widget _buildProcessButton() {
+    bool canProcess = _selectedFile != null && 
+        (_operation == 'remove' || 
+         (_operation == 'add' && 
+          _passwordController.text.isNotEmpty && 
+          _confirmPasswordController.text.isNotEmpty &&
+          _passwordController.text == _confirmPasswordController.text));
+
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _rotatePDF,
+        onPressed: _isProcessing || !canProcess ? null : _processPassword,
         icon: _isProcessing
             ? const SizedBox(
                 width: 20,
@@ -348,10 +391,12 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.rotate_90_degrees_ccw),
-        label: Text(_isProcessing ? "Rotating..." : "Rotate PDF"),
+            : Icon(_operation == 'add' ? Icons.lock : Icons.lock_open),
+        label: Text(_isProcessing 
+            ? (_operation == 'add' ? "Encrypting..." : "Decrypting...") 
+            : (_operation == 'add' ? "Add Password Protection" : "Remove Password Protection")),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryPurple,
+          backgroundColor: AppColors.primaryRed,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
@@ -391,7 +436,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               ),
               const SizedBox(width: 12),
               Text(
-                "Rotation Complete",
+                _operation == 'add' ? "Encryption Complete" : "Decryption Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.primaryGreen,
                   fontWeight: FontWeight.w600,
@@ -409,8 +454,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.description,
+                Icon(
+                  _operation == 'add' ? Icons.lock : Icons.lock_open,
                   color: AppColors.primaryGreen,
                   size: 20,
                 ),
@@ -420,14 +465,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Rotated PDF",
+                        _operation == 'add' ? "Protected PDF" : "Unprotected PDF",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        "Rotation: ${_rotationOptions[_rotationAngle]}",
+                        _operation == 'add' 
+                            ? "Password protection added successfully"
+                            : "Password protection removed successfully",
                         style: TextStyle(
                           color: AppColors.primaryGreen.withOpacity(0.8),
                           fontSize: 12,
@@ -508,6 +555,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         setState(() {
           _selectedFile = File(result.files.single.path!);
           _outputPath = null;
+          _passwordController.clear();
+          _confirmPasswordController.clear();
         });
       }
     } catch (e) {
@@ -520,7 +569,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  Future<void> _rotatePDF() async {
+  Future<void> _processPassword() async {
     if (_selectedFile == null) return;
 
     setState(() {
@@ -529,20 +578,42 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
 
     try {
       final pdfService = PDFService();
-      final rotatedFile = await pdfService.rotatePDF(
-        _selectedFile!,
-        pageNumber: _rotationMode == 'specific_page' ? _specificPage : null,
-        angle: _getRotationAngle(),
-      );
+      File processedFile;
+
+      if (_operation == 'add') {
+        if (_passwordController.text != _confirmPasswordController.text) {
+          throw Exception('Passwords do not match');
+        }
+        if (_passwordController.text.length < 8) {
+          throw Exception('Password must be at least 8 characters long');
+        }
+        
+        processedFile = await pdfService.addPassword(
+          _selectedFile!,
+          _passwordController.text,
+        );
+      } else {
+        // For remove operation, we need the current password
+        if (_passwordController.text.isEmpty) {
+          throw Exception('Current password is required to remove protection');
+        }
+        
+        processedFile = await pdfService.removePassword(
+          _selectedFile!,
+          _passwordController.text,
+        );
+      }
 
       setState(() {
-        _outputPath = rotatedFile.path;
+        _outputPath = processedFile.path;
         _isProcessing = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('PDF rotated successfully!'),
+          content: Text(_operation == 'add' 
+              ? 'Password protection added successfully!' 
+              : 'Password protection removed successfully!'),
           backgroundColor: AppColors.primaryGreen,
         ),
       );
@@ -553,23 +624,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error rotating PDF: $e'),
+          content: Text('Error: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
-    }
-  }
-
-  dynamic _getRotationAngle() {
-    switch (_rotationAngle) {
-      case '90':
-        return PdfPageRotateAngle.rotateAngle90;
-      case '180':
-        return PdfPageRotateAngle.rotateAngle180;
-      case '270':
-        return PdfPageRotateAngle.rotateAngle270;
-      default:
-        return PdfPageRotateAngle.rotateAngle90;
     }
   }
 }

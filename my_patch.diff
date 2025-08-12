@@ -1,0 +1,114 @@
+(cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF'
+diff --git a/all_dart_files.txt b/all_dart_files.txt
+--- a/all_dart_files.txt
++++ b/all_dart_files.txt
+@@ -0,0 +1,107 @@
++# COMPLETE LIST OF ALL 70 DART FILES IN INKWISE PDF PROJECT
++
++## 📁 MAIN FILES (3 files)
++/workspace/lib/main.dart
++/workspace/lib/routes.dart
++/workspace/lib/theme.dart
++
++## 📁 MAIN SCREENS (12 files)
++/workspace/lib/screens/splash_screen.dart
++/workspace/lib/screens/home_screen.dart
++/workspace/lib/screens/tools_screen.dart
++/workspace/lib/screens/ai_tools_screen.dart
++/workspace/lib/screens/advanced_tools_screen.dart
++/workspace/lib/screens/pdf_viewer_screen.dart
++/workspace/lib/screens/recent_files_screen.dart
++/workspace/lib/screens/settings_screen.dart
++/workspace/lib/screens/find_replace_screen.dart
++/workspace/lib/screens/metadata_editor_screen.dart
++/workspace/lib/screens/analytics_dashboard_screen.dart
++/workspace/lib/screens/performance_monitor_screen.dart
++
++## 📁 PDF TOOLS (10 files)
++/workspace/lib/screens/tools/pdf_merge_screen.dart
++/workspace/lib/screens/tools/pdf_split_screen.dart
++/workspace/lib/screens/tools/pdf_compressor_screen.dart
++/workspace/lib/screens/tools/pdf_rotate_screen.dart
++/workspace/lib/screens/tools/pdf_ocr_screen.dart
++/workspace/lib/screens/tools/pdf_editor_screen.dart
++/workspace/lib/screens/tools/pdf_images_screen.dart
++/workspace/lib/screens/tools/pdf_grayscale_screen.dart
++/workspace/lib/screens/tools/pdf_password_screen.dart
++/workspace/lib/screens/tools/pdf_watermark_screen.dart
++
++## 📁 SECURITY TOOLS (3 files)
++/workspace/lib/screens/tools/security/encryption_screen.dart
++/workspace/lib/screens/tools/security/password_protection_screen.dart
++/workspace/lib/screens/tools/security/secure_vault_screen.dart
++
++## 📁 AI TOOLS (8 files)
++/workspace/lib/screens/tools/ai/smart_summarizer_screen.dart
++/workspace/lib/screens/tools/ai/offline_translator_screen.dart
++/workspace/lib/screens/tools/ai/voice_to_text_screen.dart
++/workspace/lib/screens/tools/ai/form_detector_screen.dart
++/workspace/lib/screens/tools/ai/redaction_tool_screen.dart
++/workspace/lib/screens/tools/ai/keyword_analytics_screen.dart
++/workspace/lib/screens/tools/ai/handwriting_recognition_screen.dart
++/workspace/lib/screens/tools/ai/content_cleanup_screen.dart
++
++## 📁 ADVANCED TOOLS (9 files)
++/workspace/lib/screens/tools/advanced/table_extractor_screen.dart
++/workspace/lib/screens/tools/advanced/layout_designer_screen.dart
++/workspace/lib/screens/tools/advanced/color_converter_screen.dart
++/workspace/lib/screens/tools/advanced/dual_page_view_screen.dart
++/workspace/lib/screens/tools/advanced/custom_stamps_screen.dart
++/workspace/lib/screens/tools/advanced/version_history_screen.dart
++/workspace/lib/screens/tools/advanced/pdf_indexer_screen.dart
++/workspace/lib/screens/tools/advanced/auto_tagging_screen.dart
++/workspace/lib/screens/tools/advanced/batch_tool_chain_screen.dart
++
++## 📁 SERVICES (9 files)
++/workspace/lib/services/pdf_service.dart
++/workspace/lib/services/file_service.dart
++/workspace/lib/services/ocr_service.dart
++/workspace/lib/services/performance_service.dart
++/workspace/lib/services/image_optimization_service.dart
++/workspace/lib/services/local_analytics_service.dart
++/workspace/lib/services/offline_translation_service.dart
++/workspace/lib/services/ai_summarizer_service.dart
++/workspace/lib/services/find_replace_service.dart
++
++## 📁 WIDGETS (8 files)
++/workspace/lib/widgets/tool_card.dart
++/workspace/lib/widgets/featured_tool_card.dart
++/workspace/lib/widgets/optimized_list_view.dart
++/workspace/lib/widgets/custom_app_bar.dart
++/workspace/lib/widgets/custom_button.dart
++/workspace/lib/widgets/floating_toolbox.dart
++/workspace/lib/widgets/pdf_page_viewer.dart
++/workspace/lib/widgets/recent_files_panel.dart
++
++## 📁 UTILS (2 files)
++/workspace/lib/utils/constants.dart
++/workspace/lib/utils/helpers.dart
++
++## 📁 FEATURES (5 files)
++/workspace/lib/features/edit/overlay_text_widget.dart
++/workspace/lib/features/edit/simulated_edit.dart
++/workspace/lib/features/find_replace/find_replace.dart
++/workspace/lib/features/metadata/metadata_editor.dart
++/workspace/lib/features/ocr/ocr_tool.dart
++
++## 📁 TEST (1 file)
++/workspace/test/widget_test.dart
++
++## 📊 SUMMARY
++TOTAL: 70 Dart files
++- Main files: 3
++- Main screens: 12
++- PDF tools: 10
++- Security tools: 3
++- AI tools: 8
++- Advanced tools: 9
++- Services: 9
++- Widgets: 8
++- Utils: 2
++- Features: 5
++- Test: 1
+EOF
+)

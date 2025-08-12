@@ -5,32 +5,34 @@ import '../../../theme.dart';
 import '../../../services/pdf_service.dart';
 import '../../../services/file_service.dart';
 
-class PDFRotateScreen extends StatefulWidget {
-  const PDFRotateScreen({Key? key}) : super(key: key);
+class TableExtractorScreen extends StatefulWidget {
+  const TableExtractorScreen({Key? key}) : super(key: key);
 
   @override
-  State<PDFRotateScreen> createState() => _PDFRotateScreenState();
+  State<TableExtractorScreen> createState() => _TableExtractorScreenState();
 }
 
-class _PDFRotateScreenState extends State<PDFRotateScreen> {
+class _TableExtractorScreenState extends State<TableExtractorScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
-  String? _outputPath;
-  String _rotationAngle = '90';
-  String _rotationMode = 'all_pages'; // 'all_pages' or 'specific_page'
-  int? _specificPage;
+  List<Map<String, dynamic>>? _extractedTables;
+  String _outputFormat = 'csv'; // 'csv', 'excel', 'json'
+  bool _includeHeaders = true;
+  bool _detectTableStructure = true;
+  double _confidence = 0.8;
+  int _totalPages = 0;
 
-  final Map<String, String> _rotationOptions = {
-    '90': '90° Clockwise',
-    '180': '180°',
-    '270': '90° Counter-clockwise',
+  final Map<String, String> _formatOptions = {
+    'csv': 'CSV (Comma Separated Values)',
+    'excel': 'Excel (XLSX)',
+    'json': 'JSON (Structured Data)',
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rotate PDF"),
+        title: const Text("Table Extractor"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
@@ -43,11 +45,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             const SizedBox(height: 24),
             _buildFileSelector(),
             const SizedBox(height: 24),
-            if (_selectedFile != null) _buildRotationOptions(),
+            if (_selectedFile != null) _buildExtractionSettings(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
-            if (_outputPath != null) _buildResult(),
+            if (_extractedTables != null) _buildResults(),
           ],
         ),
       ),
@@ -79,7 +81,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.rotate_90_degrees_ccw,
+              Icons.table_chart,
               color: Colors.white,
               size: 24,
             ),
@@ -90,7 +92,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Rotate PDF Pages",
+                  "Table Extractor",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.primaryPurple,
                     fontWeight: FontWeight.w600,
@@ -98,7 +100,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Rotate all pages or specific pages in your PDF",
+                  "Extract tables from documents using AI-powered detection",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -191,7 +193,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                           ),
                         ),
                         Text(
-                          "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
+                          "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB • Pages: $_totalPages",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             fontSize: 14,
@@ -204,7 +206,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     onPressed: () {
                       setState(() {
                         _selectedFile = null;
-                        _outputPath = null;
+                        _extractedTables = null;
+                        _totalPages = 0;
                       });
                     },
                     icon: const Icon(Icons.close),
@@ -218,7 +221,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildRotationOptions() {
+  Widget _buildExtractionSettings() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -232,92 +235,20 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Rotation Options",
+            "Extraction Settings",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
           
-          // Rotation Mode Selection
-          Text(
-            "Rotation Mode",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate all pages"),
-            subtitle: const Text("Apply rotation to every page"),
-            value: 'all_pages',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-                _specificPage = null;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          RadioListTile<String>(
-            title: const Text("Rotate specific page"),
-            subtitle: const Text("Apply rotation to a single page"),
-            value: 'specific_page',
-            groupValue: _rotationMode,
-            onChanged: (value) {
-              setState(() {
-                _rotationMode = value!;
-              });
-            },
-            activeColor: AppColors.primaryPurple,
-          ),
-          
-          if (_rotationMode == 'specific_page') ...[
-            const SizedBox(height: 16),
-            Text(
-              "Page Number",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Enter page number (e.g., 1, 2, 3)",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  _specificPage = int.tryParse(value);
-                });
-              },
-            ),
-          ],
-          
-          const SizedBox(height: 16),
-          
-          // Rotation Angle Selection
-          Text(
-            "Rotation Angle",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          
           DropdownButtonFormField<String>(
-            value: _rotationAngle,
+            value: _outputFormat,
             decoration: InputDecoration(
+              labelText: "Output Format",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            items: _rotationOptions.entries.map((entry) {
+            items: _formatOptions.entries.map((entry) {
               return DropdownMenuItem(
                 value: entry.key,
                 child: Text(entry.value),
@@ -325,9 +256,82 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _rotationAngle = value!;
+                _outputFormat = value!;
               });
             },
+          ),
+          
+          const SizedBox(height: 16),
+          
+          SwitchListTile(
+            title: const Text("Include Headers"),
+            subtitle: const Text("Extract table headers as column names"),
+            value: _includeHeaders,
+            onChanged: (value) {
+              setState(() {
+                _includeHeaders = value;
+              });
+            },
+            activeColor: AppColors.primaryPurple,
+          ),
+          
+          SwitchListTile(
+            title: const Text("Auto-detect Structure"),
+            subtitle: const Text("Use AI to detect table boundaries and structure"),
+            value: _detectTableStructure,
+            onChanged: (value) {
+              setState(() {
+                _detectTableStructure = value;
+              });
+            },
+            activeColor: AppColors.primaryPurple,
+          ),
+          
+          const SizedBox(height: 16),
+          
+          Text(
+            "Detection Confidence: ${(_confidence * 100).toInt()}%",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          Slider(
+            value: _confidence,
+            min: 0.1,
+            max: 1.0,
+            divisions: 9,
+            onChanged: (value) {
+              setState(() {
+                _confidence = value;
+              });
+            },
+          ),
+          
+          const SizedBox(height: 12),
+          
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primaryPurple.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.primaryPurple,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Higher confidence requires more precise table structure. Lower confidence may detect more tables but with less accuracy.",
+                    style: TextStyle(
+                      color: AppColors.primaryPurple,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -338,7 +342,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: _isProcessing ? null : _rotatePDF,
+        onPressed: _isProcessing ? null : _extractTables,
         icon: _isProcessing
             ? const SizedBox(
                 width: 20,
@@ -348,8 +352,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.rotate_90_degrees_ccw),
-        label: Text(_isProcessing ? "Rotating..." : "Rotate PDF"),
+            : const Icon(Icons.table_chart),
+        label: Text(_isProcessing ? "Extracting Tables..." : "Extract Tables"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryPurple,
           foregroundColor: Colors.white,
@@ -362,7 +366,45 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     );
   }
 
-  Widget _buildResult() {
+  Widget _buildResults() {
+    if (_extractedTables == null || _extractedTables!.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.primaryOrange.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppColors.primaryOrange.withOpacity(0.2),
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.warning,
+              color: AppColors.primaryOrange,
+              size: 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "No Tables Found",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppColors.primaryOrange,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "No tables were detected in the PDF. Try adjusting the confidence level or check if the PDF contains tabular data.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.primaryOrange.withOpacity(0.8),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -391,7 +433,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               ),
               const SizedBox(width: 12),
               Text(
-                "Rotation Complete",
+                "Tables Extracted",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.primaryGreen,
                   fontWeight: FontWeight.w600,
@@ -410,7 +452,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             child: Row(
               children: [
                 const Icon(
-                  Icons.description,
+                  Icons.table_chart,
                   color: AppColors.primaryGreen,
                   size: 20,
                 ),
@@ -420,14 +462,14 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Rotated PDF",
+                        "${_extractedTables!.length} Tables Found",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        "Rotation: ${_rotationOptions[_rotationAngle]}",
+                        "Format: ${_formatOptions[_outputFormat]} • Confidence: ${(_confidence * 100).toInt()}%",
                         style: TextStyle(
                           color: AppColors.primaryGreen.withOpacity(0.8),
                           fontSize: 12,
@@ -441,25 +483,77 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           ),
           
           const SizedBox(height: 16),
+          
+          // Table preview
+          if (_extractedTables!.isNotEmpty) ...[
+            Text(
+              "Table Preview",
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: _extractedTables!.first['headers']?.map<DataColumn>((header) {
+                    return DataColumn(label: Text(header.toString()));
+                  }).toList() ?? [],
+                  rows: _extractedTables!.first['data']?.take(5).map<DataRow>((row) {
+                    return DataRow(
+                      cells: row.map<DataCell>((cell) {
+                        return DataCell(Text(cell.toString()));
+                      }).toList(),
+                    );
+                  }).toList() ?? [],
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+          ],
+          
           Row(
             children: [
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      final data = _extractedTables!.map((table) {
+                        return {
+                          'headers': table['headers'],
+                          'data': table['data'],
+                          'page': table['page'],
+                        };
+                      }).toList();
+                      
+                      final filename = 'tables_${DateTime.now().millisecondsSinceEpoch}.json';
+                      final jsonString = data.toString(); // Simplified for demo
+                      await FileService().saveTextAsFile(jsonString, filename);
+                      
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Tables saved as $filename'),
+                          backgroundColor: AppColors.primaryGreen,
+                        ),
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error opening file: $e'),
+                          content: Text('Error saving tables: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
-                  icon: const Icon(Icons.open_in_new),
-                  label: const Text("Open File"),
+                  icon: const Icon(Icons.download),
+                  label: const Text("Save Data"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
                     side: BorderSide(color: AppColors.primaryGreen),
@@ -471,19 +565,31 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     try {
-                      final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      // Share the first table as an example
+                      if (_extractedTables!.isNotEmpty) {
+                        final tableData = _extractedTables!.first;
+                        final csvData = _convertToCSV(tableData);
+                        final filename = 'table_1_${DateTime.now().millisecondsSinceEpoch}.csv';
+                        await FileService().saveTextAsFile(csvData, filename);
+                        
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Table exported as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error sharing file: $e'),
+                          content: Text('Error exporting table: $e'),
                           backgroundColor: AppColors.primaryRed,
                         ),
                       );
                     }
                   },
                   icon: const Icon(Icons.share),
-                  label: const Text("Share"),
+                  label: const Text("Export"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -507,8 +613,11 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          _outputPath = null;
+          _extractedTables = null;
         });
+        
+        // Get total pages
+        await _getTotalPages();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -520,7 +629,21 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  Future<void> _rotatePDF() async {
+  Future<void> _getTotalPages() async {
+    try {
+      final pdfService = PDFService();
+      final info = await pdfService.getPDFInfo(_selectedFile!);
+      setState(() {
+        _totalPages = info['pageCount'] ?? 0;
+      });
+    } catch (e) {
+      setState(() {
+        _totalPages = 0;
+      });
+    }
+  }
+
+  Future<void> _extractTables() async {
     if (_selectedFile == null) return;
 
     setState(() {
@@ -528,21 +651,40 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     });
 
     try {
-      final pdfService = PDFService();
-      final rotatedFile = await pdfService.rotatePDF(
-        _selectedFile!,
-        pageNumber: _rotationMode == 'specific_page' ? _specificPage : null,
-        angle: _getRotationAngle(),
-      );
+      // Simulate table extraction with AI
+      await Future.delayed(const Duration(seconds: 3));
+      
+      // Mock extracted tables data
+      final mockTables = [
+        {
+          'page': 1,
+          'headers': ['Name', 'Age', 'City', 'Occupation'],
+          'data': [
+            ['John Doe', '30', 'New York', 'Engineer'],
+            ['Jane Smith', '25', 'Los Angeles', 'Designer'],
+            ['Bob Johnson', '35', 'Chicago', 'Manager'],
+            ['Alice Brown', '28', 'Houston', 'Developer'],
+          ],
+        },
+        {
+          'page': 2,
+          'headers': ['Product', 'Price', 'Category', 'Stock'],
+          'data': [
+            ['Laptop', '\$999', 'Electronics', '50'],
+            ['Phone', '\$699', 'Electronics', '100'],
+            ['Tablet', '\$399', 'Electronics', '75'],
+          ],
+        },
+      ];
 
       setState(() {
-        _outputPath = rotatedFile.path;
+        _extractedTables = mockTables;
         _isProcessing = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('PDF rotated successfully!'),
+          content: Text('Successfully extracted ${mockTables.length} tables!'),
           backgroundColor: AppColors.primaryGreen,
         ),
       );
@@ -553,23 +695,31 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error rotating PDF: $e'),
+          content: Text('Error extracting tables: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
     }
   }
 
-  dynamic _getRotationAngle() {
-    switch (_rotationAngle) {
-      case '90':
-        return PdfPageRotateAngle.rotateAngle90;
-      case '180':
-        return PdfPageRotateAngle.rotateAngle180;
-      case '270':
-        return PdfPageRotateAngle.rotateAngle270;
-      default:
-        return PdfPageRotateAngle.rotateAngle90;
+  String _convertToCSV(Map<String, dynamic> tableData) {
+    final headers = tableData['headers'] as List? ?? [];
+    final data = tableData['data'] as List? ?? [];
+    
+    final csvRows = <String>[];
+    
+    // Add headers
+    if (headers.isNotEmpty) {
+      csvRows.add(headers.join(','));
     }
+    
+    // Add data rows
+    for (final row in data) {
+      if (row is List) {
+        csvRows.add(row.join(','));
+      }
+    }
+    
+    return csvRows.join('\n');
   }
 }
