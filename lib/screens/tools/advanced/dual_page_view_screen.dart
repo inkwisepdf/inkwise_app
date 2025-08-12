@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
-import '../../../services/file_service.dart';
+
 
 class DualPageViewScreen extends StatefulWidget {
   const DualPageViewScreen({super.key});
@@ -13,7 +13,6 @@ class DualPageViewScreen extends StatefulWidget {
 
 class _DualPageViewScreenState extends State<DualPageViewScreen> {
   File? _selectedFile;
-  bool _isLoading = false;
   String _viewMode = 'side_by_side'; // 'side_by_side', 'split', 'overlay'
   String _layoutMode = 'horizontal'; // 'horizontal', 'vertical'
   double _splitRatio = 0.5;
@@ -566,13 +565,6 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          _isLoading = true;
-        });
-
-        // Simulate loading
-        await Future.delayed(const Duration(seconds: 1));
-        setState(() {
-          _isLoading = false;
         });
       }
     } catch (e) {

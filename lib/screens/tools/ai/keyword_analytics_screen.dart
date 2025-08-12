@@ -665,10 +665,6 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     });
 
     try {
-      // Extract text from PDF
-      final aiService = AISummarizerService();
-      final extractedText = await aiService.summarizePDF(_selectedFile!);
-      
       // Simulate analysis process
       await Future.delayed(const Duration(seconds: 2));
       
