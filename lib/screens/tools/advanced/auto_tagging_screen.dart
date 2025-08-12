@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 class AutoTaggingScreen extends StatefulWidget {
   const AutoTaggingScreen({super.key});
@@ -510,7 +510,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.label_off,
                       size: 64,
                       color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
@@ -613,9 +613,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'open',
                               child: Row(
                                 children: [
-                                  Icon(Icons.open_in_new, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Open"),
+                                  const Icon(Icons.open_in_new, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Open"),
                                 ],
                               ),
                             ),
@@ -623,9 +623,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'edit_tags',
                               child: Row(
                                 children: [
-                                  Icon(Icons.edit, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Edit Tags"),
+                                  const Icon(Icons.edit, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Edit Tags"),
                                 ],
                               ),
                             ),
@@ -633,9 +633,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'remove',
                               child: Row(
                                 children: [
-                                  Icon(Icons.remove_circle, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Remove"),
+                                  const Icon(Icons.remove_circle, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Remove"),
                                 ],
                               ),
                             ),
@@ -695,12 +695,14 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -765,23 +767,27 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Tag detection completed! ${_detectedTags.length} tags found.'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Tag detection completed! ${_detectedTags.length} tags found.'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error detecting tags: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error detecting tags: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 

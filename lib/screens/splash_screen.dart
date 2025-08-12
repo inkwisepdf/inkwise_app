@@ -184,7 +184,7 @@ class _SplashScreenState extends State<SplashScreen>
                             "Inkwise PDF",
                             style: AppTypography.displayLarge.copyWith(
                               fontWeight: FontWeight.w800,
-                              background: Paint()
+                              foreground: Paint()
                                 ..shader = const LinearGradient(
                                   colors: [AppColors.gradientStart, AppColors.gradientEnd],
                                 ).createShader(const Rect.fromLTWH(0.0, 0.0, 300.0, 70.0)),
@@ -226,7 +226,7 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                           ),
                           const SizedBox(height: AppSpacing.lg),
-                          Text(
+                          const Text(
                             "Loading...",
                             style: AppTypography.bodyMedium.copyWith(
                               color: AppColors.textSecondaryLight,

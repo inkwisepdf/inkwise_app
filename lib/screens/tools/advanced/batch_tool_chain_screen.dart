@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 
 class BatchToolChainScreen extends StatefulWidget {
@@ -12,14 +12,14 @@ class BatchToolChainScreen extends StatefulWidget {
 }
 
 class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
-  List<File> _selectedFiles = [];
+  final List<File> _selectedFiles = [];
   bool _isProcessing = false;
   List<Map<String, dynamic>> _availableTools = [];
-  List<Map<String, dynamic>> _selectedTools = [];
+  final List<Map<String, dynamic>> _selectedTools = [];
   String _processingMode = 'sequential'; // 'sequential', 'parallel'
   bool _stopOnError = true;
   bool _showProgress = true;
-  List<Map<String, dynamic>> _processingResults = [];
+  final List<Map<String, dynamic>> _processingResults = [];
 
   final Map<String, String> _modeOptions = {
     'sequential': 'Sequential Processing',
