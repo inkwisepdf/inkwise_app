@@ -274,7 +274,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
 
   Widget _buildFileList() {
     if (_showGrid) {
-      return StaggeredGridView.countBuilder(
+      return MasonryGridView.count(
         padding: const EdgeInsets.all(16),
         crossAxisCount: 2,
         mainAxisSpacing: 8,
@@ -284,7 +284,6 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           final file = _filteredFiles[index];
           return _buildFileCard(file);
         },
-        staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
       );
     } else {
       return ListView.builder(
@@ -657,7 +656,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
               'name': file.name,
               'path': file.path!,
               'type': _getFileType(file.name),
-              'size': FileService.getFileSize(file.path!),
+              'size': await FileService.getFileSize(File(file.path!)),
               'date': 'Just now',
               'isFavorite': false,
             };
@@ -698,7 +697,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
 
   void _openFile(Map<String, dynamic> file) {
     try {
-      FileService.openFile(file['path']);
+      FileService.openFile(File(file['path']));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error opening file: $e')),
@@ -712,7 +711,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         _openFile(file);
         break;
       case 'share':
-        FileService.shareFile(file['path']);
+        FileService.shareFile(File(file['path']));
         break;
       case 'favorite':
         setState(() {
