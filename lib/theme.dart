@@ -235,7 +235,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Card Theme
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: AppColors.surfaceLight,
     elevation: 2,
     shadowColor: AppColors.shadowLight,
@@ -344,7 +344,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Divider Theme
-  dividerTheme: const DividerThemeData(
+  dividerTheme: DividerThemeData(
     color: AppColors.textSecondaryLight.withOpacity(0.1),
     thickness: 1,
     space: AppSpacing.md,
@@ -408,7 +408,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryLight,
     indicatorColor: AppColors.primaryBlue,
@@ -416,7 +416,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Dialog Theme
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceLight,
     elevation: 8,
     shadowColor: AppColors.shadowDark,
@@ -549,7 +549,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Card Theme - Dark
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: AppColors.surfaceDark,
     elevation: 2,
     shadowColor: AppColors.shadowLight,
@@ -659,7 +659,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Divider Theme - Dark
-  dividerTheme: const DividerThemeData(
+  dividerTheme: DividerThemeData(
     color: AppColors.textSecondaryDark.withOpacity(0.1),
     thickness: 1,
     space: AppSpacing.md,
@@ -723,7 +723,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Tab Bar Theme - Dark
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryDark,
     indicatorColor: AppColors.primaryBlue,
@@ -731,7 +731,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Dialog Theme - Dark
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceDark,
     elevation: 8,
     shadowColor: AppColors.shadowDark,
