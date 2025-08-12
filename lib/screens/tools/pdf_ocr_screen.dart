@@ -479,7 +479,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_extractedText!);
+                      await FileService.copyToClipboard(_extractedText!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Text copied to clipboard'),
@@ -509,7 +509,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'ocr_extracted_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_extractedText!, filename);
+                      await FileService.saveTextAsFile(_extractedText!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Text saved as $filename'),

@@ -616,8 +616,8 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      final appDir = await FileService().getAppDirectoryPath();
-                      await FileService().openFile(File(appDir));
+                      final appDir = await FileService.getAppDirectoryPath();
+                      await FileService.openFile(File(appDir));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -642,7 +642,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                     try {
                       // Share the first image as an example
                       if (_convertedImages!.isNotEmpty) {
-                        await FileService().shareFile(_convertedImages!.first);
+                        await FileService.shareFile(_convertedImages!.first);
                       }
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
