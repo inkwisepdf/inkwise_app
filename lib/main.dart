@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'routes.dart';
-import 'theme.dart';
-import 'services/local_analytics_service.dart';
-import 'services/performance_service.dart';
+import 'package:inkwise_pdf/routes.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/local_analytics_service.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pdf_render/pdf_render.dart';
 
 class FindReplaceFeature extends StatefulWidget {
-  const FindReplaceFeature({Key? key}) : super(key: key);
+  const FindReplaceFeature({super.key});
 
   @override
   State<FindReplaceFeature> createState() => _FindReplaceFeatureState();
@@ -41,7 +41,7 @@ class _FindReplaceFeatureState extends State<FindReplaceFeature> {
     // Example debug output
     debugPrint('Extracted ${bytes.length} bytes from page $pageNum');
 
-    await pageImage.dispose(); // this is valid
+    // pageImage.dispose() is not needed in pdf_render
     // Note: PdfPage doesn't have dispose method in pdf_render
   }
 

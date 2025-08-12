@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import 'tools/advanced/table_extractor_screen.dart';
-import 'tools/advanced/layout_designer_screen.dart';
-import 'tools/advanced/color_converter_screen.dart';
-import 'tools/advanced/dual_page_view_screen.dart';
-import 'tools/advanced/custom_stamps_screen.dart';
-import 'tools/advanced/version_history_screen.dart';
-import 'tools/advanced/pdf_indexer_screen.dart';
-import 'tools/advanced/auto_tagging_screen.dart';
-import 'tools/advanced/batch_tool_chain_screen.dart';
-import 'tools/security/password_protection_screen.dart';
-import 'tools/security/encryption_screen.dart';
-import 'tools/security/secure_vault_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/table_extractor_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/layout_designer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/color_converter_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/dual_page_view_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/custom_stamps_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/version_history_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/pdf_indexer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/auto_tagging_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/batch_tool_chain_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/password_protection_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/encryption_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/secure_vault_screen.dart';
 
 class AdvancedToolsScreen extends StatefulWidget {
   const AdvancedToolsScreen({super.key});
