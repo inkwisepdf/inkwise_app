@@ -713,7 +713,7 @@ maintains the original formatting of the handwritten content.
     }
 
     try {
-      await FileService().copyToClipboard(_textController.text);
+      await FileService.copyToClipboard(_textController.text);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Text copied to clipboard'),
@@ -743,7 +743,7 @@ maintains the original formatting of the handwritten content.
 
     try {
       final filename = 'handwriting_${DateTime.now().millisecondsSinceEpoch}.txt';
-      await FileService().saveTextAsFile(_textController.text, filename);
+      await FileService.saveTextAsFile(_textController.text, filename);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
