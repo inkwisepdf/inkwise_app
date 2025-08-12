@@ -75,7 +75,7 @@ class ToolsScreen extends StatelessWidget {
       },
       {
         "title": "Grayscale PDF",
-        "icon": Icons.filter_bw,
+        "icon": Icons.filter_alt,
         "color": AppColors.primaryOrange,
         "route": const PDFGrayscaleScreen(),
         "description": "Convert to black and white",
@@ -174,11 +174,13 @@ class ToolsScreen extends StatelessWidget {
   }
 
   Widget _buildToolsGrid(BuildContext context, List<Map<String, dynamic>> tools) {
-    return StaggeredGrid.count(
+    return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
-      children: tools.map((tool) {
+      itemCount: tools.length,
+      itemBuilder: (context, index) {
+        final tool = tools[index];
         return ToolCard(
           title: tool["title"] as String,
           icon: tool["icon"] as IconData,
@@ -188,7 +190,7 @@ class ToolsScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => tool["route"] as Widget),
           ),
         );
-      }).toList(),
+      },
     );
   }
 }

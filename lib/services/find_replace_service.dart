@@ -3,10 +3,10 @@ import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 
 class FindReplaceService {
   /// Extracts text from an image and finds matches
-  static Future<String> extractTextFromImage(Uint8List imageBytes) async {
+  static Future<String> extractTextFromImage(String imagePath) async {
     try {
       String extractedText = await FlutterTesseractOcr.extractText(
-        imageBytes,
+        imagePath,
         language: 'eng',
       );
       return extractedText;

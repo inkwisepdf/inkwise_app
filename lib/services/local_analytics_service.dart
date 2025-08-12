@@ -96,12 +96,12 @@ class LocalAnalyticsService {
   // Log screen view
   Future<void> logScreenView(String screenName) async {
     try {
-      await logEvent('screen_view', {
+      await logEvent('screen_view', parameters: {
         'screen_name': screenName,
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       });
 
-      await logUserAction('screen_view', {
+      await logUserAction('screen_view', details: {
         'screen_name': screenName,
       });
     } catch (e) {
