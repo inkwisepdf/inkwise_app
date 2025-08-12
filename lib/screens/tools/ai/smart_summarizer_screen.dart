@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/ai_summarizer_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/ai_summarizer_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class SmartSummarizerScreen extends StatefulWidget {
   const SmartSummarizerScreen({super.key});
@@ -67,13 +66,13 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -123,7 +122,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -141,7 +140,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryBlue.withOpacity(0.3),
+                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -172,10 +171,10 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: AppColors.primaryBlue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(0.3),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -200,7 +199,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -232,7 +231,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -302,7 +301,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryPurple.withOpacity(0.1),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -352,10 +351,10 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -366,7 +365,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -397,10 +396,10 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_summary!);
+                      await FileService.copyToClipboard(_summary!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Summary copied to clipboard'),
+                          content: const Text('Summary copied to clipboard'),
                           backgroundColor: AppColors.primaryGreen,
                         ),
                       );
@@ -427,7 +426,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_summary!, filename);
+                      await FileService.saveTextAsFile(_summary!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Summary saved as $filename'),
@@ -472,12 +471,14 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -505,12 +506,14 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error generating summary: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error generating summary: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

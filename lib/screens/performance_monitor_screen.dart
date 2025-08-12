@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../theme.dart';
-import '../services/performance_service.dart';
-import '../services/image_optimization_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
+import 'package:inkwise_pdf/services/image_optimization_service.dart';
 
 class PerformanceMonitorScreen extends StatefulWidget {
   const PerformanceMonitorScreen({super.key});
@@ -82,13 +82,13 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withOpacity(0.1),
-            AppColors.gradientEnd.withOpacity(0.05),
+            AppColors.gradientStart.withValues(alpha: 0.1),
+            AppColors.gradientEnd.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.gradientStart.withOpacity(0.1),
+          color: AppColors.gradientStart.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -188,10 +188,10 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -242,7 +242,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
-              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -263,7 +263,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
                       if (value.toInt() < operations.length) {
                         return Text(
                           operations[value.toInt()].split('_').last,
-                          style: AppTypography.labelSmall,
+                          style: AppTypography.labelMedium,
                         );
                       }
                       return const Text('');
@@ -277,7 +277,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
                     getTitlesWidget: (value, meta) {
                       return Text(
                         "${value.toInt()}ms",
-                        style: AppTypography.labelSmall,
+                        style: AppTypography.labelMedium,
                       );
                     },
                   ),
@@ -311,7 +311,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         barRods: [
           BarChartRodData(
             toY: average,
-            color: _getOperationColor(operation['operation'] as String),
+            color: _getOperationColor(entry.value.key),
             width: 20,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
@@ -377,14 +377,14 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
   Widget _buildCacheCard(String title, String usage, String memory, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 1,
+              decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(
+            color: color.withValues(alpha: 0.2),
+            width: 1,
+          ),
         ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -487,10 +487,10 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: (suggestion['color'] as Color).withOpacity(0.1),
+        color: (suggestion['color'] as Color).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: (suggestion['color'] as Color).withOpacity(0.2),
+          color: (suggestion['color'] as Color).withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -529,12 +529,12 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
               vertical: AppSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: (suggestion['color'] as Color).withOpacity(0.2),
+              color: (suggestion['color'] as Color).withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
             child: Text(
               suggestion['priority'] as String,
-              style: AppTypography.labelSmall.copyWith(
+              style: AppTypography.labelMedium.copyWith(
                 color: suggestion['color'] as Color,
                 fontWeight: FontWeight.w600,
               ),
@@ -551,7 +551,7 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       child: Center(
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.analytics_outlined,
               size: 64,
               color: AppColors.textSecondaryLight,

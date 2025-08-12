@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
-import '../../../services/pdf_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
+
 
 class RedactionToolScreen extends StatefulWidget {
   const RedactionToolScreen({super.key});
@@ -94,13 +94,13 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryRed.withOpacity(0.1),
-            AppColors.primaryOrange.withOpacity(0.05),
+            AppColors.primaryRed.withValues(alpha: 0.1),
+            AppColors.primaryOrange.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryRed.withOpacity(0.2),
+          color: AppColors.primaryRed.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -150,7 +150,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -168,7 +168,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryRed.withOpacity(0.3),
+                    color: AppColors.primaryRed.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -199,10 +199,10 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryRed.withOpacity(0.1),
+                color: AppColors.primaryRed.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryRed.withOpacity(0.3),
+                  color: AppColors.primaryRed.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -227,7 +227,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -260,7 +260,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -391,7 +391,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -405,7 +405,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Text(
             "Add keywords or patterns to redact from the document",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 16),
@@ -449,7 +449,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   label: Text(keyword),
                   deleteIcon: const Icon(Icons.close, size: 18),
                   onDeleted: () => _removeKeyword(keyword),
-                  backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+                  backgroundColor: AppColors.primaryRed.withValues(alpha: 0.1),
                   deleteIconColor: AppColors.primaryRed,
                 );
               }).toList(),
@@ -522,10 +522,10 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryOrange.withOpacity(0.05),
+        color: AppColors.primaryOrange.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryOrange.withOpacity(0.2),
+          color: AppColors.primaryOrange.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -536,7 +536,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryOrange.withOpacity(0.1),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -560,7 +560,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryOrange.withOpacity(0.1),
+                              color: AppColors.primaryOrange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -585,7 +585,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                       Text(
                         "Review and confirm before redaction",
                         style: TextStyle(
-                          color: AppColors.primaryOrange.withOpacity(0.8),
+                          color: AppColors.primaryOrange.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -610,7 +610,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryRed.withOpacity(0.1),
+                      color: AppColors.primaryRed.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -626,7 +626,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                   subtitle: Text(
                     "Page ${item['page']} • ${item['type']} • Confidence: ${(item['confidence'] * 100).toInt()}%",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),
@@ -682,10 +682,10 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -696,7 +696,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -720,7 +720,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -745,7 +745,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                       Text(
                         "File: ${_outputPath!.split('/').last}",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -805,12 +805,14 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -907,23 +909,27 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Found ${mockItems.length} items to redact'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Found ${mockItems.length} items to redact'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error detecting items: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error detecting items: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -939,12 +945,14 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     final selectedItems = _detectedItems.where((item) => item['selected'] == true).toList();
     
     if (selectedItems.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('No items selected for redaction'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No items selected for redaction'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
       return;
     }
 
@@ -963,23 +971,27 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Successfully redacted ${selectedItems.length} items!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Successfully redacted ${selectedItems.length} items!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error applying redaction: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error applying redaction: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -988,14 +1000,16 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error opening file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -1004,19 +1018,21 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();
     return '$directory/$filename';
   }
 

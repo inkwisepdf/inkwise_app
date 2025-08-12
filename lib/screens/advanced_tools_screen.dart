@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import 'tools/advanced/table_extractor_screen.dart';
-import 'tools/advanced/layout_designer_screen.dart';
-import 'tools/advanced/color_converter_screen.dart';
-import 'tools/advanced/dual_page_view_screen.dart';
-import 'tools/advanced/custom_stamps_screen.dart';
-import 'tools/advanced/version_history_screen.dart';
-import 'tools/advanced/pdf_indexer_screen.dart';
-import 'tools/advanced/auto_tagging_screen.dart';
-import 'tools/advanced/batch_tool_chain_screen.dart';
-import 'tools/security/password_protection_screen.dart';
-import 'tools/security/encryption_screen.dart';
-import 'tools/security/secure_vault_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/table_extractor_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/layout_designer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/color_converter_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/dual_page_view_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/custom_stamps_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/version_history_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/pdf_indexer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/auto_tagging_screen.dart';
+import 'package:inkwise_pdf/screens/tools/advanced/batch_tool_chain_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/password_protection_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/encryption_screen.dart';
+import 'package:inkwise_pdf/screens/tools/security/secure_vault_screen.dart';
 
 class AdvancedToolsScreen extends StatefulWidget {
   const AdvancedToolsScreen({super.key});
@@ -85,13 +85,13 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -152,7 +152,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Table Extractor",
                 subtitle: "Convert PDF tables to editable format",
                 icon: Icons.table_chart,
-                gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryGreen, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const TableExtractorScreen()),
@@ -163,7 +167,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Layout Designer",
                 subtitle: "Rebuild page layouts visually",
                 icon: Icons.design_services,
-                gradient: [AppColors.primaryPurple, AppColors.primaryOrange],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryPurple, AppColors.primaryOrange],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LayoutDesignerScreen()),
@@ -174,7 +182,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "PDF Indexer",
                 subtitle: "Instant search across all documents",
                 icon: Icons.search,
-                gradient: [AppColors.primaryBlue, AppColors.primaryGreen],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryBlue, AppColors.primaryGreen],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PDFIndexerScreen()),
@@ -239,7 +251,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
             ),
             ToolCard(
               title: "Custom Stamps",
-              icon: Icons.stamp,
+                              icon: Icons.assignment,
               color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
@@ -295,7 +307,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
             ),
             ToolCard(
               title: "Secure Vault",
-              icon: Icons.vault,
+                              icon: Icons.security,
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
@@ -369,13 +381,13 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppColors.primaryGreen.withOpacity(0.1),
-                AppColors.primaryBlue.withOpacity(0.05),
+                AppColors.primaryGreen.withValues(alpha: 0.1),
+                AppColors.primaryBlue.withValues(alpha: 0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.primaryGreen.withOpacity(0.2),
+              color: AppColors.primaryGreen.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -387,10 +399,10 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.1),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.analytics,
                       color: AppColors.primaryGreen,
                       size: 20,

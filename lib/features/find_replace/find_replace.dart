@@ -1,14 +1,16 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf_render/pdf_render.dart';
 
-class FindReplaceScreen extends StatefulWidget {
-  const FindReplaceScreen({Key? key}) : super(key: key);
+class FindReplaceFeature extends StatefulWidget {
+  const FindReplaceFeature({super.key});
 
   @override
-  State<FindReplaceScreen> createState() => _FindReplaceScreenState();
+  State<FindReplaceFeature> createState() => _FindReplaceFeatureState();
 }
 
-class _FindReplaceScreenState extends State<FindReplaceScreen> {
+class _FindReplaceFeatureState extends State<FindReplaceFeature> {
   PdfDocument? document;
   int currentPage = 1;
   String searchText = '';
@@ -32,13 +34,15 @@ class _FindReplaceScreenState extends State<FindReplaceScreen> {
     final page = await document!.getPage(pageNum);
     final pageImage = await page.render();
 
-    final imageBytes = pageImage.bytes;
+    // Convert the image to bytes for processing
+    final imageBytes = await pageImage.toByteData(format: ImageByteFormat.png);
+    final bytes = imageBytes?.buffer.asUint8List() ?? Uint8List(0);
 
     // Example debug output
-    debugPrint('Extracted ${imageBytes.length} bytes from page $pageNum');
+    debugPrint('Extracted ${bytes.length} bytes from page $pageNum');
 
-    await pageImage.dispose(); // this is valid
-    await page.dispose(); // this is also valid in latest pdf_render
+    // pageImage.dispose() is not needed in pdf_render
+    // Note: PdfPage doesn't have dispose method in pdf_render
   }
 
   @override

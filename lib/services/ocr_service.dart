@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
@@ -19,28 +20,26 @@ class OCRService {
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
         final pageImage = await page.render(
-          width: page.width * 2,
-          height: page.height * 2,
+          width: (page.width * 2).toInt(),
+          height: (page.height * 2).toInt(),
         );
         
-        if (pageImage != null) {
-          // Save image temporarily
-          final tempDir = await getTemporaryDirectory();
-          final imageFile = File('${tempDir.path}/page_$i.png');
-          await imageFile.writeAsBytes(pageImage.toByteData()!.buffer.asUint8List());
-          
-          // Perform OCR
-          final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
-          extractedText += pageText + '\n';
-          
-          // Clean up
-          await imageFile.delete();
-        }
+        // Save image temporarily
+        final tempDir = await getTemporaryDirectory();
+        final imageFile = File('${tempDir.path}/page_$i.png');
+        await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
         
-        await page.close();
+        // Perform OCR
+        final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+        extractedText += '$pageText\n';
+        
+        // Clean up
+        await imageFile.delete();
+        
+        // page.close() is not available in pdf_render
       }
       
-      await document.close();
+      // document.close() is not available in pdf_render
       return extractedText.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
@@ -53,32 +52,29 @@ class OCRService {
       final PdfDocument document = await PdfDocument.openFile(pdfFile.path);
       
       if (pageNumber < 1 || pageNumber > document.pageCount) {
-        await document.close();
+        // document.close() is not available in pdf_render
         throw Exception('Invalid page number');
       }
       
       final page = await document.getPage(pageNumber);
       final pageImage = await page.render(
-        width: page.width * 2,
-        height: page.height * 2,
+        width: (page.width * 2).toInt(),
+        height: (page.height * 2).toInt(),
       );
       
       String extractedText = '';
-      if (pageImage != null) {
-        // Save image temporarily
-        final tempDir = await getTemporaryDirectory();
-        final imageFile = File('${tempDir.path}/page_$pageNumber.png');
-        await imageFile.writeAsBytes(pageImage.toByteData()!.buffer.asUint8List());
-        
-        // Perform OCR
-        extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
-        
-        // Clean up
-        await imageFile.delete();
-      }
+      // Save image temporarily
+      final tempDir = await getTemporaryDirectory();
+      final imageFile = File('${tempDir.path}/page_$pageNumber.png');
+      await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
       
-      await page.close();
-      await document.close();
+      // Perform OCR
+      extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+      
+      // Clean up
+      await imageFile.delete();
+      
+      // page.close() and document.close() are not available in pdf_render
       return extractedText.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
@@ -185,17 +181,17 @@ class OCRService {
       img.Image processedImage = img.grayscale(image);
       
       // Increase contrast
-      processedImage = img.contrast(processedImage, 150);
+      processedImage = img.contrast(processedImage, contrast: 150);
       
       // Apply noise reduction
-      processedImage = img.gaussianBlur(processedImage, 1);
+      processedImage = img.gaussianBlur(processedImage, radius: 1);
       
-      // Sharpen the image
-      processedImage = img.sharpen(processedImage);
+      // Sharpen the image - using unsharp mask instead
+      processedImage = img.unsharpMask(processedImage, radius: 1, amount: 1.0, threshold: 0.0);
       
       // Resize if too small
       if (processedImage.width < 300 || processedImage.height < 300) {
-        processedImage = img.copyResize(processedImage, width: 600, height: 600);
+        processedImage = img.copyResize(processedImage, width: 600, height: 600, interpolation: img.Interpolation.linear);
       }
       
       return Uint8List.fromList(img.encodePng(processedImage));
@@ -246,7 +242,7 @@ class OCRService {
       final testFile = File('${tempDir.path}/test.png');
       
       // Create a simple test image
-      final testImage = img.Image(100, 50);
+      final testImage = img.Image(width: 100, height: 50);
       img.fill(testImage, color: img.ColorRgb8(255, 255, 255));
       img.drawString(testImage, 'Test', font: img.arial24, x: 10, y: 10);
       

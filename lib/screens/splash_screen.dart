@@ -116,8 +116,8 @@ class _SplashScreenState extends State<SplashScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppColors.gradientStart.withOpacity(_gradientOpacity.value * 0.1),
-                      AppColors.gradientEnd.withOpacity(_gradientOpacity.value * 0.05),
+                      AppColors.gradientStart.withValues(alpha: _gradientOpacity.value * 0.1),
+                      AppColors.gradientEnd.withValues(alpha: _gradientOpacity.value * 0.05),
                     ],
                   ),
                 ),
@@ -153,7 +153,7 @@ class _SplashScreenState extends State<SplashScreen>
                             borderRadius: BorderRadius.circular(AppRadius.xl),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.gradientStart.withOpacity(0.4),
+                                color: AppColors.gradientStart.withValues(alpha: 0.4),
                                 blurRadius: 30,
                                 offset: const Offset(0, 15),
                               ),
@@ -184,7 +184,7 @@ class _SplashScreenState extends State<SplashScreen>
                             "Inkwise PDF",
                             style: AppTypography.displayLarge.copyWith(
                               fontWeight: FontWeight.w800,
-                              background: Paint()
+                              foreground: Paint()
                                 ..shader = const LinearGradient(
                                   colors: [AppColors.gradientStart, AppColors.gradientEnd],
                                 ).createShader(const Rect.fromLTWH(0.0, 0.0, 300.0, 70.0)),
@@ -222,11 +222,11 @@ class _SplashScreenState extends State<SplashScreen>
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 AppColors.gradientStart,
                               ),
-                              backgroundColor: AppColors.gradientStart.withOpacity(0.1),
+                              backgroundColor: AppColors.gradientStart.withValues(alpha: 0.1),
                             ),
                           ),
                           const SizedBox(height: AppSpacing.lg),
-                          Text(
+                          const Text(
                             "Loading...",
                             style: AppTypography.bodyMedium.copyWith(
                               color: AppColors.textSecondaryLight,
@@ -263,7 +263,7 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         "© 2024 Inkwise PDF. All rights reserved.",
                         style: AppTypography.labelMedium.copyWith(
-                          color: AppColors.textSecondaryLight.withOpacity(0.7),
+                          color: AppColors.textSecondaryLight.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -282,7 +282,6 @@ class _SplashScreenState extends State<SplashScreen>
     final size = 2.0 + random * 4.0;
     final left = random * MediaQuery.of(context).size.width;
     final top = random * MediaQuery.of(context).size.height;
-    final duration = Duration(milliseconds: 3000 + (random * 2000).toInt());
     
     return Positioned(
       left: left,
@@ -296,11 +295,11 @@ class _SplashScreenState extends State<SplashScreen>
               width: size,
               height: size,
               decoration: BoxDecoration(
-                color: AppColors.gradientStart.withOpacity(0.6),
+                color: AppColors.gradientStart.withValues(alpha: 0.6),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.gradientStart.withOpacity(0.3),
+                    color: AppColors.gradientStart.withValues(alpha: 0.3),
                     blurRadius: 4,
                   ),
                 ],

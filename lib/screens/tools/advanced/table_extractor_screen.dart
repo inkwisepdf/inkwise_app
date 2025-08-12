@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/pdf_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/pdf_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class TableExtractorScreen extends StatefulWidget {
-  const TableExtractorScreen({Key? key}) : super(key: key);
+  const TableExtractorScreen({super.key});
 
   @override
   State<TableExtractorScreen> createState() => _TableExtractorScreenState();
@@ -62,13 +62,13 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -118,7 +118,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -136,7 +136,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -167,10 +167,10 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -195,7 +195,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB • Pages: $_totalPages",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -228,7 +228,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -310,19 +310,19 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryPurple.withOpacity(0.1),
+              color: AppColors.primaryPurple.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.info_outline,
                   color: AppColors.primaryPurple,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: const Text(
                     "Higher confidence requires more precise table structure. Lower confidence may detect more tables but with less accuracy.",
                     style: TextStyle(
                       color: AppColors.primaryPurple,
@@ -371,33 +371,33 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
       return Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColors.primaryOrange.withOpacity(0.05),
+          color: AppColors.primaryOrange.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.primaryOrange.withOpacity(0.2),
+            color: AppColors.primaryOrange.withValues(alpha: 0.2),
           ),
         ),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.warning,
               color: AppColors.primaryOrange,
               size: 48,
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               "No Tables Found",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: TextStyle(
                 color: AppColors.primaryOrange,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               "No tables were detected in the PDF. Try adjusting the confidence level or check if the PDF contains tabular data.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.primaryOrange.withOpacity(0.8),
+                color: AppColors.primaryOrange.withValues(alpha: 0.8),
               ),
             ),
           ],
@@ -408,10 +408,10 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -422,7 +422,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -432,9 +432,9 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              Text(
+              const Text(
                 "Tables Extracted",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: TextStyle(
                   color: AppColors.primaryGreen,
                   fontWeight: FontWeight.w600,
                 ),
@@ -446,7 +446,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+                                color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -471,7 +471,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                       Text(
                         "Format: ${_formatOptions[_outputFormat]} • Confidence: ${(_confidence * 100).toInt()}%",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -496,7 +496,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
             
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: SingleChildScrollView(
@@ -535,21 +535,25 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                       
                       final filename = 'tables_${DateTime.now().millisecondsSinceEpoch}.json';
                       final jsonString = data.toString(); // Simplified for demo
-                      await FileService().saveTextAsFile(jsonString, filename);
+                      await FileService.saveTextAsFile(jsonString, filename);
                       
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Tables saved as $filename'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Tables saved as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error saving tables: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error saving tables: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.download),
@@ -570,23 +574,27 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                         final tableData = _extractedTables!.first;
                         final csvData = _convertToCSV(tableData);
                         final filename = 'table_1_${DateTime.now().millisecondsSinceEpoch}.csv';
-                        await FileService().saveTextAsFile(csvData, filename);
+                        await FileService.saveTextAsFile(csvData, filename);
                         
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Table exported as $filename'),
-                            backgroundColor: AppColors.primaryGreen,
-                          ),
-                        );
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Table exported as $filename'),
+                              backgroundColor: AppColors.primaryGreen,
+                            ),
+                          );
+                        }
                       }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error exporting table: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
-                    }
+                                          } catch (e) {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error exporting table: $e'),
+                              backgroundColor: AppColors.primaryRed,
+                            ),
+                          );
+                        }
+                      }
                   },
                   icon: const Icon(Icons.share),
                   label: const Text("Export"),
@@ -620,12 +628,14 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
         await _getTotalPages();
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -682,23 +692,27 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Successfully extracted ${mockTables.length} tables!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Successfully extracted ${mockTables.length} tables!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error extracting tables: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error extracting tables: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 

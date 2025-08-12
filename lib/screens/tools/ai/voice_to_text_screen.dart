@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class VoiceToTextScreen extends StatefulWidget {
   const VoiceToTextScreen({super.key});
@@ -14,7 +14,6 @@ class VoiceToTextScreen extends StatefulWidget {
 
 class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   File? _selectedFile;
-  bool _isProcessing = false;
   bool _isListening = false;
   String _transcribedText = '';
   String _selectedLanguage = 'en-US';
@@ -49,20 +48,22 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   Future<void> _initializeSpeech() async {
     bool available = await _speechToText.initialize(
       onError: (error) {
-        print('Speech recognition error: $error');
+        // Speech recognition error: $error
       },
       onStatus: (status) {
-        print('Speech recognition status: $status');
+        // Speech recognition status: $status
       },
     );
     
     if (!available) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Speech recognition not available'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Speech recognition not available'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -102,13 +103,13 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryPurple.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryPurple.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -158,7 +159,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -172,7 +173,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
           Text(
             "You can record voice notes without selecting a PDF, or add them to an existing document",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 16),
@@ -190,10 +191,10 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: AppColors.primaryBlue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(0.3),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -218,7 +219,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -249,7 +250,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -287,19 +288,19 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+                                color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.info_outline,
                   color: AppColors.primaryBlue,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: const Text(
                     "Select the language you'll be speaking in for better recognition accuracy.",
                     style: TextStyle(
                       color: AppColors.primaryBlue,
@@ -322,7 +323,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -345,7 +346,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: (_isListening ? AppColors.primaryRed : AppColors.primaryBlue).withOpacity(0.3),
+                      color: (_isListening ? AppColors.primaryRed : AppColors.primaryBlue).withValues(alpha: 0.3),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -378,7 +379,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryRed.withOpacity(0.1),
+                  color: AppColors.primaryRed.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -393,7 +394,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
+                    const Text(
                       "Recording...",
                       style: TextStyle(
                         color: AppColors.primaryRed,
@@ -414,10 +415,10 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -428,7 +429,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -512,23 +513,27 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
   Future<void> _startListening() async {
     if (!_speechToText.isAvailable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Speech recognition not available'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Speech recognition not available'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
       return;
     }
 
@@ -547,12 +552,14 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         _isListening = true;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error starting speech recognition: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error starting speech recognition: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -574,7 +581,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
     if (_textController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('No text to save'),
+          content: const Text('No text to save'),
           backgroundColor: AppColors.primaryOrange,
         ),
       );
@@ -583,21 +590,25 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
 
     try {
       final filename = 'voice_notes_${DateTime.now().millisecondsSinceEpoch}.txt';
-      await FileService().saveTextAsFile(_textController.text, filename);
+      await FileService.saveTextAsFile(_textController.text, filename);
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Voice notes saved as $filename'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Voice notes saved as $filename'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error saving file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

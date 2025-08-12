@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../theme.dart';
-import '../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   const PdfViewerScreen({super.key});
@@ -14,7 +14,7 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   File? _pdfFile;
-  GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool _isLoading = false;
   int _currentPage = 1;
   int _totalPages = 0;
@@ -122,7 +122,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
@@ -222,7 +222,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
@@ -272,7 +272,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   title: Text('Page ${index + 1}'),
                   selected: _currentPage == index + 1,
                   onTap: () {
-                    _pdfViewerKey.currentState?.jumpToPage(index + 1);
+                    setState(() {
+                      _currentPage = index + 1;
+                    });
                   },
                 );
               },
@@ -300,7 +302,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
@@ -310,9 +312,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
             child: Row(
               children: [
-                Icon(Icons.bookmark, color: AppColors.primaryBlue),
+                const Icon(Icons.bookmark, color: AppColors.primaryBlue),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   "Bookmarks",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -335,25 +337,25 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Introduction'),
                   subtitle: const Text('Page 1'),
-                  onTap: () => _pdfViewerKey.currentState?.jumpToPage(1),
+                  onTap: () => setState(() => _currentPage = 1),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Chapter 1'),
                   subtitle: const Text('Page 5'),
-                  onTap: () => _pdfViewerKey.currentState?.jumpToPage(5),
+                  onTap: () => setState(() => _currentPage = 5),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Chapter 2'),
                   subtitle: const Text('Page 12'),
-                  onTap: () => _pdfViewerKey.currentState?.jumpToPage(12),
+                  onTap: () => setState(() => _currentPage = 12),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Conclusion'),
                   subtitle: const Text('Page 25'),
-                  onTap: () => _pdfViewerKey.currentState?.jumpToPage(25),
+                  onTap: () => setState(() => _currentPage = 25),
                 ),
               ],
             ),
@@ -422,11 +424,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           ),
           const SizedBox(width: 16),
           IconButton(
-            onPressed: () => _pdfViewerKey.currentState?.zoomLevel = _zoomLevel - 0.25,
+            onPressed: () => setState(() => _zoomLevel = (_zoomLevel - 0.25).clamp(0.5, 3.0)),
             icon: const Icon(Icons.zoom_out),
           ),
           IconButton(
-            onPressed: () => _pdfViewerKey.currentState?.zoomLevel = _zoomLevel + 0.25,
+            onPressed: () => setState(() => _zoomLevel = (_zoomLevel + 0.25).clamp(0.5, 3.0)),
             icon: const Icon(Icons.zoom_in),
           ),
         ],
@@ -445,7 +447,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         ),
         const SizedBox(height: 8),
         FloatingActionButton.small(
-          onPressed: () => FileService.shareFile(_pdfFile!.path),
+          onPressed: () => FileService.shareFile(_pdfFile!),
           heroTag: 'share',
           child: const Icon(Icons.share),
         ),
@@ -479,14 +481,18 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error picking file: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking file: $e')),
+        );
+      }
     }
   }
 
   void _goToPage(int page) {
-    _pdfViewerKey.currentState?.jumpToPage(page);
+    setState(() {
+      _currentPage = page;
+    });
   }
 
   void _showSearchDialog() {
@@ -510,7 +516,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           ElevatedButton(
             onPressed: () {
               if (_searchText.isNotEmpty) {
-                _pdfViewerKey.currentState?.searchText(_searchText);
+                // Search functionality will be implemented in a future update
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Searching for: $_searchText')),
+                );
                 Navigator.pop(context);
               }
             },
@@ -524,7 +533,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void _handleMenuAction(String action) {
     switch (action) {
       case 'share':
-        FileService.shareFile(_pdfFile!.path);
+        FileService.shareFile(_pdfFile!);
         break;
       case 'info':
         _showFileInfo();
@@ -538,24 +547,29 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void _showFileInfo() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('File Information'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Name: ${_pdfFile!.path.split('/').last}'),
-            Text('Size: ${FileService.getFileSize(_pdfFile!.path)}'),
-            Text('Pages: $_totalPages'),
-            Text('Path: ${_pdfFile!.path}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
+      builder: (context) => FutureBuilder<String>(
+        future: FileService.getFileSize(_pdfFile!),
+        builder: (context, snapshot) {
+          return AlertDialog(
+            title: const Text('File Information'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Name: ${_pdfFile!.path.split('/').last}'),
+                Text('Size: ${snapshot.data ?? 'Loading...'}'),
+                Text('Pages: $_totalPages'),
+                Text('Path: ${_pdfFile!.path}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

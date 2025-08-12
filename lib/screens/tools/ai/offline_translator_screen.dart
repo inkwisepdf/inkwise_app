@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/offline_translation_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/offline_translation_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class OfflineTranslatorScreen extends StatefulWidget {
   const OfflineTranslatorScreen({super.key});
@@ -76,13 +76,13 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryGreen.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -132,7 +132,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -150,7 +150,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryGreen.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -181,10 +181,10 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -209,7 +209,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -241,7 +241,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -326,10 +326,10 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.primaryGreen.withOpacity(0.3),
+                                  color: AppColors.primaryGreen.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -389,10 +389,10 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.05),
+        color: AppColors.primaryBlue.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -403,7 +403,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryBlue.withOpacity(0.1),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -429,7 +429,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
               ),
             ),
             child: Column(
@@ -456,20 +456,24 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_translatedText!);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Translation copied to clipboard'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      await FileService.copyToClipboard(_translatedText!);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Translation copied to clipboard'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error copying translation: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error copying translation: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.copy),
@@ -486,20 +490,24 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'translated_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_translatedText!, filename);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Translation saved as $filename'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      await FileService.saveTextAsFile(_translatedText!, filename);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Translation saved as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error saving translation: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error saving translation: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.save),
@@ -531,12 +539,14 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -564,12 +574,14 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error translating PDF: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error translating PDF: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

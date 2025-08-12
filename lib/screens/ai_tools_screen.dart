@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import 'tools/ai/smart_summarizer_screen.dart';
-import 'tools/ai/offline_translator_screen.dart';
-import 'tools/ai/voice_to_text_screen.dart';
-import 'tools/ai/form_detector_screen.dart';
-import 'tools/ai/keyword_analytics_screen.dart';
-import 'tools/ai/redaction_tool_screen.dart';
-import 'tools/ai/handwriting_recognition_screen.dart';
-import 'tools/ai/content_cleanup_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/screens/tools/ai/smart_summarizer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/offline_translator_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/voice_to_text_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/form_detector_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/keyword_analytics_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/redaction_tool_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/handwriting_recognition_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/content_cleanup_screen.dart';
 
 class AIToolsScreen extends StatefulWidget {
   const AIToolsScreen({super.key});
@@ -77,13 +77,13 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -144,7 +144,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Smart PDF Summarizer",
                 subtitle: "Extract key points from documents",
                 icon: Icons.summarize,
-                gradient: [AppColors.primaryPurple, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryPurple, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SmartSummarizerScreen()),
@@ -155,7 +159,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Offline Translator",
                 subtitle: "Translate documents without internet",
                 icon: Icons.translate,
-                gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryGreen, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const OfflineTranslatorScreen()),
@@ -166,7 +174,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Voice-to-Text Notes",
                 subtitle: "Record and embed voice annotations",
                 icon: Icons.mic,
-                gradient: [AppColors.primaryOrange, AppColors.primaryRed],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryOrange, AppColors.primaryRed],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const VoiceToTextScreen()),

@@ -1,23 +1,14 @@
 import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
-import 'package:ml_algo/ml_algo.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 
 class OfflineTranslationService {
-  static const String _modelPath = 'assets/models/translation_model.json';
-  static const String _vocabPath = 'assets/models/translation_vocab.json';
-  static const String _tokenizerPath = 'assets/models/tokenizer.json';
-  
   // Modern ML components
   Map<String, dynamic>? _translationModel;
   Map<String, int>? _vocabulary;
-  Map<String, int>? _tokenizer;
   Map<String, Map<String, double>>? _wordEmbeddings;
   bool _isInitialized = false;
   
@@ -58,10 +49,8 @@ class OfflineTranslationService {
       await _loadTokenizer();
       
       _isInitialized = true;
-      print('Offline translation service initialized successfully');
       return true;
     } catch (e) {
-      print('Error initializing offline translation service: $e');
       return false;
     }
   }
@@ -94,7 +83,6 @@ class OfflineTranslationService {
       // final modelFile = await rootBundle.loadString(_modelPath);
       // _translationModel = json.decode(modelFile);
     } catch (e) {
-      print('Error loading translation model: $e');
       rethrow;
     }
   }
@@ -202,13 +190,11 @@ class OfflineTranslationService {
         'import': 94,
         'batch': 95,
         'bulk': 96,
-        'processing': 97,
         'automation': 98,
         'workflow': 99,
         'pipeline': 100,
       };
     } catch (e) {
-      print('Error loading vocabulary: $e');
       rethrow;
     }
   }
@@ -231,7 +217,6 @@ class OfflineTranslationService {
         'max_length': 10,
       };
     } catch (e) {
-      print('Error loading tokenizer: $e');
       rethrow;
     }
   }
@@ -317,14 +302,15 @@ class OfflineTranslationService {
       
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
-        final pageText = await page.text;
+        // page.text is not available in pdf_render, will use OCR instead
+        final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.close();
+        // page.close() is not available in pdf_render
       }
       
-      await document.close();
+      // document.close() is not available in pdf_render
       
       // If no text extracted, use OCR
       if (extractedText.trim().isEmpty) {
@@ -348,28 +334,26 @@ class OfflineTranslationService {
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
         final pageImage = await page.render(
-          width: page.width * 2,
-          height: page.height * 2,
+          width: (page.width * 2).toInt(),
+          height: (page.height * 2).toInt(),
         );
         
-        if (pageImage != null) {
-          // Save image temporarily
-          final tempDir = await getTemporaryDirectory();
-          final imageFile = File('${tempDir.path}/page_$i.png');
-          await imageFile.writeAsBytes(pageImage.toByteData()!.buffer.asUint8List());
-          
-          // Perform OCR
-          final pageText = await FlutterTesseractOcr.extractText(imageFile.path);
-          ocrText += pageText + '\n';
-          
-          // Clean up
-          await imageFile.delete();
-        }
+        // Save image temporarily
+        final tempDir = await getTemporaryDirectory();
+        final imageFile = File('${tempDir.path}/page_$i.png');
+        await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
         
-        await page.close();
+        // Perform OCR
+        final pageText = await FlutterTesseractOcr.extractText(imageFile.path);
+        ocrText += pageText + '\n';
+        
+        // Clean up
+        await imageFile.delete();
+        
+        // page.close() is not available in pdf_render
       }
       
-      await document.close();
+      // document.close() is not available in pdf_render
       return ocrText;
     } catch (e) {
       throw Exception('OCR failed: $e');
@@ -804,7 +788,7 @@ class OfflineTranslationService {
       _wordEmbeddings = null;
       _isInitialized = false;
     } catch (e) {
-      print('Error disposing translation service: $e');
+      // Error disposing translation service
     }
   }
 }

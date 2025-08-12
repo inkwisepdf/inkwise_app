@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/pdf_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/pdf_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class PDFPasswordScreen extends StatefulWidget {
-  const PDFPasswordScreen({Key? key}) : super(key: key);
+  const PDFPasswordScreen({super.key});
 
   @override
   State<PDFPasswordScreen> createState() => _PDFPasswordScreenState();
@@ -65,13 +65,13 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryRed.withOpacity(0.1),
-            AppColors.primaryOrange.withOpacity(0.05),
+            AppColors.primaryRed.withValues(alpha: 0.1),
+            AppColors.primaryOrange.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryRed.withOpacity(0.2),
+          color: AppColors.primaryRed.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -121,7 +121,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -139,7 +139,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryRed.withOpacity(0.3),
+                    color: AppColors.primaryRed.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -170,10 +170,10 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryRed.withOpacity(0.1),
+                color: AppColors.primaryRed.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryRed.withOpacity(0.3),
+                  color: AppColors.primaryRed.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -198,7 +198,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -232,7 +232,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -283,7 +283,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -342,19 +342,19 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryRed.withOpacity(0.1),
+              color: AppColors.primaryRed.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.info_outline,
                   color: AppColors.primaryRed,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: const Text(
                     "Use a strong password with at least 8 characters including letters, numbers, and symbols.",
                     style: TextStyle(
                       color: AppColors.primaryRed,
@@ -411,10 +411,10 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -425,7 +425,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -449,7 +449,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -476,7 +476,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                             ? "Password protection added successfully"
                             : "Password protection removed successfully",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                                                      color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -495,14 +495,16 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error opening file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error opening file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.open_in_new),
@@ -519,14 +521,16 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error sharing file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error sharing file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.share),
@@ -560,12 +564,14 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -609,25 +615,29 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_operation == 'add' 
-              ? 'Password protection added successfully!' 
-              : 'Password protection removed successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_operation == 'add' 
+                ? 'Password protection added successfully!' 
+                : 'Password protection removed successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }
