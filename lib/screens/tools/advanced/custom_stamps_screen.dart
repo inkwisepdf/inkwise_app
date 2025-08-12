@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class CustomStampsScreen extends StatefulWidget {
   const CustomStampsScreen({super.key});
@@ -20,9 +20,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
   double _stampOpacity = 1.0;
   double _stampSize = 1.0;
   double _rotation = 0.0;
-  Offset _position = const Offset(100, 100);
+  final Offset _position = const Offset(100, 100);
   List<Map<String, dynamic>> _stamps = [];
-  List<Map<String, dynamic>> _appliedStamps = [];
+  final List<Map<String, dynamic>> _appliedStamps = [];
 
   final Map<String, String> _categories = {
     'all': 'All Stamps',
@@ -493,13 +493,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.description,
                         size: 64,
                         color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
                       ),
                       const SizedBox(height: 16),
-                      Text(
+                      const Text(
                         "PDF Preview",
                         style: TextStyle(
                           fontSize: 18,
