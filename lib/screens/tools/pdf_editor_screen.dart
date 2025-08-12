@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../theme.dart';
-import '../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 
 class PDFEditorScreen extends StatefulWidget {
@@ -77,13 +77,13 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withOpacity(0.1),
-            AppColors.gradientEnd.withOpacity(0.05),
+            AppColors.gradientStart.withValues(alpha: 0.1),
+            AppColors.gradientEnd.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.gradientStart.withOpacity(0.1),
+          color: AppColors.gradientStart.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -172,7 +172,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     color: AppColors.textSecondaryLight,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  Text(
+                  const Text(
                     "Click to select a PDF file",
                     style: AppTypography.bodyMedium.copyWith(
                       color: AppColors.textSecondaryLight,
@@ -289,8 +289,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     setState(() => _editMode = entry.key);
                   }
                 },
-                backgroundColor: AppColors.textSecondaryLight.withOpacity(0.1),
-                selectedColor: AppColors.primaryBlue.withOpacity(0.2),
+                backgroundColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
+                selectedColor: AppColors.primaryBlue.withValues(alpha: 0.2),
                 labelStyle: AppTypography.labelMedium.copyWith(
                   color: isSelected ? AppColors.primaryBlue : AppColors.textSecondaryLight,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
@@ -434,7 +434,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                         color: AppColors.textSecondaryLight,
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      Text(
+                      const Text(
                         "PDF Preview",
                         style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textSecondaryLight,
@@ -499,10 +499,10 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.success.withOpacity(0.1),
+        color: AppColors.success.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.success.withOpacity(0.2),
+          color: AppColors.success.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -517,7 +517,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
+              const Text(
                 "PDF Edited Successfully!",
                 style: AppTypography.titleMedium.copyWith(
                   fontWeight: FontWeight.w600,
@@ -571,12 +571,14 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error picking file: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error picking file: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 
@@ -597,20 +599,24 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('PDF edited successfully!'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('PDF edited successfully!'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
     } catch (e) {
       setState(() => _isProcessing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error editing PDF: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error editing PDF: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 }
