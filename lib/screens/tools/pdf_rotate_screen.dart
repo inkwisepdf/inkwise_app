@@ -448,7 +448,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -472,7 +472,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -560,16 +560,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  dynamic _getRotationAngle() {
+  int _getRotationAngle() {
     switch (_rotationAngle) {
       case '90':
-        return PdfPageRotateAngle.rotateAngle90;
+        return 90;
       case '180':
-        return PdfPageRotateAngle.rotateAngle180;
+        return 180;
       case '270':
-        return PdfPageRotateAngle.rotateAngle270;
+        return 270;
       default:
-        return PdfPageRotateAngle.rotateAngle90;
+        return 90;
     }
   }
 }
