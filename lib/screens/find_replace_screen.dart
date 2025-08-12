@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../features/find_replace/find_replace.dart';
-import '../services/find_replace_service.dart';
+import 'package:inkwise_pdf/features/find_replace/find_replace.dart';
+import 'package:inkwise_pdf/services/find_replace_service.dart';
 
 class FindReplaceScreen extends StatefulWidget {
-  const FindReplaceScreen({Key? key}) : super(key: key);
+  const FindReplaceScreen({super.key});
 
   @override
-  _FindReplaceScreenState createState() => _FindReplaceScreenState();
+  State<FindReplaceScreen> createState() => _FindReplaceScreenState();
 }
 
 class _FindReplaceScreenState extends State<FindReplaceScreen> {

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import '../services/local_analytics_service.dart';
-import '../services/performance_service.dart';
-import 'tools_screen.dart';
-import 'recent_files_screen.dart';
-import 'ai_tools_screen.dart';
-import 'advanced_tools_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/services/local_analytics_service.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
+import 'package:inkwise_pdf/screens/tools_screen.dart';
+import 'package:inkwise_pdf/screens/recent_files_screen.dart';
+import 'package:inkwise_pdf/screens/ai_tools_screen.dart';
+import 'package:inkwise_pdf/screens/advanced_tools_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Inkwise PDF",
               style: AppTypography.headlineMedium.copyWith(
                 fontWeight: FontWeight.w700,
-                background: Paint()
+                foreground: Paint()
                   ..shader = const LinearGradient(
                     colors: [AppColors.gradientStart, AppColors.gradientEnd],
                   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
