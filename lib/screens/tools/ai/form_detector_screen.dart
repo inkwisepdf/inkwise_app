@@ -716,7 +716,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
       
       final filename = 'form_data_${DateTime.now().millisecondsSinceEpoch}.json';
       final jsonString = data.toString(); // Simplified for demo
-      await FileService().saveTextAsFile(jsonString, filename);
+      await FileService.saveTextAsFile(jsonString, filename);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
