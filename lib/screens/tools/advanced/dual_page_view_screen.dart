@@ -130,7 +130,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -147,7 +147,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
               height: 120,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.primaryOrange.withOpacity(0.3),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.3),
                   style: BorderStyle.solid,
                   width: 2,
                 ),
@@ -522,7 +522,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     onPressed: () => _adjustZoom(side, 0.1),
                     icon: const Icon(Icons.zoom_in, size: 20),
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.primaryOrange.withOpacity(0.9),
+                      backgroundColor: AppColors.primaryOrange.withValues(alpha: 0.9),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.all(8),
                     ),
@@ -532,7 +532,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     onPressed: () => _adjustZoom(side, -0.1),
                     icon: const Icon(Icons.zoom_out, size: 20),
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.primaryOrange.withOpacity(0.9),
+                      backgroundColor: AppColors.primaryOrange.withValues(alpha: 0.9),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.all(8),
                     ),
