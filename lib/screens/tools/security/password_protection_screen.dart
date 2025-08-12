@@ -186,12 +186,17 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                             _selectedFile!.path.split('/').last,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
-                          Text(
-                            FileService.getFileSize(_selectedFile!.path),
-                            style: TextStyle(
-                              color: AppColors.textSecondaryLight,
-                              fontSize: 12,
-                            ),
+                          FutureBuilder<String>(
+                            future: FileService.getFileSize(_selectedFile!),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data ?? 'Loading...',
+                                style: TextStyle(
+                                  color: AppColors.textSecondaryLight,
+                                  fontSize: 12,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -451,7 +456,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => FileService.openFile(_outputPath!),
+                    onPressed: () => FileService.openFile(File(_outputPath!)),
                     icon: const Icon(Icons.open_in_new),
                     label: const Text("Open File"),
                     style: OutlinedButton.styleFrom(
@@ -463,7 +468,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () => FileService.shareFile(_outputPath!),
+                    onPressed: () => FileService.shareFile(File(_outputPath!)),
                     icon: const Icon(Icons.share),
                     label: const Text("Share"),
                     style: ElevatedButton.styleFrom(
@@ -508,31 +513,20 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
     try {
       String outputPath = '';
       
+      final pdfService = PDFService();
+      
       switch (_protectionMode) {
         case 'add':
-          outputPath = await PDFService.addPassword(
-            _selectedFile!.path,
-            _password,
-            encryptionLevel: int.parse(_encryptionLevel),
-            requirePasswordToOpen: _requirePasswordToOpen,
-            requirePasswordToEdit: _requirePasswordToEdit,
-            allowPrinting: _allowPrinting,
-            allowCopying: _allowCopying,
-          );
+          final outputFile = await pdfService.addPassword(_selectedFile!, _password);
+          outputPath = outputFile.path;
           break;
         case 'remove':
-          outputPath = await PDFService.removePassword(_selectedFile!.path, _password);
+          final outputFile = await pdfService.removePassword(_selectedFile!, _password);
+          outputPath = outputFile.path;
           break;
         case 'change':
-          outputPath = await PDFService.addPassword(
-            _selectedFile!.path,
-            _password,
-            encryptionLevel: int.parse(_encryptionLevel),
-            requirePasswordToOpen: _requirePasswordToOpen,
-            requirePasswordToEdit: _requirePasswordToEdit,
-            allowPrinting: _allowPrinting,
-            allowCopying: _allowCopying,
-          );
+          final outputFile = await pdfService.addPassword(_selectedFile!, _password);
+          outputPath = outputFile.path;
           break;
       }
 

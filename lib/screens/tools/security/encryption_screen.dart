@@ -190,12 +190,17 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                             _selectedFile!.path.split('/').last,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
-                          Text(
-                            FileService.getFileSize(_selectedFile!.path),
-                            style: TextStyle(
-                              color: AppColors.textSecondaryLight,
-                              fontSize: 12,
-                            ),
+                          FutureBuilder<String>(
+                            future: FileService.getFileSize(_selectedFile!),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data ?? 'Loading...',
+                                style: TextStyle(
+                                  color: AppColors.textSecondaryLight,
+                                  fontSize: 12,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -461,7 +466,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => FileService.openFile(_outputPath!),
+                    onPressed: () => FileService.openFile(File(_outputPath!)),
                     icon: const Icon(Icons.open_in_new),
                     label: const Text("Open File"),
                     style: OutlinedButton.styleFrom(
@@ -473,7 +478,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () => FileService.shareFile(_outputPath!),
+                    onPressed: () => FileService.shareFile(File(_outputPath!)),
                     icon: const Icon(Icons.share),
                     label: const Text("Share"),
                     style: ElevatedButton.styleFrom(
@@ -556,7 +561,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     String fileName = _selectedFile!.path.split('/').last;
     String encryptedName = 'encrypted_${fileName}.enc';
     
-    return await FileService.getOutputPath(encryptedName);
+    final directory = await FileService.getAppDirectoryPath();
+    return '$directory/$encryptedName';
   }
 
   Future<String> _mockDecryptFile() async {
@@ -566,6 +572,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     String fileName = _selectedFile!.path.split('/').last;
     String decryptedName = fileName.replaceAll('.enc', '_decrypted');
     
-    return await FileService.getOutputPath(decryptedName);
+    final directory = await FileService.getAppDirectoryPath();
+    return '$directory/$decryptedName';
   }
 }
