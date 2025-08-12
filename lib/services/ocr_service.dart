@@ -24,19 +24,17 @@ class OCRService {
           height: (page.height * 2).toInt(),
         );
         
-        if (pageImage != null) {
-          // Save image temporarily
-          final tempDir = await getTemporaryDirectory();
-          final imageFile = File('${tempDir.path}/page_$i.png');
-          await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
-          
-          // Perform OCR
-          final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
-          extractedText += pageText + '\n';
-          
-          // Clean up
-          await imageFile.delete();
-        }
+        // Save image temporarily
+        final tempDir = await getTemporaryDirectory();
+        final imageFile = File('${tempDir.path}/page_$i.png');
+        await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
+        
+        // Perform OCR
+        final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+        extractedText += pageText + '\n';
+        
+        // Clean up
+        await imageFile.delete();
         
         // page.close() is not available in pdf_render
       }
@@ -65,18 +63,16 @@ class OCRService {
       );
       
       String extractedText = '';
-      if (pageImage != null) {
-        // Save image temporarily
-        final tempDir = await getTemporaryDirectory();
-        final imageFile = File('${tempDir.path}/page_$pageNumber.png');
-        await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
-        
-        // Perform OCR
-        extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
-        
-        // Clean up
-        await imageFile.delete();
-      }
+      // Save image temporarily
+      final tempDir = await getTemporaryDirectory();
+      final imageFile = File('${tempDir.path}/page_$pageNumber.png');
+      await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
+      
+      // Perform OCR
+      extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+      
+      // Clean up
+      await imageFile.delete();
       
       // page.close() and document.close() are not available in pdf_render
       return extractedText.trim();

@@ -529,13 +529,6 @@ class PDFService {
         graphics.translateTransform(-(x + imageWidth / 2), -(y + imageHeight / 2));
         
         // Draw watermark with opacity
-        final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor.fromArgb(
-          (opacity * 255).round(),
-          255,
-          255,
-          255,
-        ));
-        
         graphics.drawImage(image, Rect.fromLTWH(x, y, imageWidth, imageHeight));
         graphics.restore();
       }
