@@ -667,7 +667,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     try {
       // Extract text from PDF
       final aiService = AISummarizerService();
-      final extractedText = await aiService.extractTextFromPDF(_selectedFile!);
+      final extractedText = await aiService.summarizePDF(_selectedFile!);
       
       // Simulate analysis process
       await Future.delayed(const Duration(seconds: 2));
@@ -730,7 +730,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     try {
       final report = _generateAnalyticsReport();
       final filename = 'analytics_report_${DateTime.now().millisecondsSinceEpoch}.txt';
-      await FileService().saveTextAsFile(report, filename);
+      await FileService.saveTextAsFile(report, filename);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -753,7 +753,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     
     try {
       final report = _generateAnalyticsReport();
-      await FileService().copyToClipboard(report);
+      await FileService.copyToClipboard(report);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
