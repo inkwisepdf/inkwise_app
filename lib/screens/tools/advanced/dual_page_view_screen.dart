@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 
 class DualPageViewScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
   File? _selectedFile;
   String _viewMode = 'side_by_side'; // 'side_by_side', 'split', 'overlay'
   String _layoutMode = 'horizontal'; // 'horizontal', 'vertical'
-  double _splitRatio = 0.5;
+  final double _splitRatio = 0.5;
   bool _syncScrolling = true;
   bool _showPageNumbers = true;
   bool _showZoomControls = true;
