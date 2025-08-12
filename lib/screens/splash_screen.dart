@@ -282,7 +282,6 @@ class _SplashScreenState extends State<SplashScreen>
     final size = 2.0 + random * 4.0;
     final left = random * MediaQuery.of(context).size.width;
     final top = random * MediaQuery.of(context).size.height;
-    final duration = Duration(milliseconds: 3000 + (random * 2000).toInt());
     
     return Positioned(
       left: left,

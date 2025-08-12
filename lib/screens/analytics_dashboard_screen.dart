@@ -12,7 +12,6 @@ class AnalyticsDashboardScreen extends StatefulWidget {
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   Map<String, dynamic> _usageStats = {};
-  Map<String, dynamic> _analyticsData = {};
   bool _isLoading = true;
 
   @override
@@ -25,11 +24,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     try {
       final analyticsService = LocalAnalyticsService();
       final usageStats = await analyticsService.getUsageStatistics();
-      final analyticsData = await analyticsService.getAnalyticsData();
 
       setState(() {
         _usageStats = usageStats;
-        _analyticsData = analyticsData;
         _isLoading = false;
       });
     } catch (e) {
