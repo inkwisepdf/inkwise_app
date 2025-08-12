@@ -623,7 +623,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.assignment),
+            : Icon(Icons.assignment),
         label: Text(_isProcessing ? "Applying..." : "Apply Stamps"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -894,7 +894,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -910,7 +910,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -922,7 +922,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();
     return '$directory/$filename';
   }
 }
