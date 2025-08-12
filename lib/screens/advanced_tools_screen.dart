@@ -85,13 +85,13 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -381,13 +381,13 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppColors.primaryGreen.withOpacity(0.1),
-                AppColors.primaryBlue.withOpacity(0.05),
+                AppColors.primaryGreen.withValues(alpha: 0.1),
+                AppColors.primaryBlue.withValues(alpha: 0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.primaryGreen.withOpacity(0.2),
+              color: AppColors.primaryGreen.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -399,7 +399,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.1),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
