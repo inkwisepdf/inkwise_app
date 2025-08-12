@@ -95,7 +95,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.stamp,
+              Icons.assignment,
               color: Colors.white,
               size: 24,
             ),
@@ -623,7 +623,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.stamp),
+            : const Icon(Icons.assignment),
         label: Text(_isProcessing ? "Applying..." : "Apply Stamps"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -783,7 +783,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       case 'custom':
         return Icons.star;
       default:
-        return Icons.stamp;
+        return Icons.assignment;
     }
   }
 

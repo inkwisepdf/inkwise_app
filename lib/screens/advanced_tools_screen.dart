@@ -152,7 +152,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Table Extractor",
                 subtitle: "Convert PDF tables to editable format",
                 icon: Icons.table_chart,
-                gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryGreen, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const TableExtractorScreen()),
@@ -163,7 +167,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Layout Designer",
                 subtitle: "Rebuild page layouts visually",
                 icon: Icons.design_services,
-                gradient: [AppColors.primaryPurple, AppColors.primaryOrange],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryPurple, AppColors.primaryOrange],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LayoutDesignerScreen()),
@@ -174,7 +182,11 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "PDF Indexer",
                 subtitle: "Instant search across all documents",
                 icon: Icons.search,
-                gradient: [AppColors.primaryBlue, AppColors.primaryGreen],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryBlue, AppColors.primaryGreen],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PDFIndexerScreen()),
@@ -239,7 +251,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
             ),
             ToolCard(
               title: "Custom Stamps",
-              icon: Icons.stamp,
+                              icon: Icons.assignment,
               color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
@@ -295,7 +307,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
             ),
             ToolCard(
               title: "Secure Vault",
-              icon: Icons.vault,
+                              icon: Icons.security,
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,

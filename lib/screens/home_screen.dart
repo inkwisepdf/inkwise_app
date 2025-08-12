@@ -803,7 +803,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       {'title': 'Layout Designer', 'subtitle': 'Design custom page layouts', 'icon': Icons.design_services, 'route': '/advanced/layout'},
       {'title': 'Color Converter', 'subtitle': 'Convert colors with threshold control', 'icon': Icons.palette, 'route': '/advanced/color'},
       {'title': 'Dual Page View', 'subtitle': 'View two pages side by side', 'icon': Icons.view_column, 'route': '/advanced/dual'},
-      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents', 'icon': Icons.stamp, 'route': '/advanced/stamps'},
+      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents',                 'icon': Icons.assignment, 'route': '/advanced/stamps'},
       {'title': 'Version History', 'subtitle': 'Track document versions', 'icon': Icons.history, 'route': '/advanced/version'},
       {'title': 'PDF Indexer', 'subtitle': 'Index and search documents', 'icon': Icons.search, 'route': '/advanced/indexer'},
       {'title': 'Auto Tagging', 'subtitle': 'Automatically tag documents', 'icon': Icons.local_offer, 'route': '/advanced/tagging'},

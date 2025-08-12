@@ -179,7 +179,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
               child: _buildStatCard(
                 "Total Sessions",
                 totalSessions.toString(),
-                Icons.session,
+                Icons.analytics,
                 AppColors.primaryGreen,
               ),
             ),
@@ -332,7 +332,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                   ),
                 ),
                 borderData: FlBorderData(show: false),
-                barGroups: topFeatures.asMap().entries.map((entry) {
+                barGroups: topFeatures.toList().asMap().entries.map((entry) {
                   final index = entry.key;
                   final feature = entry.value;
                   return BarChartGroupData(
@@ -536,7 +536,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          ...topFeatures.take(10).asMap().entries.map((entry) {
+          ...topFeatures.take(10).toList().asMap().entries.map((entry) {
             final index = entry.key;
             final feature = entry.value;
             final featureName = feature['action_type'] as String? ?? 'Unknown';

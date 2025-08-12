@@ -144,7 +144,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Smart PDF Summarizer",
                 subtitle: "Extract key points from documents",
                 icon: Icons.summarize,
-                gradient: [AppColors.primaryPurple, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryPurple, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SmartSummarizerScreen()),
@@ -155,7 +159,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Offline Translator",
                 subtitle: "Translate documents without internet",
                 icon: Icons.translate,
-                gradient: [AppColors.primaryGreen, AppColors.primaryBlue],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryGreen, AppColors.primaryBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const OfflineTranslatorScreen()),
@@ -166,7 +174,11 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Voice-to-Text Notes",
                 subtitle: "Record and embed voice annotations",
                 icon: Icons.mic,
-                gradient: [AppColors.primaryOrange, AppColors.primaryRed],
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryOrange, AppColors.primaryRed],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const VoiceToTextScreen()),

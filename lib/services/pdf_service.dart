@@ -81,7 +81,7 @@ class PDFService {
         
         if (pageRanges != null) {
           // Split based on specified page ranges - process in parallel
-          final futures = pageRanges.asMap().entries.map((entry) async {
+          final futures = pageRanges.toList().asMap().entries.map((entry) async {
             final i = entry.key;
             final pageIndex = entry.value;
             

@@ -96,7 +96,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
-              _isUnlocked ? Icons.vault_open : Icons.vault,
+              _isUnlocked ? Icons.lock_open : Icons.lock,
               color: Colors.white,
               size: 24,
             ),

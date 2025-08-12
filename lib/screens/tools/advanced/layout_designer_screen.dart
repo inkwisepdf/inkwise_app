@@ -395,7 +395,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                 if (_showGrid) _buildGrid(),
                 
                 // Layout elements
-                ..._layoutElements.asMap().entries.map((entry) {
+                ..._layoutElements.toList().asMap().entries.map((entry) {
                   final index = entry.key;
                   final element = entry.value;
                   return Positioned(

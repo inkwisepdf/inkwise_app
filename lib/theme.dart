@@ -114,6 +114,12 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
   );
+  
+  static const labelSmall = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.5,
+  );
 }
 
 // Modern Border Radius

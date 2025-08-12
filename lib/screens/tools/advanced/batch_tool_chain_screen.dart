@@ -385,7 +385,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ..._selectedTools.asMap().entries.map((entry) {
+                  ..._selectedTools.toList().asMap().entries.map((entry) {
                     final index = entry.key;
                     final tool = entry.value;
                     return Padding(
