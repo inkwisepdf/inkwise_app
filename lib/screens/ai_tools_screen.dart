@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import 'tools/ai/smart_summarizer_screen.dart';
-import 'tools/ai/offline_translator_screen.dart';
-import 'tools/ai/voice_to_text_screen.dart';
-import 'tools/ai/form_detector_screen.dart';
-import 'tools/ai/keyword_analytics_screen.dart';
-import 'tools/ai/redaction_tool_screen.dart';
-import 'tools/ai/handwriting_recognition_screen.dart';
-import 'tools/ai/content_cleanup_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/screens/tools/ai/smart_summarizer_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/offline_translator_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/voice_to_text_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/form_detector_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/keyword_analytics_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/redaction_tool_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/handwriting_recognition_screen.dart';
+import 'package:inkwise_pdf/screens/tools/ai/content_cleanup_screen.dart';
 
 class AIToolsScreen extends StatefulWidget {
   const AIToolsScreen({super.key});

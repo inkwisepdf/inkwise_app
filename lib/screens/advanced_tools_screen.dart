@@ -402,7 +402,7 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                       color: AppColors.primaryGreen.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.analytics,
                       color: AppColors.primaryGreen,
                       size: 20,
