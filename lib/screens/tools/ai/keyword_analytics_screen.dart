@@ -71,13 +71,13 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -145,7 +145,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -176,10 +176,10 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -380,10 +380,10 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -394,7 +394,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -436,7 +436,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.1),
+                        color: AppColors.primaryBlue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -504,9 +504,9 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+                        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+                  border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -524,7 +524,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
             title,
             style: TextStyle(
               fontSize: 12,
-              color: color.withOpacity(0.8),
+                              color: color.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -551,7 +551,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                            border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
           ),
           child: ListView.builder(
             itemCount: keywords.length,
@@ -562,7 +562,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AppColors.primaryPurple.withOpacity(0.1),
+                  backgroundColor: AppColors.primaryPurple.withValues(alpha: 0.1),
                   child: Text(
                     '${index + 1}',
                     style: TextStyle(
@@ -584,7 +584,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                 trailing: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryPurple.withOpacity(0.1),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -648,12 +648,14 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -700,23 +702,27 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Analysis completed successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Analysis completed successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error analyzing document: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error analyzing document: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -728,19 +734,23 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
       final filename = 'analytics_report_${DateTime.now().millisecondsSinceEpoch}.txt';
       await FileService.saveTextAsFile(report, filename);
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Analytics report exported as $filename'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Analytics report exported as $filename'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error exporting report: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting report: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -751,19 +761,23 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
       final report = _generateAnalyticsReport();
       await FileService.copyToClipboard(report);
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Analytics report copied to clipboard'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Analytics report copied to clipboard'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing analytics: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing analytics: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
