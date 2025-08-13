@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/pdf_service.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
+// import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf; // Temporarily disabled
 
 class PDFRotateScreen extends StatefulWidget {
   const PDFRotateScreen({super.key});

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart' as pdf_package;
 import 'package:pdf/widgets.dart' as pw;
-import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
-import 'package:pdf_render/pdf_render.dart' as pdf_render;
+// import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf; // Temporarily disabled
+// import 'package:pdf_render/pdf_render.dart' as pdf_render; // Temporarily disabled
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'package:inkwise_pdf/services/performance_service.dart';

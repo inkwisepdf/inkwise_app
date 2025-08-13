@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+// import 'package:speech_to_text/speech_to_text.dart'; // Temporarily disabled
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
@@ -17,7 +17,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   bool _isListening = false;
   String _transcribedText = '';
   String _selectedLanguage = 'en-US';
-  final SpeechToText _speechToText = SpeechToText();
+  // final SpeechToText _speechToText = SpeechToText(); // Temporarily disabled
   final TextEditingController _textController = TextEditingController();
 
   final Map<String, String> _languageOptions = {

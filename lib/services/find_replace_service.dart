@@ -1,14 +1,16 @@
-import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
+// import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart'; // Temporarily disabled
 
 class FindReplaceService {
   /// Extracts text from an image and finds matches
   static Future<String> extractTextFromImage(String imagePath) async {
     try {
-      String extractedText = await FlutterTesseractOcr.extractText(
-        imagePath,
-        language: 'eng',
-      );
-      return extractedText;
+      // Temporarily disabled - OCR functionality not available
+      // String extractedText = await FlutterTesseractOcr.extractText(
+      //   imagePath,
+      //   language: 'eng',
+      // );
+      // return extractedText;
+      return 'OCR functionality temporarily disabled';
     } catch (e) {
       return '';
     }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class PdfViewerScreen extends StatefulWidget {
   const PdfViewerScreen({super.key});
@@ -14,7 +15,6 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   File? _pdfFile;
-  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool _isLoading = false;
   int _currentPage = 1;
   int _totalPages = 0;
@@ -169,30 +169,40 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         Expanded(
           child: Stack(
             children: [
-              SfPdfViewer.file(
-                _pdfFile!,
-                key: _pdfViewerKey,
-                enableDoubleTapZooming: true,
-                enableTextSelection: true,
-                canShowScrollHead: true,
-                canShowScrollStatus: true,
-                onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-                  setState(() {
-                    _totalPages = details.document.pages.count;
-                    _isLoading = false;
-                  });
-                },
-                onPageChanged: (PdfPageChangedDetails details) {
-                  setState(() {
-                    _currentPage = details.newPageNumber;
-                    _pageController.text = _currentPage.toString();
-                  });
-                },
-                onZoomLevelChanged: (PdfZoomDetails details) {
-                  setState(() {
-                    _zoomLevel = details.newZoomLevel;
-                  });
-                },
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.picture_as_pdf,
+                      size: 64,
+                      color: AppColors.primaryBlue,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'PDF Viewer',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'File: ${_pdfFile?.path.split('/').last ?? 'Unknown'}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () => FileService.openFile(_pdfFile!),
+                      icon: const Icon(Icons.open_in_new),
+                      label: const Text('Open with External App'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryBlue,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               if (_isLoading)
                 const Center(
