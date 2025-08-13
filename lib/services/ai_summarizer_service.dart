@@ -8,20 +8,21 @@ import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'dart:ui' as ui;
 
 class AISummarizerService {
   // Modern ML components
   Map<String, Map<String, double>>? _wordEmbeddings;
   bool _isInitialized = false;
-  
+
   // Initialize the summarizer service
   Future<bool> initialize() async {
     if (_isInitialized) return true;
-    
+
     try {
       // Load word embeddings
       await _initializeWordEmbeddings();
-      
+
       _isInitialized = true;
       return true;
     } catch (e) {
@@ -32,7 +33,7 @@ class AISummarizerService {
   // Initialize word embeddings for modern summarization
   Future<void> _initializeWordEmbeddings() async {
     _wordEmbeddings = <String, Map<String, double>>{};
-    
+
     // Create mock embeddings for common words
     final commonWords = [
       'summary', 'document', 'text', 'important', 'key', 'point', 'main',
@@ -44,7 +45,7 @@ class AISummarizerService {
       'algorithm', 'function', 'feature', 'capability', 'performance',
       'efficiency', 'effectiveness', 'quality', 'accuracy', 'precision'
     ];
-    
+
     for (final word in commonWords) {
       _wordEmbeddings![word] = _generateRandomEmbedding(256);
     }
@@ -54,20 +55,20 @@ class AISummarizerService {
   Map<String, double> _generateRandomEmbedding(int dimension) {
     final random = Random();
     final embedding = <String, double>{};
-    
+
     for (int i = 0; i < dimension; i++) {
       embedding['dim_$i'] = random.nextDouble() * 2 - 1; // Values between -1 and 1
     }
-    
+
     return embedding;
   }
 
   // Modern AI-powered summarization using ML algorithms
   Future<String> summarizePDF(
-    File pdfFile, {
-    String language = 'English',
-    int length = 3,
-  }) async {
+      File pdfFile, {
+        String language = 'English',
+        int length = 3,
+      }) async {
     try {
       // Initialize if not already done
       if (!_isInitialized) {
@@ -79,106 +80,108 @@ class AISummarizerService {
 
       // Extract text from PDF
       final text = await _extractTextFromPDF(pdfFile);
-      
+
       if (text.isEmpty) {
         throw Exception('No text found in PDF');
       }
-      
+
       // Generate summary using modern AI model
       final summary = await _generateModernSummary(text, language, length);
-      
+
       return summary;
     } catch (e) {
       throw Exception('Failed to summarize PDF: $e');
     }
   }
-  
+
   Future<String> _extractTextFromPDF(File pdfFile) async {
     try {
       // Try to extract text directly first
       String extractedText = '';
-      
+
       final document = await PdfDocument.openFile(pdfFile.path);
-      
+
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
-        final pageText = await page.text;
+        // page.text is not available in pdf_render, will use OCR instead
+        final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.close();
+        await page.dispose();
       }
-      
-      await document.close();
-      
+
+      await document.dispose();
+
       // If no text extracted, use OCR
       if (extractedText.trim().isEmpty) {
         extractedText = await _performOCR(pdfFile);
       }
-      
+
       return extractedText;
     } catch (e) {
       // Fallback to OCR
       return await _performOCR(pdfFile);
     }
   }
-  
+
   Future<String> _performOCR(File pdfFile) async {
     try {
       // Convert PDF pages to images and perform OCR
       final document = await PdfDocument.openFile(pdfFile.path);
       String ocrText = '';
-      
+
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
         final pageImage = await page.render(
-          width: page.width * 2,
-          height: page.height * 2,
+          width: (page.width * 2).toInt(),
+          height: (page.height * 2).toInt(),
         );
-        
-        if (pageImage != null) {
-          // Save image temporarily
-          final tempDir = await getTemporaryDirectory();
-          final imageFile = File('${tempDir.path}/page_$i.png');
-          await imageFile.writeAsBytes(pageImage.toByteData()!.buffer.asUint8List());
-          
-          // Perform OCR
-          final pageText = await FlutterTesseractOcr.extractText(imageFile.path);
-          ocrText += pageText + '\n';
-          
-          // Clean up
-          await imageFile.delete();
-        }
-        
-        await page.close();
+
+        await pageImage.createImageIfNotAvailable();
+        final img = pageImage.imageIfAvailable!;
+        final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+
+        // Save image temporarily
+        final tempDir = await getTemporaryDirectory();
+        final tempPath = '${tempDir.path}/page_$i.png';
+        final tempFile = await File(tempPath).writeAsBytes(byteData!.buffer.asUint8List());
+
+        // Perform OCR
+        final pageText = await FlutterTesseractOcr.extractText(tempPath);
+        ocrText += pageText + '\n';
+
+        // Clean up
+        await tempFile.delete();
+        await page.dispose();
       }
-      
-      await document.close();
+
+      await document.dispose();
       return ocrText;
     } catch (e) {
       throw Exception('OCR failed: $e');
     }
   }
-  
+
   Future<String> _generateModernSummary(String text, String language, int length) async {
     // Modern AI-powered summarization using ML algorithms
     // In a real implementation, this would use advanced neural networks
-    
+
     // Clean and preprocess text
     final cleanText = _preprocessText(text);
-    
+
     // Split into sentences
     final sentences = _splitIntoSentences(cleanText);
-    
+
     // Use modern ML algorithms for sentence scoring
     final sentenceScores = await _calculateModernSentenceScores(sentences);
-    
+
     // Select top sentences using advanced algorithms
     final selectedSentences = _selectTopSentencesModern(sentences, sentenceScores, length);
-    
+
     // Generate summary with improved coherence
     final summary = _generateCoherentSummary(selectedSentences, language);
-    
+
     // Apply language-specific formatting
     return _formatSummary(summary, language);
   }
@@ -186,13 +189,13 @@ class AISummarizerService {
   // Calculate sentence scores using modern ML algorithms
   Future<Map<String, double>> _calculateModernSentenceScores(List<String> sentences) async {
     final scores = <String, double>{};
-    
+
     // Use word embeddings for better semantic understanding
     for (final sentence in sentences) {
       final words = sentence.toLowerCase().split(RegExp(r'\s+'));
       double semanticScore = 0;
       int validWords = 0;
-      
+
       for (final word in words) {
         if (word.length > 3 && _wordEmbeddings!.containsKey(word)) {
           // Calculate semantic importance using embeddings
@@ -202,19 +205,19 @@ class AISummarizerService {
           validWords++;
         }
       }
-      
+
       // Normalize by number of valid words
       if (validWords > 0) {
         semanticScore = semanticScore / validWords;
       }
-      
+
       // Combine with traditional TF-IDF score
       final tfidfScore = _calculateTFIDFScore(sentence, sentences);
       final combinedScore = (semanticScore * 0.7) + (tfidfScore * 0.3);
-      
+
       scores[sentence] = combinedScore;
     }
-    
+
     return scores;
   }
 
@@ -232,7 +235,7 @@ class AISummarizerService {
   double _calculateTFIDFScore(String sentence, List<String> allSentences) {
     final words = sentence.toLowerCase().split(RegExp(r'\s+'));
     double totalScore = 0;
-    
+
     for (final word in words) {
       if (word.length > 3) {
         final tf = _calculateTermFrequency(word, sentence);
@@ -240,7 +243,7 @@ class AISummarizerService {
         totalScore += tf * idf;
       }
     }
-    
+
     return totalScore;
   }
 
@@ -257,30 +260,30 @@ class AISummarizerService {
       final words = sentence.toLowerCase().split(RegExp(r'\s+'));
       return words.contains(word);
     }).length;
-    
+
     if (documentsContainingWord == 0) return 0;
     return log(sentences.length / documentsContainingWord);
   }
 
   // Select top sentences using modern algorithms
   List<String> _selectTopSentencesModern(
-    List<String> sentences,
-    Map<String, double> scores,
-    int targetLength,
-  ) {
+      List<String> sentences,
+      Map<String, double> scores,
+      int targetLength,
+      ) {
     // Sort sentences by score
     final sortedSentences = sentences.toList()
       ..sort((a, b) => (scores[b] ?? 0).compareTo(scores[a] ?? 0));
-    
+
     // Select top sentences with diversity consideration
     final selected = <String>[];
     final selectedIndices = <int>{};
-    
+
     for (final sentence in sortedSentences) {
       if (selected.length >= targetLength) break;
-      
+
       final index = sentences.indexOf(sentence);
-      
+
       // Check for diversity (avoid selecting consecutive sentences)
       bool isDiverse = true;
       for (final selectedIndex in selectedIndices) {
@@ -289,30 +292,30 @@ class AISummarizerService {
           break;
         }
       }
-      
+
       if (isDiverse) {
         selected.add(sentence);
         selectedIndices.add(index);
       }
     }
-    
+
     // Sort back to original order
     selected.sort((a, b) => sentences.indexOf(a).compareTo(sentences.indexOf(b)));
-    
+
     return selected;
   }
 
   // Generate coherent summary
   String _generateCoherentSummary(List<String> selectedSentences, String language) {
     if (selectedSentences.isEmpty) return '';
-    
+
     // Join sentences with proper transitions
     final summary = selectedSentences.join('. ');
-    
+
     // Ensure proper capitalization and punctuation
     return summary.trim() + (summary.endsWith('.') ? '' : '.');
   }
-  
+
   String _preprocessText(String text) {
     // Remove extra whitespace and normalize
     return text
@@ -320,7 +323,7 @@ class AISummarizerService {
         .replaceAll(RegExp(r'[^\w\s\.\,\!\?\-]'), '')
         .trim();
   }
-  
+
   List<String> _splitIntoSentences(String text) {
     // Simple sentence splitting
     return text
@@ -329,7 +332,7 @@ class AISummarizerService {
         .map((sentence) => sentence.trim())
         .toList();
   }
-  
+
   String _formatSummary(String summary, String language) {
     // Apply language-specific formatting
     switch (language.toLowerCase()) {
@@ -343,13 +346,13 @@ class AISummarizerService {
         return summary;
     }
   }
-  
+
   // Get summary statistics
   Map<String, dynamic> getSummaryStats(String originalText, String summary) {
     final originalWords = originalText.split(RegExp(r'\s+')).length;
     final summaryWords = summary.split(RegExp(r'\s+')).length;
     final compressionRatio = (1 - (summaryWords / originalWords)) * 100;
-    
+
     return {
       'originalWords': originalWords,
       'summaryWords': summaryWords,
@@ -357,25 +360,25 @@ class AISummarizerService {
       'keyTopics': _extractKeyTopics(originalText),
     };
   }
-  
+
   List<String> _extractKeyTopics(String text) {
     // Extract key topics using TF-IDF or similar algorithm
     final words = text.toLowerCase().split(RegExp(r'\s+'));
     final wordFreq = <String, int>{};
-    
+
     for (final word in words) {
       if (word.length > 4 && !_isStopWord(word)) {
         wordFreq[word] = (wordFreq[word] ?? 0) + 1;
       }
     }
-    
+
     // Sort by frequency and return top 5
     final sortedWords = wordFreq.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    
+
     return sortedWords.take(5).map((e) => e.key).toList();
   }
-  
+
   bool _isStopWord(String word) {
     const stopWords = {
       'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
@@ -383,7 +386,7 @@ class AISummarizerService {
       'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
       'should', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those'
     };
-    
+
     return stopWords.contains(word.toLowerCase());
   }
 

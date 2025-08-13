@@ -232,7 +232,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           Text(
             "Compression Quality",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -272,9 +272,9 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -316,13 +316,13 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         onPressed: _isProcessing ? null : _compressPDF,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.compress),
         label: Text(_isProcessing ? "Compressing..." : "Compress PDF"),
         style: ElevatedButton.styleFrom(
@@ -379,7 +379,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           if (_originalSize != null && _compressedSize != null) ...[
             Row(
               children: [
@@ -427,7 +427,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               ),
             ),
           ],
-          
+
           const SizedBox(height: 16),
           Row(
             children: [
@@ -436,7 +436,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);  // Changed from instance to static method call
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -460,7 +460,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);  // Changed from instance to static method call
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -575,7 +575,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error compressing PDF: $e'),
@@ -585,4 +585,3 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
     }
   }
 }
-

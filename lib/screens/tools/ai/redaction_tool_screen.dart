@@ -271,7 +271,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           DropdownButtonFormField<String>(
             value: _redactionMode,
             decoration: InputDecoration(
@@ -292,9 +292,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           DropdownButtonFormField<String>(
             value: _redactionColor,
             decoration: InputDecoration(
@@ -315,7 +315,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               });
             },
           ),
-          
+
           if (_redactionColor == 'custom') ...[
             const SizedBox(height: 16),
             ListTile(
@@ -335,9 +335,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               ),
             ),
           ],
-          
+
           const SizedBox(height: 16),
-          
+
           Text(
             "Detection Confidence: ${(_confidence * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -353,9 +353,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           SwitchListTile(
             title: const Text("Case Sensitive"),
             subtitle: const Text("Match exact case when searching"),
@@ -367,7 +367,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             },
             activeColor: AppColors.primaryRed,
           ),
-          
+
           SwitchListTile(
             title: const Text("Use Regular Expressions"),
             subtitle: const Text("Advanced pattern matching"),
@@ -409,7 +409,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -430,9 +430,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           if (_redactionKeywords.isNotEmpty) ...[
             Text(
               "Current Keywords (${_redactionKeywords.length})",
@@ -455,9 +455,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               }).toList(),
             ),
           ],
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -497,13 +497,13 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         onPressed: _isProcessing ? null : _detectAndRedact,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.search),
         label: Text(_isProcessing ? "Processing..." : "Detect & Redact"),
         style: ElevatedButton.styleFrom(
@@ -556,7 +556,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -595,9 +595,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -643,9 +643,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               );
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -716,7 +716,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -755,9 +755,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -869,7 +869,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     try {
       // Simulate detection process
       await Future.delayed(const Duration(seconds: 3));
-      
+
       // Mock detected items
       final mockItems = [
         {
@@ -917,7 +917,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error detecting items: $e'),
@@ -937,7 +937,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
 
   Future<void> _applyRedaction() async {
     final selectedItems = _detectedItems.where((item) => item['selected'] == true).toList();
-    
+
     if (selectedItems.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -955,9 +955,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
     try {
       // Simulate redaction process
       await Future.delayed(const Duration(seconds: 2));
-      
+
       final outputPath = await _getOutputPath('redacted_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      
+
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
@@ -973,7 +973,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error applying redaction: $e'),
@@ -985,10 +985,10 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
 
   Future<void> _openRedactedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);  // Changed from instance to static method call
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -1001,10 +1001,10 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
 
   Future<void> _shareRedactedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);  // Changed from instance to static method call
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -1016,7 +1016,7 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();  // Changed from instance to static method call
     return '$directory/$filename';
   }
 

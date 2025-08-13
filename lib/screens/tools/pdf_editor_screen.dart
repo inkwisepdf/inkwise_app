@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
 
-
 class PDFEditorScreen extends StatefulWidget {
   const PDFEditorScreen({super.key});
 
@@ -91,8 +90,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 colors: [AppColors.gradientStart, AppColors.gradientEnd],
               ),
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -172,7 +171,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     color: AppColors.textSecondaryLight,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  const Text(
+                  Text(
                     "Click to select a PDF file",
                     style: AppTypography.bodyMedium.copyWith(
                       color: AppColors.textSecondaryLight,
@@ -262,7 +261,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-                          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -434,7 +433,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                         color: AppColors.textSecondaryLight,
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      const Text(
+                      Text(
                         "PDF Preview",
                         style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textSecondaryLight,
@@ -474,13 +473,13 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         onPressed: _isProcessing ? null : _processEdit,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.save),
         label: Text(_isProcessing ? "Processing..." : "Save Edited PDF"),
         style: ElevatedButton.styleFrom(
@@ -517,7 +516,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
-              const Text(
+              Text(
                 "PDF Edited Successfully!",
                 style: AppTypography.titleMedium.copyWith(
                   fontWeight: FontWeight.w600,
@@ -590,10 +589,10 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
     try {
       // Mock processing for now
       await Future.delayed(const Duration(seconds: 2));
-      
+
       final directory = await FileService.getAppDirectoryPath();
       final outputPath = '$directory/edited_${DateTime.now().millisecondsSinceEpoch}.pdf';
-      
+
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
@@ -620,4 +619,3 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
     }
   }
 }
-

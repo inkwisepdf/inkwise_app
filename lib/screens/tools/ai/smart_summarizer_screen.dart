@@ -243,7 +243,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           // Language Selection
           Text(
             "Output Language",
@@ -272,9 +272,9 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Summary Length
           Text(
             "Summary Length",
@@ -327,13 +327,13 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         onPressed: _isProcessing ? null : _processSummarization,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.auto_awesome),
         label: Text(_isProcessing ? "Processing..." : "Generate Summary"),
         style: ElevatedButton.styleFrom(
@@ -397,10 +397,10 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_summary!);
+                      await FileService.copyToClipboard(_summary!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Summary copied to clipboard'),
+                          content: const Text('Summary copied to clipboard'),
                           backgroundColor: AppColors.primaryGreen,
                         ),
                       );
@@ -427,7 +427,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_summary!, filename);
+                      await FileService.saveTextAsFile(_summary!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Summary saved as $filename'),
@@ -504,7 +504,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error generating summary: $e'),

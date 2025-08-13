@@ -24,25 +24,32 @@ class _FindReplaceFeatureState extends State<FindReplaceFeature> {
 
   Future<void> loadPdf() async {
     setState(() => isLoading = true);
-    document = await PdfDocument.openAsset('assets/sample.pdf');
+    try {
+      document = await PdfDocument.openAsset('assets/sample.pdf');
+    } catch (e) {
+      debugPrint('Error loading PDF: $e');
+    }
     setState(() => isLoading = false);
   }
 
   Future<void> findTextOnPage(int pageNum) async {
     if (document == null) return;
 
-    final page = await document!.getPage(pageNum);
-    final pageImage = await page.render();
+    try {
+      final page = await document!.getPage(pageNum);
+      final pageImage = await page.render();
 
-    // Convert the image to bytes for processing
-    final imageBytes = await pageImage.toByteData(format: ImageByteFormat.png);
-    final bytes = imageBytes?.buffer.asUint8List() ?? Uint8List(0);
+      // Get the actual image bytes from PdfPageImage
+      final bytes = pageImage.pixels;
 
-    // Example debug output
-    debugPrint('Extracted ${bytes.length} bytes from page $pageNum');
+      // Example debug output
+      debugPrint('Extracted ${bytes.length} bytes from page $pageNum');
+      debugPrint('Image dimensions: ${pageImage.width}x${pageImage.height}');
 
-    // pageImage.dispose() is not needed in pdf_render
-    // Note: PdfPage doesn't have dispose method in pdf_render
+      // Note: PdfPage doesn't need manual disposal in pdf_render package
+    } catch (e) {
+      debugPrint('Error processing page $pageNum: $e');
+    }
   }
 
   @override
@@ -58,25 +65,24 @@ class _FindReplaceFeatureState extends State<FindReplaceFeature> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Search Text',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) => searchText = value,
-                  ),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () => findTextOnPage(currentPage),
-                    child: const Text('Search on Page'),
-                  ),
-                ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Search Text',
+                border: OutlineInputBorder(),
               ),
+              onChanged: (value) => searchText = value,
             ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () => findTextOnPage(currentPage),
+              child: const Text('Search on Page'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

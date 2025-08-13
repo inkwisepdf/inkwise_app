@@ -19,14 +19,14 @@ class FileService {
   static Future<File> writeFile(String filename, List<int> bytes) async {
     return await PerformanceService().withOperationLimit(() async {
       PerformanceService().startOperation('file_write');
-      
+
       final path = await getAppDirectoryPath();
       final file = File('$path/$filename');
       final result = await file.writeAsBytes(bytes, flush: true);
-      
+
       // Cache the file data for faster subsequent access
       PerformanceService().setCache('file_$filename', bytes);
-      
+
       PerformanceService().endOperation('file_write');
       return result;
     });
@@ -77,7 +77,10 @@ class FileService {
 
   static Future<void> shareFile(File file) async {
     try {
-      await SharePlus.instance.share([XFile(file.path)], text: 'Shared from Inkwise PDF');
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: 'Shared from Inkwise PDF',
+      );
     } catch (e) {
       throw Exception('Error sharing file: $e');
     }
@@ -95,7 +98,7 @@ class FileService {
     try {
       final appDir = await getAppDirectoryPath();
       final directory = Directory(appDir);
-      
+
       if (!await directory.exists()) {
         return [];
       }
@@ -108,7 +111,7 @@ class FileService {
 
       // Sort by modification time (most recent first)
       files.sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
-      
+
       return files.take(10).toList(); // Return last 10 files
     } catch (e) {
       return [];

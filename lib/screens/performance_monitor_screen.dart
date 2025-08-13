@@ -55,22 +55,22 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildPerformanceOverview(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildOperationPerformance(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildCachePerformance(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildOptimizationSuggestions(),
-                ],
-              ),
-            ),
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            const SizedBox(height: AppSpacing.xl),
+            _buildPerformanceOverview(),
+            const SizedBox(height: AppSpacing.xl),
+            _buildOperationPerformance(),
+            const SizedBox(height: AppSpacing.xl),
+            _buildCachePerformance(),
+            const SizedBox(height: AppSpacing.xl),
+            _buildOptimizationSuggestions(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -138,14 +138,14 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
   Widget _buildPerformanceOverview() {
     final totalOperations = _performanceStats.values.fold<int>(
       0,
-      (sum, operation) => sum + (operation['count'] as int),
+          (sum, operation) => sum + (operation['count'] as int),
     );
 
     final averageResponseTime = totalOperations > 0
         ? _performanceStats.values.fold<double>(
-            0,
-            (sum, operation) => sum + (operation['average'] as double),
-          ) / _performanceStats.length
+      0,
+          (sum, operation) => sum + (operation['average'] as double),
+    ) / _performanceStats.length
         : 0.0;
 
     return Column(
@@ -253,8 +253,8 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
               barTouchData: BarTouchData(enabled: false),
               titlesData: FlTitlesData(
                 show: true,
-                rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -303,15 +303,15 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     final operations = _performanceStats.entries.toList();
     return operations.asMap().entries.map((entry) {
       final index = entry.key;
-      final operation = entry.value;
-      final average = operation['average'] as double;
-      
+      final operationEntry = entry.value;
+      final average = operationEntry.value['average'] as double;
+
       return BarChartGroupData(
         x: index,
         barRods: [
           BarChartRodData(
             toY: average,
-            color: _getOperationColor(entry.value.key),
+            color: _getOperationColor(operationEntry.key),
             width: 20,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
@@ -377,14 +377,14 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
   Widget _buildCacheCard(String title, String usage, String memory, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
-              decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-            color: color.withValues(alpha: 0.2),
-            width: 1,
-          ),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+          width: 1,
         ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -570,4 +570,3 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     );
   }
 }
-

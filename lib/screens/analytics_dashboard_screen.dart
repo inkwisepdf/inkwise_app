@@ -256,7 +256,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
   Widget _buildFeatureUsageChart() {
     final topFeatures = _usageStats['top_features'] as List? ?? [];
-    
+
     if (topFeatures.isEmpty) {
       return _buildEmptyState("No feature usage data available");
     }
@@ -287,8 +287,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
-                maxY: topFeatures.isNotEmpty 
-                    ? (topFeatures.first['count'] as int).toDouble() * 1.2 
+                maxY: topFeatures.isNotEmpty
+                    ? (topFeatures.first['count'] as int).toDouble() * 1.2
                     : 10,
                 barTouchData: const BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
@@ -330,7 +330,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     ),
                   ),
                 ),
-                borderData: const FlBorderData(show: false),
+                borderData: FlBorderData(show: false),
                 barGroups: topFeatures.toList().asMap().entries.map((entry) {
                   final index = entry.key;
                   final feature = entry.value;
@@ -359,7 +359,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
   Widget _buildScreenViewsChart() {
     final topScreens = _usageStats['top_screens'] as List? ?? [];
-    
+
     if (topScreens.isEmpty) {
       return _buildEmptyState("No screen view data available");
     }
@@ -427,7 +427,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
   Widget _buildRecentActivity() {
     final recentActivity = _usageStats['recent_activity'] as List? ?? [];
-    
+
     if (recentActivity.isEmpty) {
       return _buildEmptyState("No recent activity available");
     }
@@ -457,7 +457,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             final actionType = activity['action_type'] as String? ?? 'Unknown';
             final timestamp = activity['timestamp'] as int? ?? 0;
             final details = activity['action_details'] as String? ?? '';
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Row(
@@ -509,7 +509,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
   Widget _buildTopFeatures() {
     final topFeatures = _usageStats['top_features'] as List? ?? [];
-    
+
     if (topFeatures.isEmpty) {
       return _buildEmptyState("No top features data available");
     }
@@ -540,7 +540,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             final feature = entry.value;
             final featureName = feature['action_type'] as String? ?? 'Unknown';
             final count = feature['count'] as int? ?? 0;
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Row(
@@ -632,7 +632,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     final now = DateTime.now();
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     final difference = now.difference(date);
-    
+
     if (difference.inMinutes < 1) {
       return 'Just now';
     } else if (difference.inMinutes < 60) {
@@ -648,7 +648,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     try {
       final analyticsService = LocalAnalyticsService();
       final exportData = await analyticsService.exportAnalyticsData();
-      
+
       // In a real implementation, you would save this to a file
       // For now, just show a snackbar
       if (mounted) {

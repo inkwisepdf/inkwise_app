@@ -264,7 +264,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           DropdownButtonFormField<String>(
             value: _stampCategory,
             decoration: InputDecoration(
@@ -285,9 +285,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           SizedBox(
             height: 200,
             child: GridView.builder(
@@ -301,7 +301,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               itemBuilder: (context, index) {
                 final stamp = _getFilteredStamps()[index];
                 final isSelected = _selectedStamp == stamp['id'];
-                
+
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -310,12 +310,12 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isSelected 
+                      color: isSelected
                           ? AppColors.primaryGreen.withValues(alpha: 0.1)
                           : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isSelected 
+                        color: isSelected
                             ? AppColors.primaryGreen
                             : Colors.grey.withValues(alpha: 0.3),
                         width: isSelected ? 2 : 1,
@@ -327,7 +327,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         Icon(
                           _getStampIcon(stamp['type']),
                           size: 32,
-                          color: isSelected 
+                          color: isSelected
                               ? AppColors.primaryGreen
                               : Colors.grey,
                         ),
@@ -337,7 +337,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                            color: isSelected 
+                            color: isSelected
                                 ? AppColors.primaryGreen
                                 : Colors.grey,
                           ),
@@ -373,7 +373,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           Text(
             "Opacity: ${(_stampOpacity * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -389,9 +389,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Text(
             "Size: ${(_stampSize * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -407,9 +407,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Text(
             "Rotation: ${_rotation.toInt()}°",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -425,9 +425,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -478,7 +478,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             height: 300,
             decoration: BoxDecoration(
@@ -493,13 +493,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.description,
                         size: 64,
                         color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
+                      Text(
                         "PDF Preview",
                         style: TextStyle(
                           fontSize: 18,
@@ -510,7 +510,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Applied Stamps
                 ..._appliedStamps.map((stamp) {
                   return Positioned(
@@ -545,7 +545,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               ],
             ),
           ),
-          
+
           if (_appliedStamps.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
@@ -581,9 +581,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           size: 16,
                         ),
                         const SizedBox(width: 4),
-                        const Text(
+                        Text(
                           stamp['name'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.primaryGreen,
                           ),
@@ -616,13 +616,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         onPressed: _isProcessing ? null : _applyStamps,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : Icon(Icons.assignment),
         label: Text(_isProcessing ? "Applying..." : "Apply Stamps"),
         style: ElevatedButton.styleFrom(
@@ -675,7 +675,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -714,9 +714,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -826,7 +826,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
 
   void _addStampToPage() {
     if (_selectedStamp.isEmpty) return;
-    
+
     final stamp = _stamps.firstWhere((s) => s['id'] == _selectedStamp);
     setState(() {
       _appliedStamps.add({
@@ -863,9 +863,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     try {
       // Simulate stamp application process
       await Future.delayed(const Duration(seconds: 2));
-      
+
       final outputPath = await _getOutputPath('stamped_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      
+
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
@@ -883,7 +883,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -897,7 +897,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
 
   Future<void> _openStampedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.openFile(file);
@@ -915,7 +915,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
 
   Future<void> _shareStampedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.shareFile(file);
@@ -936,4 +936,3 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     return '$directory/$filename';
   }
 }
-

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import '../widgets/featured_tool_card.dart';
-import '../services/local_analytics_service.dart';
-import '../services/performance_service.dart';
-import 'tools_screen.dart';
-import 'recent_files_screen.dart';
-import 'ai_tools_screen.dart';
-import 'advanced_tools_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/widgets/featured_tool_card.dart';
+import 'package:inkwise_pdf/services/local_analytics_service.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
+import 'package:inkwise_pdf/screens/tools_screen.dart';
+import 'package:inkwise_pdf/screens/recent_files_screen.dart';
+import 'package:inkwise_pdf/screens/ai_tools_screen.dart';
+import 'package:inkwise_pdf/screens/advanced_tools_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 600), // Faster animation
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
     );
@@ -42,14 +42,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
-    
+
     // Start animations immediately for faster perceived performance
     _animationController.forward();
     _slideController.forward();
-    
+
     // Preload essential data for faster navigation
     _preloadData();
-    
+
     // Log screen view with local analytics
     LocalAnalyticsService().logScreenView('home_screen');
   }
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // Warm up tool lists and search data
       _performSearch('');
     });
-    
+
     // Preload common services
     await Future.microtask(() {
       PerformanceService().getPerformanceStats();
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -161,8 +161,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.gradientStart.withOpacity(0.05),
-                AppColors.gradientEnd.withOpacity(0.02),
+                AppColors.gradientStart.withValues(alpha: 0.05),
+                AppColors.gradientEnd.withValues(alpha: 0.02),
               ],
             ),
           ),
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: AppColors.glassLight,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
-              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: AppColors.glassLight,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
-              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -219,13 +219,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withOpacity(0.1),
-            AppColors.gradientEnd.withOpacity(0.05),
+            AppColors.gradientStart.withValues(alpha: 0.1),
+            AppColors.gradientEnd.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(
-          color: AppColors.gradientStart.withOpacity(0.1),
+          color: AppColors.gradientStart.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.gradientStart.withOpacity(0.3),
+                      color: AppColors.gradientStart.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -301,10 +301,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -473,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Essential PDF operations",
               Icons.build,
               AppColors.primaryBlue,
-              () => Navigator.push(
+                  () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
               ),
@@ -483,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Smart AI-powered features",
               Icons.psychology,
               AppColors.primaryPurple,
-              () => Navigator.push(
+                  () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AIToolsScreen()),
               ),
@@ -493,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Professional features",
               Icons.tune,
               AppColors.primaryOrange,
-              () => Navigator.push(
+                  () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
               ),
@@ -503,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Protect your documents",
               Icons.security,
               AppColors.primaryRed,
-              () => Navigator.push(
+                  () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
               ),
@@ -520,7 +520,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: [
@@ -544,7 +544,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Container(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
@@ -610,7 +610,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
-              color: AppColors.textSecondaryLight.withOpacity(0.1),
+              color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
               width: 1,
             ),
           ),
@@ -621,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Container(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryBlue.withOpacity(0.1),
+                    color: AppColors.primaryBlue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
@@ -648,7 +648,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _showSearchDialog() {
     String searchQuery = '';
     List<Map<String, dynamic>> searchResults = [];
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -723,7 +723,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               leading: Container(
                                 padding: const EdgeInsets.all(AppSpacing.sm),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue.withOpacity(0.1),
+                                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(AppRadius.sm),
                                 ),
                                 child: Icon(
@@ -776,7 +776,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> _performSearch(String query) {
     if (query.isEmpty) return [];
-    
+
     final allTools = [
       // Core PDF Tools
       {'title': 'Merge PDFs', 'subtitle': 'Combine multiple PDF files', 'icon': Icons.merge, 'route': '/tools/merge'},
@@ -788,7 +788,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       {'title': 'Add Watermark', 'subtitle': 'Add text or image watermarks', 'icon': Icons.water_drop, 'route': '/tools/watermark'},
       {'title': 'PDF to Images', 'subtitle': 'Convert PDF pages to images', 'icon': Icons.image, 'route': '/tools/images'},
       {'title': 'Grayscale PDF', 'subtitle': 'Convert to black and white', 'icon': Icons.filter_b_and_w, 'route': '/tools/grayscale'},
-      
+
       // AI Tools
       {'title': 'Smart Summarizer', 'subtitle': 'Extract key insights from documents', 'icon': Icons.auto_awesome, 'route': '/ai/summarizer'},
       {'title': 'Offline Translator', 'subtitle': 'Translate documents offline', 'icon': Icons.translate, 'route': '/ai/translator'},
@@ -798,22 +798,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       {'title': 'Keyword Analytics', 'subtitle': 'Analyze document keywords and frequency', 'icon': Icons.analytics, 'route': '/ai/analytics'},
       {'title': 'Handwriting Recognition', 'subtitle': 'Convert handwritten text to digital', 'icon': Icons.edit, 'route': '/ai/handwriting'},
       {'title': 'Content Cleanup', 'subtitle': 'Clean and enhance document content', 'icon': Icons.cleaning_services, 'route': '/ai/cleanup'},
-      
+
       // Advanced Tools
       {'title': 'Layout Designer', 'subtitle': 'Design custom page layouts', 'icon': Icons.design_services, 'route': '/advanced/layout'},
       {'title': 'Color Converter', 'subtitle': 'Convert colors with threshold control', 'icon': Icons.palette, 'route': '/advanced/color'},
       {'title': 'Dual Page View', 'subtitle': 'View two pages side by side', 'icon': Icons.view_column, 'route': '/advanced/dual'},
-      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents', 'icon': Icons.stamp, 'route': '/advanced/stamps'},
+      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents', 'icon': Icons.bookmark, 'route': '/advanced/stamps'},
       {'title': 'Version History', 'subtitle': 'Track document versions', 'icon': Icons.history, 'route': '/advanced/version'},
       {'title': 'PDF Indexer', 'subtitle': 'Index and search documents', 'icon': Icons.search, 'route': '/advanced/indexer'},
       {'title': 'Auto Tagging', 'subtitle': 'Automatically tag documents', 'icon': Icons.local_offer, 'route': '/advanced/tagging'},
       {'title': 'Batch Tool Chain', 'subtitle': 'Process multiple files efficiently', 'icon': Icons.settings_suggest, 'route': '/advanced/batch'},
       {'title': 'Table Extractor', 'subtitle': 'Extract tables from documents', 'icon': Icons.table_chart, 'route': '/advanced/table'},
     ];
-    
+
     return allTools.where((tool) {
       return tool['title'].toString().toLowerCase().contains(query.toLowerCase()) ||
-             tool['subtitle'].toString().toLowerCase().contains(query.toLowerCase());
+          tool['subtitle'].toString().toLowerCase().contains(query.toLowerCase());
     }).toList();
   }
 
@@ -831,4 +831,3 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
-

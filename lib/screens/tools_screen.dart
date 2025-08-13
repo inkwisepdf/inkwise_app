@@ -48,7 +48,7 @@ class ToolsScreen extends StatelessWidget {
         "route": const PDFRotateScreen(),
         "description": "Rotate page orientation",
       },
-      
+
       // Text & OCR Tools
       {
         "title": "OCR Tool",
@@ -64,7 +64,7 @@ class ToolsScreen extends StatelessWidget {
         "route": const PDFEditorScreen(),
         "description": "Edit PDF content and layout",
       },
-      
+
       // Conversion Tools
       {
         "title": "PDF to Images",
@@ -80,7 +80,7 @@ class ToolsScreen extends StatelessWidget {
         "route": const PDFGrayscaleScreen(),
         "description": "Convert to black and white",
       },
-      
+
       // Security Tools
       {
         "title": "Add Password",
@@ -109,16 +109,16 @@ class ToolsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(context), // Pass context to _buildHeader
             const SizedBox(height: 24),
-            _buildToolsGrid(context, tools),
+            _buildToolsGrid(context, tools), // Pass context to _buildToolsGrid
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) { // Add context parameter
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -173,7 +173,7 @@ class ToolsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildToolsGrid(BuildContext context, List<Map<String, dynamic>> tools) {
+  Widget _buildToolsGrid(BuildContext context, List<Map<String, dynamic>> tools) { // Add context parameter
     return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 16,

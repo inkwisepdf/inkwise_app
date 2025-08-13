@@ -18,7 +18,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
   bool _isProcessing = false;
   String _sourceLanguage = 'Auto Detect';
   String _targetLanguage = 'English';
-  
+
   final Map<String, String> _languages = {
     'Auto Detect': 'auto',
     'English': 'en',
@@ -252,7 +252,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           // Source Language
           Text(
             "Source Language",
@@ -281,9 +281,9 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Target Language
           Text(
             "Target Language",
@@ -312,9 +312,9 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
               });
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Translation Quality
           Text(
             "Translation Quality",
@@ -364,13 +364,13 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         onPressed: _isProcessing ? null : _processTranslation,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.translate),
         label: Text(_isProcessing ? "Translating..." : "Translate PDF"),
         style: ElevatedButton.styleFrom(
@@ -456,7 +456,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                 child: OutlinedButton.icon(
                   onPressed: () async {
                     try {
-                      await FileService().copyToClipboard(_translatedText!);
+                      await FileService.copyToClipboard(_translatedText!);  // Changed from instance to static method call
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Translation copied to clipboard'),
@@ -486,7 +486,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                   onPressed: () async {
                     try {
                       final filename = 'translated_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService().saveTextAsFile(_translatedText!, filename);
+                      await FileService.saveTextAsFile(_translatedText!, filename);  // Changed from instance to static method call
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Translation saved as $filename'),
@@ -563,7 +563,7 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error translating PDF: $e'),

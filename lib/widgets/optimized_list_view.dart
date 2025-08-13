@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// Optimized ListView with performance improvements
 class OptimizedListView extends StatelessWidget {
@@ -136,7 +138,7 @@ class OptimizedScrollView extends StatelessWidget {
   final ScrollController? controller;
   final bool? primary;
   final bool reverse;
-  final ScrollDragStartBehavior dragStartBehavior;
+  final DragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
@@ -149,7 +151,7 @@ class OptimizedScrollView extends StatelessWidget {
     this.controller,
     this.primary,
     this.reverse = false,
-    this.dragStartBehavior = ScrollDragStartBehavior.start,
+    this.dragStartBehavior = DragStartBehavior.start,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
@@ -265,4 +267,3 @@ class OptimizedImage extends StatelessWidget {
     );
   }
 }
-
