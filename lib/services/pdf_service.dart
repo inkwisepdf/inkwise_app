@@ -462,9 +462,9 @@ class PDFService {
 
         // Draw watermark
         final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor(
-          color.red,
-          color.green,
-          color.blue,
+          (color.red * 255.0).round() & 0xff,
+          (color.green * 255.0).round() & 0xff,
+          (color.blue * 255.0).round() & 0xff,
         ));
 
         // Apply opacity using transparency
