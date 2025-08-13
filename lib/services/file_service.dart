@@ -79,7 +79,7 @@ class FileService {
     try {
       await SharePlus.instance.share(
         ShareParams(
-          files: [file.path],
+          files: [XFile(file.path)],
           text: 'Shared from Inkwise PDF',
         ),
       );
