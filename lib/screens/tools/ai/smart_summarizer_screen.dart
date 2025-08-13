@@ -98,9 +98,9 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 Text(
                   "AI-Powered Summarization",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryPurple,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.primaryPurple,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -250,8 +250,8 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
           Text(
             "Output Language",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
@@ -261,7 +261,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
             items: _languages.map((language) {
               return DropdownMenuItem(
@@ -282,8 +282,8 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
           Text(
             "Summary Length",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -304,7 +304,7 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               ),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppColors.primaryPurple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
@@ -331,13 +331,13 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         onPressed: _isProcessing ? null : _processSummarization,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.auto_awesome),
         label: Text(_isProcessing ? "Processing..." : "Generate Summary"),
         style: ElevatedButton.styleFrom(
@@ -383,9 +383,9 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
               Text(
                 "Generated Summary",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryGreen,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.primaryGreen,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -402,19 +402,23 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                   onPressed: () async {
                     try {
                       await FileService.copyToClipboard(_summary!);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Summary copied to clipboard'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Summary copied to clipboard'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error copying summary: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error copying summary: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.copy),
@@ -433,19 +437,23 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                       final filename =
                           'summary_${DateTime.now().millisecondsSinceEpoch}.txt';
                       await FileService.saveTextAsFile(_summary!, filename);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Summary saved as $filename'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Summary saved as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error saving summary: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error saving summary: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.save),
@@ -477,12 +485,14 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -510,12 +520,14 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error generating summary: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error generating summary: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

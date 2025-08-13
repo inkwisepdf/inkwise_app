@@ -784,15 +784,16 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting image: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting image: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
-
   Future<void> _pickColor() async {
     // Simple color picker - in a real app, you'd use a proper color picker package
     final colors = [

@@ -86,9 +86,9 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 Text(
                   "PDF Compression",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryGreen,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.primaryGreen,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -238,8 +238,8 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
           Text(
             "Compression Quality",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -260,7 +260,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               ),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
@@ -317,13 +317,13 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         onPressed: _isProcessing ? null : _compressPDF,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.compress),
         label: Text(_isProcessing ? "Compressing..." : "Compress PDF"),
         style: ElevatedButton.styleFrom(
@@ -341,7 +341,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
   Widget _buildResult() {
     final compressionRatio = _originalSize != null && _compressedSize != null
         ? ((_originalSize! - _compressedSize!) / _originalSize! * 100)
-            .toStringAsFixed(1)
+        .toStringAsFixed(1)
         : '0';
 
     return Container(
@@ -374,9 +374,9 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               Text(
                 "Compression Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryBlue,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.primaryBlue,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -439,12 +439,14 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                       await FileService.openFile(
                           file); // Changed from instance to static method call
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error opening file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error opening file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.open_in_new),
@@ -464,12 +466,14 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                       await FileService.shareFile(
                           file); // Changed from instance to static method call
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error sharing file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error sharing file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.share),
@@ -537,12 +541,14 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -567,23 +573,27 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('PDF compressed successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('PDF compressed successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error compressing PDF: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error compressing PDF: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

@@ -485,12 +485,14 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                   onPressed: () async {
                     try {
                       await FileService.copyToClipboard(_extractedText!);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Text copied to clipboard'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Text copied to clipboard'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -519,12 +521,14 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                           'ocr_extracted_${DateTime.now().millisecondsSinceEpoch}.txt';
                       await FileService.saveTextAsFile(
                           _extractedText!, filename);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Text saved as $filename'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Text saved as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(

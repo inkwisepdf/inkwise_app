@@ -125,9 +125,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                 Text(
                   "Redaction Tool",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryRed,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.primaryRed,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -398,9 +398,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Text(
             "Add keywords or patterns to redact from the document",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
+              color:
+              Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ),
           const SizedBox(height: 16),
           Row(
@@ -428,8 +428,8 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
             Text(
               "Current Keywords (${_redactionKeywords.length})",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -486,13 +486,13 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         onPressed: _isProcessing ? null : _detectAndRedact,
         icon: _isProcessing
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        )
             : const Icon(Icons.search),
         label: Text(_isProcessing ? "Processing..." : "Detect & Redact"),
         style: ElevatedButton.styleFrom(
@@ -538,9 +538,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               Text(
                 "Detected Items",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryOrange,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.primaryOrange,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -696,9 +696,9 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
               Text(
                 "Redaction Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryGreen,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.primaryGreen,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -789,12 +789,14 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -891,23 +893,27 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Found ${mockItems.length} items to redact'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Found ${mockItems.length} items to redact'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error detecting items: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error detecting items: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -921,15 +927,17 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
 
   Future<void> _applyRedaction() async {
     final selectedItems =
-        _detectedItems.where((item) => item['selected'] == true).toList();
+    _detectedItems.where((item) => item['selected'] == true).toList();
 
     if (selectedItems.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No items selected for redaction'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No items selected for redaction'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
       return;
     }
 
@@ -949,23 +957,27 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Successfully redacted ${selectedItems.length} items!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Successfully redacted ${selectedItems.length} items!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error applying redaction: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error applying redaction: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -977,12 +989,14 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
       await FileService.openFile(
           file); // Changed from instance to static method call
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error opening file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -994,12 +1008,14 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
       await FileService.shareFile(
           file); // Changed from instance to static method call
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
