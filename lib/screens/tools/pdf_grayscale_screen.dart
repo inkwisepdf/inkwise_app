@@ -17,8 +17,9 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
   bool _isProcessing = false;
   String? _outputPath;
   double _threshold = 0.5;
-  String _conversionMode = 'all_pages'; // 'all_pages', 'specific_pages', 'page_range'
-  List<int> _selectedPages = [];
+  String _conversionMode =
+      'all_pages'; // 'all_pages', 'specific_pages', 'page_range'
+  final List<int> _selectedPages = [];
   int? _startPage;
   int? _endPage;
   int _totalPages = 0;
@@ -79,7 +80,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               color: AppColors.primaryOrange,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.filter_alt,
               color: Colors.white,
               size: 24,
@@ -93,9 +94,9 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                 Text(
                   "Grayscale PDF",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryOrange,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryOrange,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -194,7 +195,10 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB • Pages: $_totalPages",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -241,7 +245,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           RadioListTile<String>(
             title: const Text("Convert all pages"),
             subtitle: const Text("Convert every page to grayscale"),
@@ -257,7 +260,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           RadioListTile<String>(
             title: const Text("Convert specific pages"),
             subtitle: const Text("Select individual pages to convert"),
@@ -272,7 +274,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           RadioListTile<String>(
             title: const Text("Convert page range"),
             subtitle: const Text("Convert a range of pages"),
@@ -286,14 +287,13 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           if (_conversionMode == 'specific_pages') ...[
             const SizedBox(height: 16),
             Text(
               "Select Pages",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -313,12 +313,16 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primaryOrange : Colors.grey.withValues(alpha: 0.1),
+                      color: isSelected
+                          ? AppColors.primaryOrange
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected ? AppColors.primaryOrange : Colors.grey,
+                        color:
+                            isSelected ? AppColors.primaryOrange : Colors.grey,
                       ),
                     ),
                     child: Text(
@@ -333,7 +337,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               }),
             ),
           ],
-          
           if (_conversionMode == 'page_range') ...[
             const SizedBox(height: 16),
             Row(
@@ -399,7 +402,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           Text(
             "Threshold: ${(_threshold * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -415,9 +417,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Preserve Text Quality"),
             subtitle: const Text("Maintain text readability during conversion"),
@@ -429,7 +429,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           SwitchListTile(
             title: const Text("Enhance Contrast"),
             subtitle: const Text("Improve contrast for better readability"),
@@ -441,25 +440,23 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           const SizedBox(height: 12),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColors.primaryOrange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline,
                   color: AppColors.primaryOrange,
                   size: 16,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
-                  child: const Text(
+                  child: Text(
                     "Threshold controls the brightness level at which colors are converted to black or white. Lower values create darker images, higher values create lighter images.",
                     style: TextStyle(
                       color: AppColors.primaryOrange,
@@ -476,10 +473,14 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-        (_conversionMode == 'all_pages' || 
-         (_conversionMode == 'specific_pages' && _selectedPages.isNotEmpty) ||
-         (_conversionMode == 'page_range' && _startPage != null && _endPage != null && _startPage! <= _endPage!));
+    bool canProcess = _selectedFile != null &&
+        (_conversionMode == 'all_pages' ||
+            (_conversionMode == 'specific_pages' &&
+                _selectedPages.isNotEmpty) ||
+            (_conversionMode == 'page_range' &&
+                _startPage != null &&
+                _endPage != null &&
+                _startPage! <= _endPage!));
 
     return SizedBox(
       width: double.infinity,
@@ -539,14 +540,13 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               Text(
                 "Conversion Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -585,7 +585,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -610,7 +609,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -662,7 +661,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
           _startPage = null;
           _endPage = null;
         });
-        
+
         // Get total pages
         await _getTotalPages();
       }
@@ -723,12 +722,12 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
         if (_startPage == null || _endPage == null) {
           throw Exception('Please specify start and end pages');
         }
-        
+
         final pageNumbers = List.generate(
           _endPage! - _startPage! + 1,
           (index) => _startPage! + index,
         );
-        
+
         grayscaleFile = await pdfService.convertToGrayscale(
           _selectedFile!,
           threshold: _threshold,
@@ -745,8 +744,8 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('PDF converted to grayscale successfully!'),
+          const SnackBar(
+            content: Text('PDF converted to grayscale successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -755,7 +754,7 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -767,4 +766,3 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
     }
   }
 }
-

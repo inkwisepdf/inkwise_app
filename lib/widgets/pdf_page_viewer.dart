@@ -19,4 +19,3 @@ class PDFPageViewer extends StatelessWidget {
     );
   }
 }
-

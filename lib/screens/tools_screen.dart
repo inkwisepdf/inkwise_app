@@ -118,7 +118,8 @@ class ToolsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) { // Add context parameter
+  Widget _buildHeader(BuildContext context) {
+    // Add context parameter
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -156,9 +157,9 @@ class ToolsScreen extends StatelessWidget {
                 Text(
                   "PDF Tools",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -173,7 +174,9 @@ class ToolsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildToolsGrid(BuildContext context, List<Map<String, dynamic>> tools) { // Add context parameter
+  Widget _buildToolsGrid(
+      BuildContext context, List<Map<String, dynamic>> tools) {
+    // Add context parameter
     return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 16,

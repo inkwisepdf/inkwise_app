@@ -25,9 +25,11 @@ class FloatingToolbox extends StatelessWidget {
           spacing: 12,
           children: [
             IconButton(icon: const Icon(Icons.edit), onPressed: onEditText),
-            IconButton(icon: const Icon(Icons.text_fields), onPressed: onAddText),
+            IconButton(
+                icon: const Icon(Icons.text_fields), onPressed: onAddText),
             IconButton(icon: const Icon(Icons.image), onPressed: onAddImage),
-            IconButton(icon: const Icon(Icons.document_scanner), onPressed: onOCR),
+            IconButton(
+                icon: const Icon(Icons.document_scanner), onPressed: onOCR),
           ],
         ),
       ),

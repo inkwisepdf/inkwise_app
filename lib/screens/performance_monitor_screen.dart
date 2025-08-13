@@ -8,7 +8,8 @@ class PerformanceMonitorScreen extends StatefulWidget {
   const PerformanceMonitorScreen({super.key});
 
   @override
-  State<PerformanceMonitorScreen> createState() => _PerformanceMonitorScreenState();
+  State<PerformanceMonitorScreen> createState() =>
+      _PerformanceMonitorScreenState();
 }
 
 class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
@@ -55,22 +56,22 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: AppSpacing.xl),
-            _buildPerformanceOverview(),
-            const SizedBox(height: AppSpacing.xl),
-            _buildOperationPerformance(),
-            const SizedBox(height: AppSpacing.xl),
-            _buildCachePerformance(),
-            const SizedBox(height: AppSpacing.xl),
-            _buildOptimizationSuggestions(),
-          ],
-        ),
-      ),
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: AppSpacing.xl),
+                  _buildPerformanceOverview(),
+                  const SizedBox(height: AppSpacing.xl),
+                  _buildOperationPerformance(),
+                  const SizedBox(height: AppSpacing.xl),
+                  _buildCachePerformance(),
+                  const SizedBox(height: AppSpacing.xl),
+                  _buildOptimizationSuggestions(),
+                ],
+              ),
+            ),
     );
   }
 
@@ -138,14 +139,15 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
   Widget _buildPerformanceOverview() {
     final totalOperations = _performanceStats.values.fold<int>(
       0,
-          (sum, operation) => sum + (operation['count'] as int),
+      (sum, operation) => sum + (operation['count'] as int),
     );
 
     final averageResponseTime = totalOperations > 0
         ? _performanceStats.values.fold<double>(
-      0,
-          (sum, operation) => sum + (operation['average'] as double),
-    ) / _performanceStats.length
+              0,
+              (sum, operation) => sum + (operation['average'] as double),
+            ) /
+            _performanceStats.length
         : 0.0;
 
     return Column(
@@ -184,7 +186,8 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
@@ -250,11 +253,13 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
             BarChartData(
               alignment: BarChartAlignment.spaceAround,
               maxY: _getMaxResponseTime(),
-              barTouchData: BarTouchData(enabled: false),
+              barTouchData: const BarTouchData(enabled: false),
               titlesData: FlTitlesData(
                 show: true,
-                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -374,7 +379,8 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     );
   }
 
-  Widget _buildCacheCard(String title, String usage, String memory, IconData icon, Color color) {
+  Widget _buildCacheCard(
+      String title, String usage, String memory, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
@@ -449,7 +455,8 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
       if (average > 1000) {
         suggestions.add({
           'title': 'Slow Operation Detected',
-          'description': '$operation is taking ${average.toStringAsFixed(0)}ms on average',
+          'description':
+              '$operation is taking ${average.toStringAsFixed(0)}ms on average',
           'icon': Icons.warning,
           'color': AppColors.primaryOrange,
           'priority': 'High',
@@ -463,7 +470,8 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     if (imageCacheSize < maxImageCacheSize * 0.3) {
       suggestions.add({
         'title': 'Cache Underutilized',
-        'description': 'Image cache is only ${(imageCacheSize / maxImageCacheSize * 100).toStringAsFixed(0)}% full',
+        'description':
+            'Image cache is only ${(imageCacheSize / maxImageCacheSize * 100).toStringAsFixed(0)}% full',
         'icon': Icons.info,
         'color': AppColors.primaryBlue,
         'priority': 'Medium',

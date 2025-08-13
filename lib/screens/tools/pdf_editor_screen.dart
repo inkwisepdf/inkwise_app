@@ -19,8 +19,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
   String _textContent = '';
   double _textOpacity = 1.0;
   double _textSize = 16.0;
-  Color _textColor = AppColors.textPrimaryLight;
-  Offset _textPosition = const Offset(100, 100);
+  final Color _textColor = AppColors.textPrimaryLight;
+  final Offset _textPosition = const Offset(100, 100);
 
   final TextEditingController _textController = TextEditingController();
 
@@ -90,8 +90,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
                 colors: [AppColors.gradientStart, AppColors.gradientEnd],
               ),
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -165,7 +165,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               ),
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.upload_file,
                     size: 48,
                     color: AppColors.textSecondaryLight,
@@ -193,7 +193,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.description,
                     color: AppColors.primaryBlue,
                     size: 24,
@@ -238,7 +238,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
             child: ElevatedButton.icon(
               onPressed: _pickFile,
               icon: const Icon(Icons.folder_open),
-              label: Text(_selectedFile == null ? "Select File" : "Change File"),
+              label:
+                  Text(_selectedFile == null ? "Select File" : "Change File"),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 foregroundColor: Colors.white,
@@ -288,10 +289,13 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     setState(() => _editMode = entry.key);
                   }
                 },
-                backgroundColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
+                backgroundColor:
+                    AppColors.textSecondaryLight.withValues(alpha: 0.1),
                 selectedColor: AppColors.primaryBlue.withValues(alpha: 0.2),
                 labelStyle: AppTypography.labelMedium.copyWith(
-                  color: isSelected ? AppColors.primaryBlue : AppColors.textSecondaryLight,
+                  color: isSelected
+                      ? AppColors.primaryBlue
+                      : AppColors.textSecondaryLight,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
               );
@@ -374,7 +378,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                         min: 0.1,
                         max: 1.0,
                         divisions: 9,
-                        onChanged: (value) => setState(() => _textOpacity = value),
+                        onChanged: (value) =>
+                            setState(() => _textOpacity = value),
                       ),
                     ],
                   ),
@@ -427,7 +432,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.picture_as_pdf,
                         size: 64,
                         color: AppColors.textSecondaryLight,
@@ -473,13 +478,13 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         onPressed: _isProcessing ? null : _processEdit,
         icon: _isProcessing
             ? const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        )
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
             : const Icon(Icons.save),
         label: Text(_isProcessing ? "Processing..." : "Save Edited PDF"),
         style: ElevatedButton.styleFrom(
@@ -510,7 +515,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.check_circle,
                 color: AppColors.success,
                 size: 24,
@@ -591,7 +596,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
       await Future.delayed(const Duration(seconds: 2));
 
       final directory = await FileService.getAppDirectoryPath();
-      final outputPath = '$directory/edited_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      final outputPath =
+          '$directory/edited_${DateTime.now().millisecondsSinceEpoch}.pdf';
 
       setState(() {
         _outputPath = outputPath;
@@ -600,8 +606,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('PDF edited successfully!'),
+          const SnackBar(
+            content: Text('PDF edited successfully!'),
             backgroundColor: AppColors.success,
           ),
         );

@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 
-
 class SecureVaultScreen extends StatefulWidget {
   const SecureVaultScreen({super.key});
 
@@ -13,9 +12,9 @@ class SecureVaultScreen extends StatefulWidget {
 
 class _SecureVaultScreenState extends State<SecureVaultScreen> {
   bool _isUnlocked = false;
-  String _masterPassword = '';
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _showPassword = false;
   List<Map<String, dynamic>> _vaultFiles = [];
   bool _isProcessing = false;
@@ -81,10 +80,10 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-            color: AppColors.primaryRed.withValues(alpha: 0.2),
-            width: 1,
-          ),
+        border: Border.all(
+          color: AppColors.primaryRed.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
@@ -106,15 +105,17 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _isUnlocked ? "Secure Vault (Unlocked)" : "Secure Vault (Locked)",
+                  _isUnlocked
+                      ? "Secure Vault (Unlocked)"
+                      : "Secure Vault (Locked)",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _isUnlocked 
+                  _isUnlocked
                       ? "Your files are securely encrypted and protected"
                       : "Enter master password to access your secure files",
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -145,7 +146,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           TextField(
             controller: _passwordController,
             obscureText: !_showPassword,
@@ -156,7 +156,8 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               suffixIcon: IconButton(
-                icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(
+                    _showPassword ? Icons.visibility : Icons.visibility_off),
                 onPressed: () {
                   setState(() {
                     _showPassword = !_showPassword;
@@ -165,9 +166,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               ),
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
@@ -193,23 +192,21 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               ),
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColors.primaryRed.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.security,
                   color: AppColors.primaryRed,
                   size: 16,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     "Your master password is used to encrypt/decrypt all files in the vault. Keep it safe and never share it.",
@@ -228,9 +225,10 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   }
 
   Widget _buildVaultStats() {
-    final totalSize = _vaultFiles.fold<double>(0, (sum, file) => sum + (file['size'] ?? 0));
+    final totalSize =
+        _vaultFiles.fold<double>(0, (sum, file) => sum + (file['size'] ?? 0));
     final totalFiles = _vaultFiles.length;
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -254,9 +252,9 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 Text(
                   totalFiles.toString(),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 Text(
                   "Files",
@@ -280,9 +278,9 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 Text(
                   "${(totalSize / 1024 / 1024).toStringAsFixed(1)} MB",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 Text(
                   "Total Size",
@@ -317,7 +315,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -327,7 +324,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                   label: const Text("Add File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryRed,
-                    side: BorderSide(color: AppColors.primaryRed),
+                    side: const BorderSide(color: AppColors.primaryRed),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
@@ -340,7 +337,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                   label: const Text("Add Multiple"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryRed,
-                    side: BorderSide(color: AppColors.primaryRed),
+                    side: const BorderSide(color: AppColors.primaryRed),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
@@ -374,15 +371,21 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
             Text(
               "No Files in Vault",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               "Add files to your secure vault to keep them encrypted and protected",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -434,7 +437,10 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 subtitle: Text(
                   "${(file['size'] / 1024 / 1024).toStringAsFixed(2)} MB • Added ${file['date']}",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
                     fontSize: 12,
                   ),
                 ),
@@ -484,7 +490,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   Future<void> _loadVaultFiles() async {
     // Simulate loading vault files
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     setState(() {
       _vaultFiles = [
         {
@@ -512,7 +518,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   Future<void> _unlockVault() async {
     if (_passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please enter your master password'),
           backgroundColor: AppColors.primaryRed,
         ),
@@ -527,20 +533,20 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
     try {
       // Simulate vault unlocking
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // In a real app, you would verify the password against stored hash
-      if (_passwordController.text == 'vault123') { // Demo password
+      if (_passwordController.text == 'vault123') {
+        // Demo password
         setState(() {
           _isUnlocked = true;
-          _masterPassword = _passwordController.text;
           _isProcessing = false;
         });
-        
+
         _passwordController.clear();
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Vault unlocked successfully!'),
               backgroundColor: AppColors.primaryGreen,
             ),
@@ -553,7 +559,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -568,12 +574,11 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   void _lockVault() {
     setState(() {
       _isUnlocked = false;
-      _masterPassword = '';
     });
-    
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Vault locked'),
           backgroundColor: AppColors.primaryOrange,
         ),
@@ -636,19 +641,19 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
     try {
       // Simulate file encryption
       await Future.delayed(const Duration(seconds: 1));
-      
+
       final newFile = {
         'name': file.path.split('/').last,
         'size': await file.length(),
         'date': DateTime.now().toString().split(' ')[0],
         'path': '/vault/${file.path.split('/').last}',
       };
-      
+
       setState(() {
         _vaultFiles.add(newFile);
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${newFile['name']} added to vault'),
@@ -659,7 +664,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error encrypting file: $e'),
@@ -671,7 +676,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
 
   Future<void> _handleFileAction(String action, int index) async {
     final file = _vaultFiles[index];
-    
+
     try {
       switch (action) {
         case 'open':
@@ -683,7 +688,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
             ),
           );
           break;
-          
+
         case 'share':
           // Simulate sharing encrypted file
           ScaffoldMessenger.of(context).showSnackBar(
@@ -693,13 +698,13 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
             ),
           );
           break;
-          
+
         case 'remove':
           // Remove file from vault
           setState(() {
             _vaultFiles.removeAt(index);
           });
-          
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${file['name']} removed from vault'),
@@ -718,4 +723,3 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
     }
   }
 }
-

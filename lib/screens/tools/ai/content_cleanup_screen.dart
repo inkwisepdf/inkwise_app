@@ -105,9 +105,9 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                 Text(
                   "Content Cleanup",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -140,7 +140,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _fileType,
             decoration: InputDecoration(
@@ -164,9 +163,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           if (_selectedFile == null)
             GestureDetector(
               onTap: _selectFile,
@@ -191,7 +188,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                     const SizedBox(height: 8),
                     Text(
                       "Tap to select ${_fileType == 'image' ? 'image' : 'PDF'} file",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primaryGreen,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -233,7 +230,10 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -277,7 +277,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _cleanupMode,
             decoration: InputDecoration(
@@ -298,9 +297,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Cleanup Intensity: ${(_cleanupIntensity * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -316,17 +313,14 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Cleanup Options",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-          
           SwitchListTile(
             title: const Text("Remove Watermarks"),
             subtitle: const Text("Detect and remove watermarks"),
@@ -338,7 +332,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Remove Stains"),
             subtitle: const Text("Clean up stains and marks"),
@@ -350,7 +343,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Remove Noise"),
             subtitle: const Text("Reduce image noise and artifacts"),
@@ -362,7 +354,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Enhance Text"),
             subtitle: const Text("Improve text readability"),
@@ -374,7 +365,6 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Preserve Colors"),
             subtitle: const Text("Maintain original colors"),
@@ -426,7 +416,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
         color: AppColors.primaryOrange.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-                      color: AppColors.primaryOrange.withValues(alpha: 0.2),
+          color: AppColors.primaryOrange.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -437,7 +427,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                                      color: AppColors.primaryOrange.withValues(alpha: 0.1),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -450,14 +440,13 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               Text(
                 "Detected Issues",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryOrange,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryOrange,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -478,7 +467,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                     children: [
                       Text(
                         "${_detectedIssues.length} issues found",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryOrange,
                           fontWeight: FontWeight.w600,
                         ),
@@ -496,9 +485,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -527,7 +514,10 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                   subtitle: Text(
                     "Will be cleaned up automatically",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),
@@ -535,9 +525,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               );
             },
           ),
-          
           const SizedBox(height: 16),
-          
           ElevatedButton.icon(
             onPressed: _applyCleanup,
             icon: const Icon(Icons.cleaning_services),
@@ -584,14 +572,13 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               Text(
                 "Cleanup Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -630,9 +617,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -642,7 +627,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -669,8 +654,9 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
     try {
       if (_fileType == 'image') {
         final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-        
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
+
         if (image != null) {
           setState(() {
             _selectedFile = File(image.path);
@@ -714,7 +700,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
     try {
       // Simulate analysis process
       await Future.delayed(const Duration(seconds: 3));
-      
+
       // Mock detected issues
       final mockIssues = [
         'Watermark detected',
@@ -741,7 +727,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -761,9 +747,10 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
     try {
       // Simulate cleanup process
       await Future.delayed(const Duration(seconds: 2));
-      
-      final outputPath = await _getOutputPath('cleaned_${DateTime.now().millisecondsSinceEpoch}.${_fileType == 'image' ? 'png' : 'pdf'}');
-      
+
+      final outputPath = await _getOutputPath(
+          'cleaned_${DateTime.now().millisecondsSinceEpoch}.${_fileType == 'image' ? 'png' : 'pdf'}');
+
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
@@ -771,8 +758,8 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Document cleaned successfully!'),
+          const SnackBar(
+            content: Text('Document cleaned successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -781,7 +768,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -795,7 +782,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
 
   Future<void> _openCleanedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.openFile(file);
@@ -813,7 +800,7 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
 
   Future<void> _shareCleanedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.shareFile(file);
@@ -848,4 +835,3 @@ class _ContentCleanupScreenState extends State<ContentCleanupScreen> {
     }
   }
 }
-

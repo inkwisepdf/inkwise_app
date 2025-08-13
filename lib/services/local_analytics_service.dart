@@ -8,9 +8,10 @@ class LocalAnalyticsService {
   static const String _analyticsTable = 'analytics_events';
   static const String _userActionsTable = 'user_actions';
   static const String _appUsageTable = 'app_usage';
-  
+
   // Singleton pattern
-  static final LocalAnalyticsService _instance = LocalAnalyticsService._internal();
+  static final LocalAnalyticsService _instance =
+      LocalAnalyticsService._internal();
   factory LocalAnalyticsService() => _instance;
   LocalAnalyticsService._internal();
 
@@ -23,7 +24,7 @@ class LocalAnalyticsService {
   Future<Database> _initDatabase() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'inkwise_analytics.db');
-    
+
     return await openDatabase(
       path,
       version: 1,
@@ -73,7 +74,7 @@ class LocalAnalyticsService {
       final db = await database;
       final sessionId = await _getCurrentSessionId();
       final userId = await _getUserId();
-      
+
       await db.insert(_analyticsTable, {
         'event_name': name,
         'parameters': parameters != null ? jsonEncode(parameters) : null,
@@ -83,7 +84,7 @@ class LocalAnalyticsService {
       });
 
       // Also log to user actions for detailed tracking
-      await logUserAction('analytics_event', {
+      await logUserAction('analytics_event', details: {
         'event_name': name,
         'parameters': parameters,
       });
@@ -109,10 +110,11 @@ class LocalAnalyticsService {
   }
 
   // Log user action
-  Future<void> logUserAction(String actionType, {Map<String, dynamic>? details}) async {
+  Future<void> logUserAction(String actionType,
+      {Map<String, dynamic>? details}) async {
     try {
       final db = await database;
-      
+
       await db.insert(_userActionsTable, {
         'action_type': actionType,
         'action_details': details != null ? jsonEncode(details) : null,
@@ -130,7 +132,7 @@ class LocalAnalyticsService {
     try {
       final db = await database;
       final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
-      
+
       await db.insert(_appUsageTable, {
         'session_start': DateTime.now().millisecondsSinceEpoch,
         'session_end': null,
@@ -151,7 +153,7 @@ class LocalAnalyticsService {
     try {
       final db = await database;
       final sessionId = await _getCurrentSessionId();
-      
+
       if (sessionId != null) {
         await db.update(
           _appUsageTable,
@@ -176,17 +178,22 @@ class LocalAnalyticsService {
     try {
       final db = await database;
       final startTimestamp = startDate?.millisecondsSinceEpoch ?? 0;
-      final endTimestamp = endDate?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch;
+      final endTimestamp = endDate?.millisecondsSinceEpoch ??
+          DateTime.now().millisecondsSinceEpoch;
 
       // Get event counts
-      final eventCounts = await db.rawQuery('''
+      final eventCounts = await db.rawQuery(
+          '''
         SELECT event_name, COUNT(*) as count
         FROM $_analyticsTable
         WHERE timestamp BETWEEN ? AND ?
         ${eventName != null ? 'AND event_name = ?' : ''}
         GROUP BY event_name
         ORDER BY count DESC
-      ''', eventName != null ? [startTimestamp, endTimestamp, eventName] : [startTimestamp, endTimestamp]);
+      ''',
+          eventName != null
+              ? [startTimestamp, endTimestamp, eventName]
+              : [startTimestamp, endTimestamp]);
 
       // Get screen view counts
       final screenViews = await db.rawQuery('''
@@ -235,16 +242,16 @@ class LocalAnalyticsService {
   Future<Map<String, dynamic>> getUsageStatistics() async {
     try {
       final db = await database;
-      
+
       // Total events
       final totalEvents = Sqflite.firstIntValue(
-        await db.rawQuery('SELECT COUNT(*) FROM $_analyticsTable')
-      ) ?? 0;
+              await db.rawQuery('SELECT COUNT(*) FROM $_analyticsTable')) ??
+          0;
 
       // Total sessions
       final totalSessions = Sqflite.firstIntValue(
-        await db.rawQuery('SELECT COUNT(*) FROM $_appUsageTable')
-      ) ?? 0;
+              await db.rawQuery('SELECT COUNT(*) FROM $_appUsageTable')) ??
+          0;
 
       // Most used features
       final topFeatures = await db.rawQuery('''
@@ -292,7 +299,7 @@ class LocalAnalyticsService {
     try {
       final analyticsData = await getAnalyticsData();
       final usageStats = await getUsageStatistics();
-      
+
       final exportData = {
         'export_date': DateTime.now().toIso8601String(),
         'analytics_data': analyticsData,
@@ -309,11 +316,16 @@ class LocalAnalyticsService {
   Future<void> clearOldData(int daysToKeep) async {
     try {
       final db = await database;
-      final cutoffTime = DateTime.now().subtract(Duration(days: daysToKeep)).millisecondsSinceEpoch;
-      
-      await db.delete(_analyticsTable, where: 'timestamp < ?', whereArgs: [cutoffTime]);
-      await db.delete(_userActionsTable, where: 'timestamp < ?', whereArgs: [cutoffTime]);
-      await db.delete(_appUsageTable, where: 'session_start < ?', whereArgs: [cutoffTime]);
+      final cutoffTime = DateTime.now()
+          .subtract(Duration(days: daysToKeep))
+          .millisecondsSinceEpoch;
+
+      await db.delete(_analyticsTable,
+          where: 'timestamp < ?', whereArgs: [cutoffTime]);
+      await db.delete(_userActionsTable,
+          where: 'timestamp < ?', whereArgs: [cutoffTime]);
+      await db.delete(_appUsageTable,
+          where: 'session_start < ?', whereArgs: [cutoffTime]);
     } catch (e) {
       // Error clearing old data
     }
@@ -364,4 +376,3 @@ class LocalAnalyticsService {
     }
   }
 }
-

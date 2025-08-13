@@ -88,9 +88,9 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                 Text(
                   "Form Detector",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -189,7 +189,10 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -232,7 +235,6 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           RadioListTile<String>(
             title: const Text("Automatic Detection"),
             subtitle: const Text("Use AI to automatically detect form fields"),
@@ -245,10 +247,10 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           RadioListTile<String>(
             title: const Text("Manual Detection"),
-            subtitle: const Text("Manually select areas to detect as form fields"),
+            subtitle:
+                const Text("Manually select areas to detect as form fields"),
             value: 'manual',
             groupValue: _detectionMode,
             onChanged: (value) {
@@ -258,9 +260,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Detection Confidence: ${(_confidence * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -276,17 +276,14 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Field Types to Detect",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-          
           SwitchListTile(
             title: const Text("Text Fields"),
             subtitle: const Text("Input boxes, text areas"),
@@ -298,7 +295,6 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Checkboxes"),
             subtitle: const Text("Check boxes and tick marks"),
@@ -310,7 +306,6 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Radio Buttons"),
             subtitle: const Text("Radio button groups"),
@@ -322,7 +317,6 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           SwitchListTile(
             title: const Text("Signature Fields"),
             subtitle: const Text("Signature areas and lines"),
@@ -389,9 +383,9 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
             Text(
               "No Forms Detected",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.primaryOrange,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: AppColors.primaryOrange,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -436,18 +430,18 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
               Text(
                 "Forms Detected",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -464,7 +458,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                     children: [
                       Text(
                         "${_detectedForms!.length} Form Fields Found",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
@@ -482,18 +476,18 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Form fields list
           Text(
             "Detected Fields",
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 12),
-          
+
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -506,7 +500,8 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: _getFieldTypeColor(field['type']).withValues(alpha: 0.1),
+                      color: _getFieldTypeColor(field['type'])
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -522,7 +517,10 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                   subtitle: Text(
                     "Page ${field['page']} • ${field['type']} • Confidence: ${(field['confidence'] * 100).toInt()}%",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
                       fontSize: 12,
                     ),
                   ),
@@ -535,9 +533,9 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
               );
             },
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -547,7 +545,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
                   label: const Text("Export Data"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -605,7 +603,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
     try {
       // Simulate form detection with AI
       await Future.delayed(const Duration(seconds: 3));
-      
+
       // Mock detected form fields
       final mockForms = [
         {
@@ -653,7 +651,8 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Successfully detected ${mockForms.length} form fields!'),
+            content:
+                Text('Successfully detected ${mockForms.length} form fields!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -662,7 +661,7 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -719,11 +718,12 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
           'confidence': field['confidence'],
         };
       }).toList();
-      
-      final filename = 'form_data_${DateTime.now().millisecondsSinceEpoch}.json';
+
+      final filename =
+          'form_data_${DateTime.now().millisecondsSinceEpoch}.json';
       final jsonString = data.toString(); // Simplified for demo
       await FileService.saveTextAsFile(jsonString, filename);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -748,11 +748,11 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
     try {
       // Simulate creating fillable PDF
       await Future.delayed(const Duration(seconds: 2));
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Fillable PDF created successfully!'),
+          const SnackBar(
+            content: Text('Fillable PDF created successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -799,4 +799,3 @@ class _FormDetectorScreenState extends State<FormDetectorScreen> {
     }
   }
 }
-

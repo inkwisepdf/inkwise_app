@@ -26,10 +26,10 @@ class ToolCard extends StatelessWidget {
           width: 1,
         ),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),

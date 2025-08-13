@@ -19,7 +19,8 @@ class AIToolsScreen extends StatefulWidget {
   State<AIToolsScreen> createState() => _AIToolsScreenState();
 }
 
-class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateMixin {
+class _AIToolsScreenState extends State<AIToolsScreen>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -109,9 +110,9 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 Text(
                   "AI-Powered Features",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -144,14 +145,15 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Smart PDF Summarizer",
                 subtitle: "Extract key points from documents",
                 icon: Icons.summarize,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryPurple, AppColors.primaryBlue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SmartSummarizerScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const SmartSummarizerScreen()),
                 ),
               ),
               const SizedBox(width: 16),
@@ -159,14 +161,15 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Offline Translator",
                 subtitle: "Translate documents without internet",
                 icon: Icons.translate,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryGreen, AppColors.primaryBlue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const OfflineTranslatorScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const OfflineTranslatorScreen()),
                 ),
               ),
               const SizedBox(width: 16),
@@ -174,14 +177,15 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
                 title: "Voice-to-Text Notes",
                 subtitle: "Record and embed voice annotations",
                 icon: Icons.mic,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryOrange, AppColors.primaryRed],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const VoiceToTextScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const VoiceToTextScreen()),
                 ),
               ),
             ],
@@ -211,7 +215,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SmartSummarizerScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const SmartSummarizerScreen()),
               ),
             ),
             ToolCard(
@@ -220,7 +225,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryGreen,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const OfflineTranslatorScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const OfflineTranslatorScreen()),
               ),
             ),
             ToolCard(
@@ -229,7 +235,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryOrange,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const VoiceToTextScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const VoiceToTextScreen()),
               ),
             ),
             ToolCard(
@@ -238,7 +245,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryBlue,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FormDetectorScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const FormDetectorScreen()),
               ),
             ),
             ToolCard(
@@ -247,7 +255,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryGreen,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const KeywordAnalyticsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const KeywordAnalyticsScreen()),
               ),
             ),
             ToolCard(
@@ -256,7 +265,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RedactionToolScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RedactionToolScreen()),
               ),
             ),
           ],
@@ -285,7 +295,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HandwritingRecognitionScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const HandwritingRecognitionScreen()),
               ),
             ),
             ToolCard(
@@ -294,7 +305,8 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
               color: AppColors.primaryBlue,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ContentCleanupScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const ContentCleanupScreen()),
               ),
             ),
           ],
@@ -303,4 +315,3 @@ class _AIToolsScreenState extends State<AIToolsScreen> with TickerProviderStateM
     );
   }
 }
-

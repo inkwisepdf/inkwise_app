@@ -247,15 +247,15 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           Text(
             "No Recent Files",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             "Your recently opened files will appear here",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondaryLight,
-            ),
+                  color: AppColors.textSecondaryLight,
+                ),
           ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
@@ -314,7 +314,8 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: _getFileTypeColor(file['type']).withValues(alpha: 0.1),
+                      color: _getFileTypeColor(file['type'])
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -345,7 +346,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
               const SizedBox(height: 4),
               Text(
                 file['size'],
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textSecondaryLight,
                   fontSize: 12,
                 ),
@@ -353,7 +354,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
               const SizedBox(height: 4),
               Text(
                 file['date'],
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textSecondaryLight,
                   fontSize: 12,
                 ),
@@ -409,9 +410,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'open',
                   child: Row(
                     children: [
-                      const Icon(Icons.open_in_new),
-                      const SizedBox(width: 8),
-                      const Text('Open'),
+                      Icon(Icons.open_in_new),
+                      SizedBox(width: 8),
+                      Text('Open'),
                     ],
                   ),
                 ),
@@ -419,9 +420,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'share',
                   child: Row(
                     children: [
-                      const Icon(Icons.share),
-                      const SizedBox(width: 8),
-                      const Text('Share'),
+                      Icon(Icons.share),
+                      SizedBox(width: 8),
+                      Text('Share'),
                     ],
                   ),
                 ),
@@ -429,9 +430,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'favorite',
                   child: Row(
                     children: [
-                      const Icon(Icons.favorite_border),
-                      const SizedBox(width: 8),
-                      const Text('Toggle Favorite'),
+                      Icon(Icons.favorite_border),
+                      SizedBox(width: 8),
+                      Text('Toggle Favorite'),
                     ],
                   ),
                 ),
@@ -439,9 +440,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'delete',
                   child: Row(
                     children: [
-                      const Icon(Icons.delete),
-                      const SizedBox(width: 8),
-                      const Text('Remove from Recent'),
+                      Icon(Icons.delete),
+                      SizedBox(width: 8),
+                      Text('Remove from Recent'),
                     ],
                   ),
                 ),
@@ -482,7 +483,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
 
   void _loadRecentFiles() {
     setState(() => _isLoading = true);
-    
+
     // Simulate loading recent files
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
@@ -600,18 +601,20 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         title: const Text('Sort By'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _sortOptions.entries.map((entry) => RadioListTile<String>(
-            title: Text(entry.value),
-            value: entry.key,
-            groupValue: _sortBy,
-            onChanged: (value) {
-              setState(() {
-                _sortBy = value!;
-                _sortFiles();
-              });
-              Navigator.pop(context);
-            },
-          )).toList(),
+          children: _sortOptions.entries
+              .map((entry) => RadioListTile<String>(
+                    title: Text(entry.value),
+                    value: entry.key,
+                    groupValue: _sortBy,
+                    onChanged: (value) {
+                      setState(() {
+                        _sortBy = value!;
+                        _sortFiles();
+                      });
+                      Navigator.pop(context);
+                    },
+                  ))
+              .toList(),
         ),
       ),
     );
@@ -624,18 +627,20 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         title: const Text('Filter By'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _filterOptions.entries.map((entry) => RadioListTile<String>(
-            title: Text(entry.value),
-            value: entry.key,
-            groupValue: _filterBy,
-            onChanged: (value) {
-              setState(() {
-                _filterBy = value!;
-                _filterFiles();
-              });
-              Navigator.pop(context);
-            },
-          )).toList(),
+          children: _filterOptions.entries
+              .map((entry) => RadioListTile<String>(
+                    title: Text(entry.value),
+                    value: entry.key,
+                    groupValue: _filterBy,
+                    onChanged: (value) {
+                      setState(() {
+                        _filterBy = value!;
+                        _filterFiles();
+                      });
+                      Navigator.pop(context);
+                    },
+                  ))
+              .toList(),
         ),
       ),
     );

@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 
-
 class DualPageViewScreen extends StatefulWidget {
   const DualPageViewScreen({super.key});
 
@@ -47,7 +46,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
         children: [
           if (_selectedFile != null) _buildControls(),
           Expanded(
-            child: _selectedFile != null ? _buildDualView() : _buildFileSelector(),
+            child:
+                _selectedFile != null ? _buildDualView() : _buildFileSelector(),
           ),
         ],
       ),
@@ -106,9 +106,9 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 Text(
                   "Dual Page View",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryOrange,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryOrange,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -202,7 +202,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                   items: _viewModeOptions.entries.map((entry) {
                     return DropdownMenuItem(
@@ -226,7 +227,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                   items: _layoutModeOptions.entries.map((entry) {
                     return DropdownMenuItem(
@@ -257,10 +259,12 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                         ),
                         keyboardType: TextInputType.number,
-                        controller: TextEditingController(text: _leftPage.toString()),
+                        controller:
+                            TextEditingController(text: _leftPage.toString()),
                         onChanged: (value) {
                           setState(() {
                             _leftPage = int.tryParse(value) ?? 1;
@@ -283,10 +287,12 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                         ),
                         keyboardType: TextInputType.number,
-                        controller: TextEditingController(text: _rightPage.toString()),
+                        controller:
+                            TextEditingController(text: _rightPage.toString()),
                         onChanged: (value) {
                           setState(() {
                             _rightPage = int.tryParse(value) ?? 2;
@@ -303,7 +309,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
           Row(
             children: [
               SwitchListTile(
-                title: const Text("Sync Scrolling", style: TextStyle(fontSize: 12)),
+                title: const Text("Sync Scrolling",
+                    style: TextStyle(fontSize: 12)),
                 value: _syncScrolling,
                 onChanged: (value) {
                   setState(() {
@@ -315,7 +322,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 dense: true,
               ),
               SwitchListTile(
-                title: const Text("Page Numbers", style: TextStyle(fontSize: 12)),
+                title:
+                    const Text("Page Numbers", style: TextStyle(fontSize: 12)),
                 value: _showPageNumbers,
                 onChanged: (value) {
                   setState(() {
@@ -327,7 +335,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 dense: true,
               ),
               SwitchListTile(
-                title: const Text("Zoom Controls", style: TextStyle(fontSize: 12)),
+                title:
+                    const Text("Zoom Controls", style: TextStyle(fontSize: 12)),
                 value: _showZoomControls,
                 onChanged: (value) {
                   setState(() {
@@ -458,7 +467,10 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 Icon(
                   Icons.description,
                   size: 64,
-                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .outline
+                      .withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -466,7 +478,10 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outline
+                        .withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -474,21 +489,27 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                   "PDF Viewer",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outline
+                        .withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                                      "Zoom: ${(zoom * 100).toInt()}%",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
-                    ),
+                  "Zoom: ${(zoom * 100).toInt()}%",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outline
+                        .withValues(alpha: 0.5),
+                  ),
                 ),
               ],
             ),
           ),
-          
+
           // Page Number
           if (_showPageNumbers)
             Positioned(
@@ -510,7 +531,7 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                 ),
               ),
             ),
-          
+
           // Zoom Controls
           if (_showZoomControls)
             Positioned(
@@ -522,7 +543,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     onPressed: () => _adjustZoom(side, 0.1),
                     icon: const Icon(Icons.zoom_in, size: 20),
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.primaryOrange.withValues(alpha: 0.9),
+                      backgroundColor:
+                          AppColors.primaryOrange.withValues(alpha: 0.9),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.all(8),
                     ),
@@ -532,7 +554,8 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
                     onPressed: () => _adjustZoom(side, -0.1),
                     icon: const Icon(Icons.zoom_out, size: 20),
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.primaryOrange.withValues(alpha: 0.9),
+                      backgroundColor:
+                          AppColors.primaryOrange.withValues(alpha: 0.9),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.all(8),
                     ),
@@ -568,13 +591,14 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting PDF: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }
-

@@ -7,7 +7,8 @@ class AnalyticsDashboardScreen extends StatefulWidget {
   const AnalyticsDashboardScreen({super.key});
 
   @override
-  State<AnalyticsDashboardScreen> createState() => _AnalyticsDashboardScreenState();
+  State<AnalyticsDashboardScreen> createState() =>
+      _AnalyticsDashboardScreenState();
 }
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
@@ -187,7 +188,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         const SizedBox(height: AppSpacing.md),
         _buildStatCard(
           "Last Updated",
-          DateTime.fromMillisecondsSinceEpoch(lastUpdated).toString().substring(0, 19),
+          DateTime.fromMillisecondsSinceEpoch(lastUpdated)
+              .toString()
+              .substring(0, 19),
           Icons.update,
           AppColors.primaryPurple,
         ),
@@ -195,7 +198,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
@@ -206,10 +210,10 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
           width: 1,
         ),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -293,18 +297,23 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 barTouchData: const BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
                   show: true,
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
                         if (value.toInt() < topFeatures.length) {
-                          final feature = topFeatures[value.toInt()]['action_type'] as String;
+                          final feature = topFeatures[value.toInt()]
+                              ['action_type'] as String;
                           return Padding(
                             padding: const EdgeInsets.only(top: AppSpacing.sm),
                             child: Text(
-                              feature.length > 8 ? '${feature.substring(0, 8)}...' : feature,
+                              feature.length > 8
+                                  ? '${feature.substring(0, 8)}...'
+                                  : feature,
                               style: AppTypography.labelSmall.copyWith(
                                 color: AppColors.textSecondaryLight,
                               ),
@@ -405,8 +414,10 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     flex: 1,
                     child: LinearProgressIndicator(
                       value: count / (topScreens.first['count'] as int),
-                      backgroundColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+                      backgroundColor:
+                          AppColors.textSecondaryLight.withValues(alpha: 0.1),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppColors.primaryGreen),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -591,7 +602,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -654,7 +665,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Analytics data exported (${exportData.length} characters)'),
+            content: Text(
+                'Analytics data exported (${exportData.length} characters)'),
             backgroundColor: AppColors.success,
           ),
         );
@@ -671,4 +683,3 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     }
   }
 }
-

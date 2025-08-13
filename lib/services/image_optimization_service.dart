@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as path;
 
 class ImageOptimizationService {
-  static final ImageOptimizationService _instance = ImageOptimizationService._internal();
+  static final ImageOptimizationService _instance =
+      ImageOptimizationService._internal();
   factory ImageOptimizationService() => _instance;
   ImageOptimizationService._internal();
 
@@ -12,14 +12,15 @@ class ImageOptimizationService {
   static const int _maxCacheSize = 50;
 
   // Optimized image processing with caching
-  Future<Uint8List> optimizeImage(Uint8List imageData, {
+  Future<Uint8List> optimizeImage(
+    Uint8List imageData, {
     int? maxWidth,
     int? maxHeight,
     double quality = 0.8,
     bool maintainAspectRatio = true,
   }) async {
     final cacheKey = _generateCacheKey(imageData, maxWidth, maxHeight, quality);
-    
+
     // Check cache first
     if (_imageCache.containsKey(cacheKey)) {
       return _imageCache[cacheKey]!;
@@ -39,7 +40,8 @@ class ImageOptimizationService {
   }
 
   // Process image optimization in isolate
-  static Future<Uint8List> _processImageOptimization(Map<String, dynamic> params) async {
+  static Future<Uint8List> _processImageOptimization(
+      Map<String, dynamic> params) async {
     final Uint8List imageData = params['imageData'];
     final int? maxWidth = params['maxWidth'];
     final int? maxHeight = params['maxHeight'];
@@ -54,7 +56,8 @@ class ImageOptimizationService {
 
     // Resize if needed
     if (maxWidth != null || maxHeight != null) {
-      processedImage = _resizeImage(image, maxWidth, maxHeight, maintainAspectRatio);
+      processedImage =
+          _resizeImage(image, maxWidth, maxHeight, maintainAspectRatio);
     }
 
     // Optimize quality
@@ -63,7 +66,8 @@ class ImageOptimizationService {
     }
 
     // Encode with optimization
-    return Uint8List.fromList(img.encodeJpg(processedImage, quality: (quality * 100).round()));
+    return Uint8List.fromList(
+        img.encodeJpg(processedImage, quality: (quality * 100).round()));
   }
 
   // Resize image with aspect ratio preservation
@@ -104,8 +108,12 @@ class ImageOptimizationService {
   }
 
   // Generate cache key
-  String _generateCacheKey(Uint8List imageData, int? maxWidth, int? maxHeight, double quality) {
-    final hash = imageData.length + (maxWidth ?? 0) + (maxHeight ?? 0) + (quality * 100).round();
+  String _generateCacheKey(
+      Uint8List imageData, int? maxWidth, int? maxHeight, double quality) {
+    final hash = imageData.length +
+        (maxWidth ?? 0) +
+        (maxHeight ?? 0) +
+        (quality * 100).round();
     return 'img_${hash}_${imageData.length}';
   }
 
@@ -126,15 +134,15 @@ class ImageOptimizationService {
     int? maxHeight,
     double quality = 0.8,
   }) async {
-    final futures = imageDataList.map((imageData) => 
-      optimizeImage(imageData, maxWidth: maxWidth, maxHeight: maxHeight, quality: quality)
-    );
-    
+    final futures = imageDataList.map((imageData) => optimizeImage(imageData,
+        maxWidth: maxWidth, maxHeight: maxHeight, quality: quality));
+
     return await Future.wait(futures);
   }
 
   // Fast thumbnail generation
-  Future<Uint8List> generateThumbnail(Uint8List imageData, {int size = 200}) async {
+  Future<Uint8List> generateThumbnail(Uint8List imageData,
+      {int size = 200}) async {
     return await optimizeImage(
       imageData,
       maxWidth: size,
@@ -154,8 +162,8 @@ class ImageOptimizationService {
     return {
       'size': _imageCache.length,
       'maxSize': _maxCacheSize,
-      'memoryUsage': _imageCache.values.fold<int>(0, (sum, data) => sum + data.length),
+      'memoryUsage':
+          _imageCache.values.fold<int>(0, (sum, data) => sum + data.length),
     };
   }
 }
-

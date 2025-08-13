@@ -3,118 +3,118 @@ import 'package:flutter/material.dart';
 // Futuristic, Professional, Minimalist Color Palette
 class AppColors {
   // Primary Colors - Modern Blue Gradient
-  static const primaryBlue = Color(0xFF2563EB);      // Deep Blue
-  static const secondaryBlue = Color(0xFF3B82F6);    // Medium Blue
-  static const accentBlue = Color(0xFF60A5FA);       // Light Blue
-  static const lightBlue = Color(0xFFDBEAFE);        // Very Light Blue
-  static const darkBlue = Color(0xFF1E40AF);         // Dark Blue
-  
+  static const primaryBlue = Color(0xFF2563EB); // Deep Blue
+  static const secondaryBlue = Color(0xFF3B82F6); // Medium Blue
+  static const accentBlue = Color(0xFF60A5FA); // Light Blue
+  static const lightBlue = Color(0xFFDBEAFE); // Very Light Blue
+  static const darkBlue = Color(0xFF1E40AF); // Dark Blue
+
   // Accent Colors - Professional Palette
-  static const primaryGreen = Color(0xFF10B981);     // Emerald Green
-  static const primaryPurple = Color(0xFF8B5CF6);    // Purple
-  static const primaryOrange = Color(0xFFF59E0B);    // Amber
-  static const primaryRed = Color(0xFFEF4444);       // Red
-  static const primaryTeal = Color(0xFF14B8A6);      // Teal
-  static const primaryIndigo = Color(0xFF6366F1);    // Indigo
-  
+  static const primaryGreen = Color(0xFF10B981); // Emerald Green
+  static const primaryPurple = Color(0xFF8B5CF6); // Purple
+  static const primaryOrange = Color(0xFFF59E0B); // Amber
+  static const primaryRed = Color(0xFFEF4444); // Red
+  static const primaryTeal = Color(0xFF14B8A6); // Teal
+  static const primaryIndigo = Color(0xFF6366F1); // Indigo
+
   // Neutral Colors - Minimalist Grays
-  static const backgroundLight = Color(0xFFFAFAFA);  // Off White
-  static const surfaceLight = Color(0xFFFFFFFF);     // Pure White
-  static const backgroundDark = Color(0xFF0F0F23);   // Deep Dark
-  static const surfaceDark = Color(0xFF1A1A2E);      // Dark Surface
-  
+  static const backgroundLight = Color(0xFFFAFAFA); // Off White
+  static const surfaceLight = Color(0xFFFFFFFF); // Pure White
+  static const backgroundDark = Color(0xFF0F0F23); // Deep Dark
+  static const surfaceDark = Color(0xFF1A1A2E); // Dark Surface
+
   // Text Colors - High Contrast
   static const textPrimaryLight = Color(0xFF1F2937); // Dark Gray
   static const textSecondaryLight = Color(0xFF6B7280); // Medium Gray
-  static const textPrimaryDark = Color(0xFFF9FAFB);  // Light Gray
+  static const textPrimaryDark = Color(0xFFF9FAFB); // Light Gray
   static const textSecondaryDark = Color(0xFFD1D5DB); // Medium Light Gray
-  
+
   // Gradient Colors - Futuristic
-  static const gradientStart = Color(0xFF667EEA);    // Purple Blue
-  static const gradientEnd = Color(0xFF764BA2);      // Purple
+  static const gradientStart = Color(0xFF667EEA); // Purple Blue
+  static const gradientEnd = Color(0xFF764BA2); // Purple
   static const gradientBlueStart = Color(0xFF4F46E5); // Indigo
-  static const gradientBlueEnd = Color(0xFF7C3AED);  // Purple
-  
+  static const gradientBlueEnd = Color(0xFF7C3AED); // Purple
+
   // Success/Error Colors
-  static const success = Color(0xFF10B981);          // Green
-  static const warning = Color(0xFFF59E0B);          // Amber
-  static const error = Color(0xFFEF4444);            // Red
-  static const info = Color(0xFF3B82F6);             // Blue
-  
+  static const success = Color(0xFF10B981); // Green
+  static const warning = Color(0xFFF59E0B); // Amber
+  static const error = Color(0xFFEF4444); // Red
+  static const info = Color(0xFF3B82F6); // Blue
+
   // Glass Effect Colors
-  static const glassLight = Color(0x80FFFFFF);       // Semi-transparent White
-  static const glassDark = Color(0x80000000);        // Semi-transparent Black
-  
+  static const glassLight = Color(0x80FFFFFF); // Semi-transparent White
+  static const glassDark = Color(0x80000000); // Semi-transparent Black
+
   // Shadow Colors
-  static const shadowLight = Color(0x1A000000);      // Light Shadow
-  static const shadowMedium = Color(0x33000000);     // Medium Shadow
-  static const shadowDark = Color(0x4D000000);       // Dark Shadow
+  static const shadowLight = Color(0x1A000000); // Light Shadow
+  static const shadowMedium = Color(0x33000000); // Medium Shadow
+  static const shadowDark = Color(0x4D000000); // Dark Shadow
 }
 
 // Modern Typography Scale
 class AppTypography {
   static const fontFamily = 'Inter'; // Modern, clean font
-  
+
   static const displayLarge = TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.5,
   );
-  
+
   static const displayMedium = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.25,
   );
-  
+
   static const headlineLarge = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.25,
   );
-  
+
   static const headlineMedium = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.15,
   );
-  
+
   static const titleLarge = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
   );
-  
+
   static const titleMedium = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.15,
   );
-  
+
   static const bodyLarge = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.5,
   );
-  
+
   static const bodyMedium = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.25,
   );
-  
+
   static const labelLarge = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.1,
   );
-  
+
   static const labelMedium = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
   );
-  
+
   static const labelSmall = TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w500,
@@ -148,7 +148,7 @@ final ThemeData lightTheme = ThemeData(
   primaryColor: AppColors.primaryBlue,
   scaffoldBackgroundColor: AppColors.backgroundLight,
   cardColor: AppColors.surfaceLight,
-  
+
   // Modern App Bar Theme
   appBarTheme: AppBarTheme(
     backgroundColor: AppColors.surfaceLight,
@@ -165,7 +165,7 @@ final ThemeData lightTheme = ThemeData(
       size: 24,
     ),
   ),
-  
+
   // Modern Floating Action Button Theme
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.primaryBlue,
@@ -175,7 +175,7 @@ final ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
     ),
   ),
-  
+
   // Modern Elevated Button Theme
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -196,7 +196,7 @@ final ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Outlined Button Theme
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
@@ -215,7 +215,7 @@ final ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Text Button Theme
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
@@ -233,7 +233,7 @@ final ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Card Theme
   cardTheme: CardThemeData(
     color: AppColors.surfaceLight,
@@ -244,7 +244,7 @@ final ThemeData lightTheme = ThemeData(
     ),
     margin: const EdgeInsets.all(AppSpacing.sm),
   ),
-  
+
   // Modern Text Theme
   textTheme: TextTheme(
     displayLarge: AppTypography.displayLarge.copyWith(
@@ -278,21 +278,19 @@ final ThemeData lightTheme = ThemeData(
       color: AppColors.textSecondaryLight,
     ),
   ),
-  
+
   // Modern Color Scheme
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: AppColors.primaryBlue,
     secondary: AppColors.secondaryBlue,
     surface: AppColors.surfaceLight,
-    background: AppColors.backgroundLight,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryLight,
-    onBackground: AppColors.textPrimaryLight,
     outline: AppColors.textSecondaryLight.withValues(alpha: 0.2),
     outlineVariant: AppColors.textSecondaryLight.withValues(alpha: 0.1),
   ),
-  
+
   // Modern Input Decoration Theme
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
@@ -336,20 +334,20 @@ final ThemeData lightTheme = ThemeData(
       color: AppColors.textSecondaryLight.withValues(alpha: 0.7),
     ),
   ),
-  
+
   // Modern Icon Theme
   iconTheme: const IconThemeData(
     color: AppColors.textPrimaryLight,
     size: 24,
   ),
-  
+
   // Modern Divider Theme
   dividerTheme: DividerThemeData(
     color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
-  
+
   // Modern Switch Theme
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -365,7 +363,7 @@ final ThemeData lightTheme = ThemeData(
       return AppColors.textSecondaryLight.withValues(alpha: 0.2);
     }),
   ),
-  
+
   // Modern Slider Theme
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
@@ -377,7 +375,7 @@ final ThemeData lightTheme = ThemeData(
       color: Colors.white,
     ),
   ),
-  
+
   // Modern Chip Theme
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.lightBlue,
@@ -397,7 +395,7 @@ final ThemeData lightTheme = ThemeData(
       vertical: AppSpacing.sm,
     ),
   ),
-  
+
   // Modern Bottom Navigation Bar Theme
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.surfaceLight,
@@ -406,15 +404,15 @@ final ThemeData lightTheme = ThemeData(
     type: BottomNavigationBarType.fixed,
     elevation: 8,
   ),
-  
+
   // Modern Tab Bar Theme
-  tabBarTheme: TabBarThemeData(
+  tabBarTheme: const TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryLight,
     indicatorColor: AppColors.primaryBlue,
     indicatorSize: TabBarIndicatorSize.tab,
   ),
-  
+
   // Modern Dialog Theme
   dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceLight,
@@ -430,7 +428,7 @@ final ThemeData lightTheme = ThemeData(
       color: AppColors.textSecondaryLight,
     ),
   ),
-  
+
   // Modern Snackbar Theme
   snackBarTheme: SnackBarThemeData(
     backgroundColor: AppColors.textPrimaryLight,
@@ -442,7 +440,7 @@ final ThemeData lightTheme = ThemeData(
     ),
     behavior: SnackBarBehavior.floating,
   ),
-  
+
   // Modern Popup Menu Theme
   popupMenuTheme: PopupMenuThemeData(
     color: AppColors.surfaceLight,
@@ -462,7 +460,7 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: AppColors.primaryBlue,
   scaffoldBackgroundColor: AppColors.backgroundDark,
   cardColor: AppColors.surfaceDark,
-  
+
   // Modern App Bar Theme - Dark
   appBarTheme: AppBarTheme(
     backgroundColor: AppColors.surfaceDark,
@@ -479,7 +477,7 @@ final ThemeData darkTheme = ThemeData(
       size: 24,
     ),
   ),
-  
+
   // Modern Floating Action Button Theme - Dark
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.primaryBlue,
@@ -489,7 +487,7 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(AppRadius.lg)),
     ),
   ),
-  
+
   // Modern Elevated Button Theme - Dark
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -510,7 +508,7 @@ final ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Outlined Button Theme - Dark
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
@@ -529,7 +527,7 @@ final ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Text Button Theme - Dark
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
@@ -547,7 +545,7 @@ final ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
-  
+
   // Modern Card Theme - Dark
   cardTheme: CardThemeData(
     color: AppColors.surfaceDark,
@@ -558,7 +556,7 @@ final ThemeData darkTheme = ThemeData(
     ),
     margin: const EdgeInsets.all(AppSpacing.sm),
   ),
-  
+
   // Modern Text Theme - Dark
   textTheme: TextTheme(
     displayLarge: AppTypography.displayLarge.copyWith(
@@ -592,22 +590,20 @@ final ThemeData darkTheme = ThemeData(
       color: AppColors.textSecondaryDark,
     ),
   ),
-  
+
   // Modern Color Scheme - Dark
   colorScheme: ColorScheme.fromSwatch().copyWith(
     brightness: Brightness.dark,
     primary: AppColors.primaryBlue,
     secondary: AppColors.secondaryBlue,
     surface: AppColors.surfaceDark,
-    background: AppColors.backgroundDark,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryDark,
-    onBackground: AppColors.textPrimaryDark,
     outline: AppColors.textSecondaryDark.withValues(alpha: 0.2),
     outlineVariant: AppColors.textSecondaryDark.withValues(alpha: 0.1),
   ),
-  
+
   // Modern Input Decoration Theme - Dark
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
@@ -651,20 +647,20 @@ final ThemeData darkTheme = ThemeData(
       color: AppColors.textSecondaryDark.withValues(alpha: 0.7),
     ),
   ),
-  
+
   // Modern Icon Theme - Dark
   iconTheme: const IconThemeData(
     color: AppColors.textPrimaryDark,
     size: 24,
   ),
-  
+
   // Modern Divider Theme - Dark
   dividerTheme: DividerThemeData(
     color: AppColors.textSecondaryDark.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
-  
+
   // Modern Switch Theme - Dark
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -680,7 +676,7 @@ final ThemeData darkTheme = ThemeData(
       return AppColors.textSecondaryDark.withValues(alpha: 0.2);
     }),
   ),
-  
+
   // Modern Slider Theme - Dark
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
@@ -692,7 +688,7 @@ final ThemeData darkTheme = ThemeData(
       color: Colors.white,
     ),
   ),
-  
+
   // Modern Chip Theme - Dark
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.primaryBlue.withValues(alpha: 0.1),
@@ -712,7 +708,7 @@ final ThemeData darkTheme = ThemeData(
       vertical: AppSpacing.sm,
     ),
   ),
-  
+
   // Modern Bottom Navigation Bar Theme - Dark
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.surfaceDark,
@@ -721,15 +717,15 @@ final ThemeData darkTheme = ThemeData(
     type: BottomNavigationBarType.fixed,
     elevation: 8,
   ),
-  
+
   // Modern Tab Bar Theme - Dark
-  tabBarTheme: TabBarThemeData(
+  tabBarTheme: const TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryDark,
     indicatorColor: AppColors.primaryBlue,
     indicatorSize: TabBarIndicatorSize.tab,
   ),
-  
+
   // Modern Dialog Theme - Dark
   dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceDark,
@@ -745,7 +741,7 @@ final ThemeData darkTheme = ThemeData(
       color: AppColors.textSecondaryDark,
     ),
   ),
-  
+
   // Modern Snackbar Theme - Dark
   snackBarTheme: SnackBarThemeData(
     backgroundColor: AppColors.textPrimaryDark,
@@ -757,7 +753,7 @@ final ThemeData darkTheme = ThemeData(
     ),
     behavior: SnackBarBehavior.floating,
   ),
-  
+
   // Modern Popup Menu Theme - Dark
   popupMenuTheme: PopupMenuThemeData(
     color: AppColors.surfaceDark,

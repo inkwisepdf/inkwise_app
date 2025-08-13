@@ -1,6 +1,4 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pdf_render/pdf_render.dart';
 
 class FindReplaceFeature extends StatefulWidget {
@@ -65,24 +63,24 @@ class _FindReplaceFeatureState extends State<FindReplaceFeature> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search Text',
-                border: OutlineInputBorder(),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Search Text',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) => searchText = value,
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () => findTextOnPage(currentPage),
+                    child: const Text('Search on Page'),
+                  ),
+                ],
               ),
-              onChanged: (value) => searchText = value,
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () => findTextOnPage(currentPage),
-              child: const Text('Search on Page'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

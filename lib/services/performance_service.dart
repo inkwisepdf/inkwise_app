@@ -60,7 +60,8 @@ class PerformanceService {
   T? getFromCache<T>(String key) {
     if (_memoryCache.containsKey(key)) {
       final timestamp = _cacheTimestamps[key];
-      if (timestamp != null && DateTime.now().difference(timestamp) < _cacheExpiry) {
+      if (timestamp != null &&
+          DateTime.now().difference(timestamp) < _cacheExpiry) {
         return _memoryCache[key] as T?;
       } else {
         _memoryCache.remove(key);
@@ -95,7 +96,8 @@ class PerformanceService {
     );
 
     if (result.isNotEmpty) {
-      final timestamp = DateTime.fromMillisecondsSinceEpoch(result.first['timestamp'] as int);
+      final timestamp =
+          DateTime.fromMillisecondsSinceEpoch(result.first['timestamp'] as int);
       if (DateTime.now().difference(timestamp) < _cacheExpiry) {
         return result.first['data'] as T?;
       } else {
@@ -175,8 +177,9 @@ class PerformanceService {
 
   // Optimized file reading with caching
   Future<Uint8List> readFileOptimized(String filePath) async {
-    final cacheKey = 'file_${path.basename(filePath)}_${await _getFileHash(filePath)}';
-    
+    final cacheKey =
+        'file_${path.basename(filePath)}_${await _getFileHash(filePath)}';
+
     // Check memory cache first
     final cachedData = getFromCache<Uint8List>(cacheKey);
     if (cachedData != null) return cachedData;
@@ -251,10 +254,10 @@ class PerformanceService {
   // Optimize image processing
   Future<Uint8List> optimizeImageProcessing(Uint8List imageData) async {
     startOperation('image_optimization');
-    
+
     // Implement image optimization logic here
     // This is a placeholder for actual image optimization
-    
+
     endOperation('image_optimization');
     return imageData;
   }
@@ -262,10 +265,10 @@ class PerformanceService {
   // Optimize PDF processing
   Future<void> optimizePDFProcessing(String filePath) async {
     startOperation('pdf_optimization');
-    
+
     // Implement PDF optimization logic here
     // This is a placeholder for actual PDF optimization
-    
+
     endOperation('pdf_optimization');
   }
 
@@ -291,11 +294,10 @@ class PerformanceService {
 
 // Semaphore for limiting concurrent operations
 class Semaphore {
-  final int _maxCount;
   int _currentCount;
   final List<Completer<void>> _waiters = [];
 
-  Semaphore(this._maxCount) : _currentCount = _maxCount;
+  Semaphore(int maxCount) : _currentCount = maxCount;
 
   Future<T> run<T>(Future<T> Function() operation) async {
     await _acquire();
@@ -326,4 +328,3 @@ class Semaphore {
     }
   }
 }
-

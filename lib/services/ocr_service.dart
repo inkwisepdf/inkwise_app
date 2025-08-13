@@ -13,7 +13,8 @@ class OCRService {
   OCRService._internal();
 
   /// Extract text from scanned PDF using OCR
-  Future<String> extractTextFromScannedPDF(File pdfFile, {String language = 'eng'}) async {
+  Future<String> extractTextFromScannedPDF(File pdfFile,
+      {String language = 'eng'}) async {
     try {
       final PdfDocument document = await PdfDocument.openFile(pdfFile.path);
       String extractedText = '';
@@ -28,12 +29,15 @@ class OCRService {
         // Save image temporarily
         final tempDir = await getTemporaryDirectory();
         final imageFile = File('${tempDir.path}/page_$i.png');
-        final image = await pageImage.createImageIfNotAvailable(); // Use createImageIfNotAvailable
-        final imageBytes = await image.toByteData(format: ui.ImageByteFormat.png);
+        final image = await pageImage
+            .createImageIfNotAvailable(); // Use createImageIfNotAvailable
+        final imageBytes =
+            await image.toByteData(format: ui.ImageByteFormat.png);
         await imageFile.writeAsBytes(imageBytes!.buffer.asUint8List());
 
         // Perform OCR
-        final pageText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+        final pageText = await FlutterTesseractOcr.extractText(imageFile.path,
+            language: language);
         extractedText += '$pageText\n';
 
         // Clean up
@@ -48,7 +52,8 @@ class OCRService {
   }
 
   /// Extract text from specific page
-  Future<String> extractTextFromPage(File pdfFile, int pageNumber, {String language = 'eng'}) async {
+  Future<String> extractTextFromPage(File pdfFile, int pageNumber,
+      {String language = 'eng'}) async {
     try {
       final PdfDocument document = await PdfDocument.openFile(pdfFile.path);
 
@@ -67,12 +72,14 @@ class OCRService {
       // Save image temporarily
       final tempDir = await getTemporaryDirectory();
       final imageFile = File('${tempDir.path}/page_$pageNumber.png');
-      final image = await pageImage.createImageIfNotAvailable(); // Use createImageIfNotAvailable
+      final image = await pageImage
+          .createImageIfNotAvailable(); // Use createImageIfNotAvailable
       final imageBytes = await image.toByteData(format: ui.ImageByteFormat.png);
       await imageFile.writeAsBytes(imageBytes!.buffer.asUint8List());
 
       // Perform OCR
-      extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+      extractedText = await FlutterTesseractOcr.extractText(imageFile.path,
+          language: language);
 
       // Clean up
       await imageFile.delete();
@@ -85,9 +92,12 @@ class OCRService {
   }
 
   /// Extract text from image file
-  Future<String> extractTextFromImage(File imageFile, {String language = 'eng'}) async {
+  Future<String> extractTextFromImage(File imageFile,
+      {String language = 'eng'}) async {
     try {
-      final extractedText = await FlutterTesseractOcr.extractText(imageFile.path, language: language);
+      final extractedText = await FlutterTesseractOcr.extractText(
+          imageFile.path,
+          language: language);
       return extractedText.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
@@ -95,15 +105,18 @@ class OCRService {
   }
 
   /// Extract text from image bytes
-  Future<String> extractTextFromImageBytes(Uint8List imageBytes, {String language = 'eng'}) async {
+  Future<String> extractTextFromImageBytes(Uint8List imageBytes,
+      {String language = 'eng'}) async {
     try {
       // Save bytes to temporary file
       final tempDir = await getTemporaryDirectory();
-      final tempFile = File('${tempDir.path}/temp_image_${DateTime.now().millisecondsSinceEpoch}.png');
+      final tempFile = File(
+          '${tempDir.path}/temp_image_${DateTime.now().millisecondsSinceEpoch}.png');
       await tempFile.writeAsBytes(imageBytes);
 
       // Perform OCR
-      final extractedText = await FlutterTesseractOcr.extractText(tempFile.path, language: language);
+      final extractedText = await FlutterTesseractOcr.extractText(tempFile.path,
+          language: language);
 
       // Clean up
       await tempFile.delete();
@@ -161,13 +174,19 @@ class OCRService {
 
     // Check for European languages
     final textLower = text.toLowerCase();
-    if (textLower.contains('ñ') || textLower.contains('á') || textLower.contains('é')) {
+    if (textLower.contains('ñ') ||
+        textLower.contains('á') ||
+        textLower.contains('é')) {
       return 'spa'; // Spanish
     }
-    if (textLower.contains('ä') || textLower.contains('ö') || textLower.contains('ü')) {
+    if (textLower.contains('ä') ||
+        textLower.contains('ö') ||
+        textLower.contains('ü')) {
       return 'deu'; // German
     }
-    if (textLower.contains('à') || textLower.contains('ç') || textLower.contains('é')) {
+    if (textLower.contains('à') ||
+        textLower.contains('ç') ||
+        textLower.contains('é')) {
       return 'fra'; // French
     }
 
@@ -199,7 +218,8 @@ class OCRService {
 
       // Resize if too small
       if (processedImage.width < 300 || processedImage.height < 300) {
-        processedImage = img.copyResize(processedImage, width: 600, height: 600, interpolation: img.Interpolation.linear);
+        processedImage = img.copyResize(processedImage,
+            width: 600, height: 600, interpolation: img.Interpolation.linear);
       }
 
       return Uint8List.fromList(img.encodePng(processedImage));
@@ -209,7 +229,8 @@ class OCRService {
   }
 
   /// Extract text with confidence scores
-  Future<List<OCRResult>> extractTextWithConfidence(File imageFile, {String language = 'eng'}) async {
+  Future<List<OCRResult>> extractTextWithConfidence(File imageFile,
+      {String language = 'eng'}) async {
     try {
       // This would require a more advanced OCR implementation
       // For now, return basic result
@@ -227,7 +248,8 @@ class OCRService {
   }
 
   /// Batch OCR processing
-  Future<List<String>> batchOCR(List<File> imageFiles, {String language = 'eng'}) async {
+  Future<List<String>> batchOCR(List<File> imageFiles,
+      {String language = 'eng'}) async {
     final List<String> results = [];
 
     for (final imageFile in imageFiles) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inkwise_pdf/features/find_replace/find_replace.dart';
 import 'package:inkwise_pdf/services/find_replace_service.dart';
 
 class FindReplaceScreen extends StatefulWidget {
@@ -35,11 +34,18 @@ class _FindReplaceScreenState extends State<FindReplaceScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: _pathController, decoration: const InputDecoration(labelText: 'PDF Path')),
-            TextField(controller: _findController, decoration: const InputDecoration(labelText: 'Find Text')),
-            TextField(controller: _replaceController, decoration: const InputDecoration(labelText: 'Replace With')),
+            TextField(
+                controller: _pathController,
+                decoration: const InputDecoration(labelText: 'PDF Path')),
+            TextField(
+                controller: _findController,
+                decoration: const InputDecoration(labelText: 'Find Text')),
+            TextField(
+                controller: _replaceController,
+                decoration: const InputDecoration(labelText: 'Replace With')),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: _runFindReplace, child: const Text("Run")),
+            ElevatedButton(
+                onPressed: _runFindReplace, child: const Text("Run")),
             const SizedBox(height: 20),
             Expanded(child: SingleChildScrollView(child: Text(_output))),
           ],
@@ -48,4 +54,3 @@ class _FindReplaceScreenState extends State<FindReplaceScreen> {
     );
   }
 }
-

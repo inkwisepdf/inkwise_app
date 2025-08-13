@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class AppHelpers {
-  static void showSnackBar(BuildContext context, String message, {Color? color}) {
+  static void showSnackBar(BuildContext context, String message,
+      {Color? color}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -18,4 +19,3 @@ class AppHelpers {
     return '${(bytes / math.pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
   }
 }
-

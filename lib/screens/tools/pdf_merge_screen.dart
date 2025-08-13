@@ -13,7 +13,7 @@ class PDFMergeScreen extends StatefulWidget {
 }
 
 class _PDFMergeScreenState extends State<PDFMergeScreen> {
-  List<File> _selectedFiles = [];
+  final List<File> _selectedFiles = [];
   bool _isProcessing = false;
   String? _outputPath;
   double? _totalSize;
@@ -84,9 +84,9 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                 Text(
                   "Merge PDFs",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -119,7 +119,6 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           if (_selectedFiles.isEmpty)
             GestureDetector(
               onTap: _pickFiles,
@@ -161,11 +160,11 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                      "${_selectedFiles.length} file${_selectedFiles.length == 1 ? '' : 's'} selected",
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        "${_selectedFiles.length} file${_selectedFiles.length == 1 ? '' : 's'} selected",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
-                    ),
                     ),
                     TextButton.icon(
                       onPressed: _pickFiles,
@@ -181,8 +180,11 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                 Text(
                   "Total size: ${_getTotalSize()}",
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
+                      ),
                 ),
               ],
             ),
@@ -249,7 +251,7 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                       ),
                       child: Text(
                         "${index + 1}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryBlue,
                           fontWeight: FontWeight.w600,
                         ),
@@ -272,7 +274,10 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                           Text(
                             "${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.6),
                               fontSize: 12,
                             ),
                           ),
@@ -281,14 +286,19 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                     ),
                     if (_selectedFiles.length > 1) ...[
                       IconButton(
-                        onPressed: index > 0 ? () => _moveFile(index, -1) : null,
+                        onPressed:
+                            index > 0 ? () => _moveFile(index, -1) : null,
                         icon: const Icon(Icons.keyboard_arrow_up),
                         color: index > 0 ? AppColors.primaryBlue : Colors.grey,
                       ),
                       IconButton(
-                        onPressed: index < _selectedFiles.length - 1 ? () => _moveFile(index, 1) : null,
+                        onPressed: index < _selectedFiles.length - 1
+                            ? () => _moveFile(index, 1)
+                            : null,
                         icon: const Icon(Icons.keyboard_arrow_down),
-                        color: index < _selectedFiles.length - 1 ? AppColors.primaryBlue : Colors.grey,
+                        color: index < _selectedFiles.length - 1
+                            ? AppColors.primaryBlue
+                            : Colors.grey,
                       ),
                     ],
                     IconButton(
@@ -365,14 +375,13 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
               Text(
                 "Merge Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -391,7 +400,7 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Merged PDF",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
@@ -402,7 +411,8 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                         Text(
                           "Size: ${_totalSize!.toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: AppColors.primaryGreen.withValues(alpha: 0.8),
+                            color:
+                                AppColors.primaryGreen.withValues(alpha: 0.8),
                             fontSize: 12,
                           ),
                         ),
@@ -412,7 +422,6 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -422,22 +431,22 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
                     try {
                       final file = File(_outputPath!);
                       await FileService.openFile(file);
-                                          } catch (e) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error opening file: $e'),
-                              backgroundColor: AppColors.primaryRed,
-                            ),
-                          );
-                        }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error opening file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
                       }
+                    }
                   },
                   icon: const Icon(Icons.open_in_new),
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -554,8 +563,8 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('PDFs merged successfully!'),
+          const SnackBar(
+            content: Text('PDFs merged successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -564,7 +573,7 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -576,4 +585,3 @@ class _PDFMergeScreenState extends State<PDFMergeScreen> {
     }
   }
 }
-

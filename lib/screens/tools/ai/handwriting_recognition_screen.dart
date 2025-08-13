@@ -9,10 +9,12 @@ class HandwritingRecognitionScreen extends StatefulWidget {
   const HandwritingRecognitionScreen({super.key});
 
   @override
-  State<HandwritingRecognitionScreen> createState() => _HandwritingRecognitionScreenState();
+  State<HandwritingRecognitionScreen> createState() =>
+      _HandwritingRecognitionScreenState();
 }
 
-class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScreen> {
+class _HandwritingRecognitionScreenState
+    extends State<HandwritingRecognitionScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
   String _recognizedText = '';
@@ -114,9 +116,9 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                 Text(
                   "Handwriting Recognition",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryOrange,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryOrange,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -149,7 +151,6 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _recognitionMode,
             decoration: InputDecoration(
@@ -172,9 +173,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           if (_selectedFile == null)
             GestureDetector(
               onTap: _selectInput,
@@ -199,7 +198,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                     const SizedBox(height: 8),
                     Text(
                       _getInputText(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primaryOrange,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -241,7 +240,10 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -284,7 +286,6 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _selectedLanguage,
             decoration: InputDecoration(
@@ -305,9 +306,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Recognition Confidence: ${(_confidence * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -323,9 +322,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Auto-Correct"),
             subtitle: const Text("Automatically correct recognition errors"),
@@ -337,7 +334,6 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
             },
             activeColor: AppColors.primaryOrange,
           ),
-          
           SwitchListTile(
             title: const Text("Preserve Formatting"),
             subtitle: const Text("Maintain line breaks and spacing"),
@@ -413,18 +409,17 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               Text(
                 "Recognition Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -441,7 +436,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                     children: [
                       Text(
                         "${_recognizedText.split(' ').length} words recognized",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
@@ -459,39 +454,34 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Recognized Text",
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 12),
-          
           Container(
             height: 200,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
             ),
             child: TextField(
               controller: _textController,
               maxLines: null,
               expands: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Recognized text will appear here",
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.all(16),
+                contentPadding: EdgeInsets.all(16),
               ),
               style: const TextStyle(fontSize: 16),
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -501,7 +491,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                   label: const Text("Clear"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryRed,
-                    side: BorderSide(color: AppColors.primaryRed),
+                    side: const BorderSide(color: AppColors.primaryRed),
                   ),
                 ),
               ),
@@ -513,7 +503,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
                   label: const Text("Copy"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryBlue,
-                    side: BorderSide(color: AppColors.primaryBlue),
+                    side: const BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -564,7 +554,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
 
   IconData _getFileIcon() {
     if (_selectedFile == null) return Icons.file_present;
-    
+
     final extension = _selectedFile!.path.split('.').last.toLowerCase();
     switch (extension) {
       case 'jpg':
@@ -608,7 +598,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       setState(() {
         _selectedFile = File(image.path);
@@ -620,7 +610,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
   Future<void> _captureImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
-    
+
     if (image != null) {
       setState(() {
         _selectedFile = File(image.path);
@@ -653,7 +643,7 @@ class _HandwritingRecognitionScreenState extends State<HandwritingRecognitionScr
     try {
       // Simulate handwriting recognition process
       await Future.delayed(const Duration(seconds: 3));
-      
+
       // Mock recognized text
       final mockText = '''
 This is a sample of recognized handwritten text.
@@ -678,8 +668,8 @@ maintains the original formatting of the handwritten content.
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Handwriting recognition completed successfully!'),
+          const SnackBar(
+            content: Text('Handwriting recognition completed successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -688,7 +678,7 @@ maintains the original formatting of the handwritten content.
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -710,8 +700,8 @@ maintains the original formatting of the handwritten content.
   Future<void> _copyText() async {
     if (_textController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('No text to copy'),
+        const SnackBar(
+          content: Text('No text to copy'),
           backgroundColor: AppColors.primaryOrange,
         ),
       );
@@ -722,8 +712,8 @@ maintains the original formatting of the handwritten content.
       await FileService.copyToClipboard(_textController.text);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Text copied to clipboard'),
+          const SnackBar(
+            content: Text('Text copied to clipboard'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -743,8 +733,8 @@ maintains the original formatting of the handwritten content.
   Future<void> _saveText() async {
     if (_textController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('No text to save'),
+        const SnackBar(
+          content: Text('No text to save'),
           backgroundColor: AppColors.primaryOrange,
         ),
       );
@@ -752,9 +742,10 @@ maintains the original formatting of the handwritten content.
     }
 
     try {
-      final filename = 'handwriting_${DateTime.now().millisecondsSinceEpoch}.txt';
+      final filename =
+          'handwriting_${DateTime.now().millisecondsSinceEpoch}.txt';
       await FileService.saveTextAsFile(_textController.text, filename);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -775,4 +766,3 @@ maintains the original formatting of the handwritten content.
     }
   }
 }
-

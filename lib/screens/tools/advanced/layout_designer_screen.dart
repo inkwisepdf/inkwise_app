@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class LayoutDesignerScreen extends StatefulWidget {
   const LayoutDesignerScreen({super.key});
@@ -20,7 +20,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
   double _margin = 20.0;
   bool _showGrid = true;
   bool _snapToGrid = true;
-  List<Map<String, dynamic>> _layoutElements = [];
+  final List<Map<String, dynamic>> _layoutElements = [];
   int _selectedElementIndex = -1;
 
   final Map<String, String> _modeOptions = {
@@ -105,9 +105,9 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                 Text(
                   "Layout Designer",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -206,7 +206,10 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -250,7 +253,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _designMode,
             decoration: InputDecoration(
@@ -271,9 +273,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _pageSize,
             decoration: InputDecoration(
@@ -294,9 +294,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Margin: ${_margin.toInt()}px",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -312,9 +310,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Show Grid"),
             subtitle: const Text("Display design grid"),
@@ -326,7 +322,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             },
             activeColor: AppColors.primaryPurple,
           ),
-          
           SwitchListTile(
             title: const Text("Snap to Grid"),
             subtitle: const Text("Align elements to grid"),
@@ -381,7 +376,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             height: 400,
             decoration: BoxDecoration(
@@ -393,7 +387,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               children: [
                 // Grid background
                 if (_showGrid) _buildGrid(),
-                
+
                 // Layout elements
                 ..._layoutElements.toList().asMap().entries.map((entry) {
                   final index = entry.key;
@@ -407,11 +401,11 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                         width: element['width'].toDouble(),
                         height: element['height'].toDouble(),
                         decoration: BoxDecoration(
-                          color: _selectedElementIndex == index 
+                          color: _selectedElementIndex == index
                               ? AppColors.primaryPurple.withValues(alpha: 0.2)
                               : Colors.transparent,
                           border: Border.all(
-                            color: _selectedElementIndex == index 
+                            color: _selectedElementIndex == index
                                 ? AppColors.primaryPurple
                                 : Colors.grey.withValues(alpha: 0.5),
                             width: _selectedElementIndex == index ? 2 : 1,
@@ -482,7 +476,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -492,19 +485,20 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                   label: const Text("Delete"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryRed,
-                    side: BorderSide(color: AppColors.primaryRed),
+                    side: const BorderSide(color: AppColors.primaryRed),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: _selectedElementIndex >= 0 ? _duplicateElement : null,
+                  onPressed:
+                      _selectedElementIndex >= 0 ? _duplicateElement : null,
                   icon: const Icon(Icons.copy),
                   label: const Text("Duplicate"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryBlue,
-                    side: BorderSide(color: AppColors.primaryBlue),
+                    side: const BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -516,15 +510,13 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                   label: const Text("Clear All"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryOrange,
-                    side: BorderSide(color: AppColors.primaryOrange),
+                    side: const BorderSide(color: AppColors.primaryOrange),
                   ),
                 ),
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
@@ -583,14 +575,13 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               Text(
                 "Layout Generated",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -629,9 +620,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -641,7 +630,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -747,7 +736,8 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
   void _duplicateElement() {
     if (_selectedElementIndex >= 0) {
       setState(() {
-        final element = Map<String, dynamic>.from(_layoutElements[_selectedElementIndex]);
+        final element =
+            Map<String, dynamic>.from(_layoutElements[_selectedElementIndex]);
         element['x'] = (element['x'] as double) + 20;
         element['y'] = (element['y'] as double) + 20;
         _layoutElements.add(element);
@@ -772,9 +762,10 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     try {
       // Simulate layout generation process
       await Future.delayed(const Duration(seconds: 3));
-      
-      final outputPath = await _getOutputPath('layout_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      
+
+      final outputPath = await _getOutputPath(
+          'layout_${DateTime.now().millisecondsSinceEpoch}.pdf');
+
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
@@ -782,8 +773,8 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Layout generated successfully!'),
+          const SnackBar(
+            content: Text('Layout generated successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -792,7 +783,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -806,7 +797,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
 
   Future<void> _openGeneratedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.openFile(file);
@@ -824,7 +815,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
 
   Future<void> _shareGeneratedFile() async {
     if (_outputPath == null) return;
-    
+
     try {
       final file = File(_outputPath!);
       await FileService.shareFile(file);
@@ -867,4 +858,3 @@ class GridPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-

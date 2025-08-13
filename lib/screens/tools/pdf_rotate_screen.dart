@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/pdf_service.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
 
 class PDFRotateScreen extends StatefulWidget {
   const PDFRotateScreen({super.key});
@@ -92,9 +93,9 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 Text(
                   "Rotate PDF Pages",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -193,7 +194,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -236,16 +240,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           // Rotation Mode Selection
           Text(
             "Rotation Mode",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-          
+
           RadioListTile<String>(
             title: const Text("Rotate all pages"),
             subtitle: const Text("Apply rotation to every page"),
@@ -259,7 +263,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             },
             activeColor: AppColors.primaryPurple,
           ),
-          
+
           RadioListTile<String>(
             title: const Text("Rotate specific page"),
             subtitle: const Text("Apply rotation to a single page"),
@@ -272,14 +276,14 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             },
             activeColor: AppColors.primaryPurple,
           ),
-          
+
           if (_rotationMode == 'specific_page') ...[
             const SizedBox(height: 16),
             Text(
               "Page Number",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -297,25 +301,26 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               },
             ),
           ],
-          
+
           const SizedBox(height: 16),
-          
+
           // Rotation Angle Selection
           Text(
             "Rotation Angle",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-          
+
           DropdownButtonFormField<String>(
             value: _rotationAngle,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
             items: _rotationOptions.entries.map((entry) {
               return DropdownMenuItem(
@@ -393,14 +398,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               Text(
                 "Rotation Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -439,7 +443,6 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -464,7 +467,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -548,8 +551,8 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('PDF rotated successfully!'),
+          const SnackBar(
+            content: Text('PDF rotated successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -558,7 +561,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -570,17 +573,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  int _getRotationAngle() {
+  sf_pdf.PdfPageRotateAngle _getRotationAngle() {
     switch (_rotationAngle) {
       case '90':
-        return 90;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle90;
       case '180':
-        return 180;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle180;
       case '270':
-        return 270;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle270;
       default:
-        return 90;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle90;
     }
   }
 }
-

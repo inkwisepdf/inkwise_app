@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
 
-
 class EncryptionScreen extends StatefulWidget {
   const EncryptionScreen({super.key});
 
@@ -27,7 +26,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   String _keyDerivation = 'PBKDF2'; // 'PBKDF2', 'Argon2', 'Scrypt'
 
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final Map<String, String> _modeOptions = {
     'encrypt': 'Encrypt File',
@@ -74,7 +74,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildEncryptionSettings(),
             const SizedBox(height: 24),
-            if (_selectedFile != null && _encryptionMode == 'encrypt') _buildAdvancedOptions(),
+            if (_selectedFile != null && _encryptionMode == 'encrypt')
+              _buildAdvancedOptions(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
@@ -90,7 +91,10 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.primaryOrange.withValues(alpha: 0.1), AppColors.primaryOrange.withValues(alpha: 0.05)],
+          colors: [
+            AppColors.primaryOrange.withValues(alpha: 0.1),
+            AppColors.primaryOrange.withValues(alpha: 0.05)
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -118,16 +122,16 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 Text(
                   "Advanced Encryption",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primaryOrange,
-                    fontWeight: FontWeight.w700,
-                  ),
+                        color: AppColors.primaryOrange,
+                        fontWeight: FontWeight.w700,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   "Apply military-grade encryption to your files with multiple algorithms",
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondaryLight,
-                  ),
+                        color: AppColors.textSecondaryLight,
+                      ),
                 ),
               ],
             ),
@@ -148,13 +152,13 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.file_present, color: AppColors.primaryBlue),
+                const Icon(Icons.file_present, color: AppColors.primaryBlue),
                 const SizedBox(width: 12),
                 Text(
                   "Select File",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
             ),
@@ -176,11 +180,13 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.lightBlue.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.3)),
+                  border: Border.all(
+                      color: AppColors.primaryBlue.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.insert_drive_file, color: AppColors.primaryBlue),
+                    const Icon(Icons.insert_drive_file,
+                        color: AppColors.primaryBlue),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -195,7 +201,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                             builder: (context, snapshot) {
                               return Text(
                                 snapshot.data ?? 'Loading...',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.textSecondaryLight,
                                   fontSize: 12,
                                 ),
@@ -228,11 +234,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.security, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.security, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Operation Mode",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -242,12 +248,13 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
             ),
             const SizedBox(height: 16),
             ..._modeOptions.entries.map((entry) => RadioListTile<String>(
-              title: Text(entry.value),
-              value: entry.key,
-              groupValue: _encryptionMode,
-              onChanged: (value) => setState(() => _encryptionMode = value!),
-              activeColor: AppColors.primaryBlue,
-            )),
+                  title: Text(entry.value),
+                  value: entry.key,
+                  groupValue: _encryptionMode,
+                  onChanged: (value) =>
+                      setState(() => _encryptionMode = value!),
+                  activeColor: AppColors.primaryBlue,
+                )),
           ],
         ),
       ),
@@ -263,11 +270,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.key, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.key, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Encryption Settings",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -281,12 +288,15 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 value: _algorithm,
                 decoration: InputDecoration(
                   labelText: "Encryption Algorithm",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
-                items: _algorithmOptions.entries.map((entry) => DropdownMenuItem(
-                  value: entry.key,
-                  child: Text(entry.value),
-                )).toList(),
+                items: _algorithmOptions.entries
+                    .map((entry) => DropdownMenuItem(
+                          value: entry.key,
+                          child: Text(entry.value),
+                        ))
+                    .toList(),
                 onChanged: (value) => setState(() => _algorithm = value!),
               ),
               const SizedBox(height: 16),
@@ -294,12 +304,15 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 value: _keyDerivation,
                 decoration: InputDecoration(
                   labelText: "Key Derivation Function",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
-                items: _keyDerivationOptions.entries.map((entry) => DropdownMenuItem(
-                  value: entry.key,
-                  child: Text(entry.value),
-                )).toList(),
+                items: _keyDerivationOptions.entries
+                    .map((entry) => DropdownMenuItem(
+                          value: entry.key,
+                          child: Text(entry.value),
+                        ))
+                    .toList(),
                 onChanged: (value) => setState(() => _keyDerivation = value!),
               ),
               const SizedBox(height: 16),
@@ -308,13 +321,18 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               controller: _passwordController,
               obscureText: !_showPassword,
               decoration: InputDecoration(
-                labelText: _encryptionMode == 'encrypt' ? "Encryption Password" : "Decryption Password",
+                labelText: _encryptionMode == 'encrypt'
+                    ? "Encryption Password"
+                    : "Decryption Password",
                 hintText: "Enter password",
                 suffixIcon: IconButton(
-                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () => setState(() => _showPassword = !_showPassword),
+                  icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () =>
+                      setState(() => _showPassword = !_showPassword),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onChanged: (value) => setState(() => _password = value),
             ),
@@ -327,10 +345,14 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                   labelText: "Confirm Password",
                   hintText: "Confirm password",
                   suffixIcon: IconButton(
-                    icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
+                    icon: Icon(_showConfirmPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () => setState(
+                        () => _showConfirmPassword = !_showConfirmPassword),
                   ),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 onChanged: (value) => setState(() => _confirmPassword = value),
               ),
@@ -350,11 +372,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.settings, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.settings, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Advanced Options",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -367,12 +389,14 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               title: const Text("Compress before encryption"),
               subtitle: const Text("Reduce file size before encrypting"),
               value: _compressBeforeEncryption,
-              onChanged: (value) => setState(() => _compressBeforeEncryption = value),
+              onChanged: (value) =>
+                  setState(() => _compressBeforeEncryption = value),
               activeColor: AppColors.primaryBlue,
             ),
             SwitchListTile(
               title: const Text("Add metadata"),
-              subtitle: const Text("Include file information in encrypted data"),
+              subtitle:
+                  const Text("Include file information in encrypted data"),
               value: _addMetadata,
               onChanged: (value) => setState(() => _addMetadata = value),
               activeColor: AppColors.primaryBlue,
@@ -384,28 +408,31 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-      (_encryptionMode == 'decrypt' || 
-       (_password.isNotEmpty && _password == _confirmPassword));
+    bool canProcess = _selectedFile != null &&
+        (_encryptionMode == 'decrypt' ||
+            (_password.isNotEmpty && _password == _confirmPassword));
 
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         onPressed: canProcess && !_isProcessing ? _processEncryption : null,
-        icon: _isProcessing 
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-            )
-          : Icon(_encryptionMode == 'encrypt' ? Icons.lock : Icons.lock_open),
-        label: Text(_isProcessing ? "Processing..." : 
-          (_encryptionMode == 'encrypt' ? "Encrypt File" : "Decrypt File")),
+        icon: _isProcessing
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              )
+            : Icon(_encryptionMode == 'encrypt' ? Icons.lock : Icons.lock_open),
+        label: Text(_isProcessing
+            ? "Processing..."
+            : (_encryptionMode == 'encrypt' ? "Encrypt File" : "Decrypt File")),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryOrange,
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 48),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );
@@ -420,11 +447,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.check_circle, color: AppColors.primaryGreen),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.check_circle, color: AppColors.primaryGreen),
+                SizedBox(width: 12),
+                Text(
                   "Success!",
                   style: TextStyle(
                     color: AppColors.primaryGreen,
@@ -439,21 +466,22 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               decoration: BoxDecoration(
                 color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
+                border: Border.all(
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _encryptionMode == 'encrypt' 
-                      ? "File encrypted successfully"
-                      : "File decrypted successfully",
+                    _encryptionMode == 'encrypt'
+                        ? "File encrypted successfully"
+                        : "File decrypted successfully",
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     _outputPath!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.textSecondaryLight,
                       fontSize: 12,
                     ),
@@ -471,7 +499,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                     label: const Text("Open File"),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.primaryBlue,
-                      side: BorderSide(color: AppColors.primaryBlue),
+                      side: const BorderSide(color: AppColors.primaryBlue),
                     ),
                   ),
                 ),
@@ -523,7 +551,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
 
     try {
       String outputPath = '';
-      
+
       if (_encryptionMode == 'encrypt') {
         // Mock encryption - in real implementation, use actual encryption library
         outputPath = await _mockEncryptFile();
@@ -540,9 +568,9 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_encryptionMode == 'encrypt' 
-              ? 'File encrypted successfully!' 
-              : 'File decrypted successfully!'),
+            content: Text(_encryptionMode == 'encrypt'
+                ? 'File encrypted successfully!'
+                : 'File decrypted successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -563,10 +591,10 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   Future<String> _mockEncryptFile() async {
     // Simulate encryption process
     await Future.delayed(const Duration(seconds: 2));
-    
+
     String fileName = _selectedFile!.path.split('/').last;
     String encryptedName = 'encrypted_$fileName.enc';
-    
+
     final directory = await FileService.getAppDirectoryPath();
     return '$directory/$encryptedName';
   }
@@ -574,12 +602,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   Future<String> _mockDecryptFile() async {
     // Simulate decryption process
     await Future.delayed(const Duration(seconds: 2));
-    
+
     String fileName = _selectedFile!.path.split('/').last;
     String decryptedName = fileName.replaceAll('.enc', '_decrypted');
-    
+
     final directory = await FileService.getAppDirectoryPath();
     return '$directory/$decryptedName';
   }
 }
-

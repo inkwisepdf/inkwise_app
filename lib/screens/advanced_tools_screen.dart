@@ -23,7 +23,8 @@ class AdvancedToolsScreen extends StatefulWidget {
   State<AdvancedToolsScreen> createState() => _AdvancedToolsScreenState();
 }
 
-class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerProviderStateMixin {
+class _AdvancedToolsScreenState extends State<AdvancedToolsScreen>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -117,9 +118,9 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 Text(
                   "Advanced PDF Tools",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -152,14 +153,15 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Table Extractor",
                 subtitle: "Convert PDF tables to editable format",
                 icon: Icons.table_chart,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryGreen, AppColors.primaryBlue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TableExtractorScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const TableExtractorScreen()),
                 ),
               ),
               const SizedBox(width: 16),
@@ -167,14 +169,15 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "Layout Designer",
                 subtitle: "Rebuild page layouts visually",
                 icon: Icons.design_services,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryPurple, AppColors.primaryOrange],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LayoutDesignerScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const LayoutDesignerScreen()),
                 ),
               ),
               const SizedBox(width: 16),
@@ -182,14 +185,15 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 title: "PDF Indexer",
                 subtitle: "Instant search across all documents",
                 icon: Icons.search,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primaryBlue, AppColors.primaryGreen],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PDFIndexerScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const PDFIndexerScreen()),
                 ),
               ),
             ],
@@ -219,7 +223,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryGreen,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TableExtractorScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const TableExtractorScreen()),
               ),
             ),
             ToolCard(
@@ -228,7 +233,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const LayoutDesignerScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const LayoutDesignerScreen()),
               ),
             ),
             ToolCard(
@@ -237,7 +243,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryOrange,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ColorConverterScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const ColorConverterScreen()),
               ),
             ),
             ToolCard(
@@ -246,16 +253,18 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryBlue,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DualPageViewScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const DualPageViewScreen()),
               ),
             ),
             ToolCard(
               title: "Custom Stamps",
-                              icon: Icons.assignment,
+              icon: Icons.assignment,
               color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CustomStampsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const CustomStampsScreen()),
               ),
             ),
             ToolCard(
@@ -264,7 +273,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryGreen,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const VersionHistoryScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const VersionHistoryScreen()),
               ),
             ),
           ],
@@ -293,7 +303,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryRed,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PasswordProtectionScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const PasswordProtectionScreen()),
               ),
             ),
             ToolCard(
@@ -302,16 +313,18 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryOrange,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const EncryptionScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const EncryptionScreen()),
               ),
             ),
             ToolCard(
               title: "Secure Vault",
-                              icon: Icons.security,
+              icon: Icons.security,
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SecureVaultScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const SecureVaultScreen()),
               ),
             ),
           ],
@@ -340,7 +353,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryBlue,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PDFIndexerScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const PDFIndexerScreen()),
               ),
             ),
             ToolCard(
@@ -349,7 +363,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryGreen,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AutoTaggingScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const AutoTaggingScreen()),
               ),
             ),
             ToolCard(
@@ -358,7 +373,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
               color: AppColors.primaryPurple,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const BatchToolChainScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const BatchToolChainScreen()),
               ),
             ),
           ],
@@ -412,9 +428,9 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                   Text(
                     "Document Analytics",
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryGreen,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: AppColors.primaryGreen,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ],
               ),
@@ -428,7 +444,8 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const AdvancedToolsScreen()),
                   );
                 },
                 icon: const Icon(Icons.analytics),
@@ -445,4 +462,3 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen> with TickerPr
     );
   }
 }
-

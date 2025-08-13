@@ -41,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
+    ).animate(
+        CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
 
     // Start animations immediately for faster perceived performance
     _animationController.forward();
@@ -284,7 +285,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
-              _buildStatCard("25+", "Professional Tools", AppColors.primaryBlue),
+              _buildStatCard(
+                  "25+", "Professional Tools", AppColors.primaryBlue),
               const SizedBox(width: AppSpacing.md),
               _buildStatCard("AI", "Powered", AppColors.primaryPurple),
               const SizedBox(width: AppSpacing.md),
@@ -356,7 +358,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AIToolsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const AIToolsScreen()),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -369,7 +372,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AIToolsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const AIToolsScreen()),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -382,7 +386,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const AdvancedToolsScreen()),
                 ),
               ),
             ],
@@ -473,7 +478,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Essential PDF operations",
               Icons.build,
               AppColors.primaryBlue,
-                  () => Navigator.push(
+              () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
               ),
@@ -483,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Smart AI-powered features",
               Icons.psychology,
               AppColors.primaryPurple,
-                  () => Navigator.push(
+              () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AIToolsScreen()),
               ),
@@ -493,9 +498,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Professional features",
               Icons.tune,
               AppColors.primaryOrange,
-                  () => Navigator.push(
+              () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AdvancedToolsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const AdvancedToolsScreen()),
               ),
             ),
             _buildCategoryCard(
@@ -503,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               "Protect your documents",
               Icons.security,
               AppColors.primaryRed,
-                  () => Navigator.push(
+              () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ToolsScreen()),
               ),
@@ -514,7 +520,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildCategoryCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildCategoryCard(String title, String subtitle, IconData icon,
+      Color color, VoidCallback onTap) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -524,10 +531,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           width: 1,
         ),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
@@ -593,7 +600,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             TextButton.icon(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecentFilesScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RecentFilesScreen()),
               ),
               icon: const Icon(Icons.arrow_forward, size: 16),
               label: const Text("View All"),
@@ -624,7 +632,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     color: AppColors.primaryBlue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.folder_open,
                     size: 32,
                     color: AppColors.primaryBlue,
@@ -665,7 +673,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.all(AppSpacing.sm),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                        colors: [
+                          AppColors.gradientStart,
+                          AppColors.gradientEnd
+                        ],
                       ),
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
@@ -723,8 +734,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               leading: Container(
                                 padding: const EdgeInsets.all(AppSpacing.sm),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                                  color: AppColors.primaryBlue
+                                      .withValues(alpha: 0.1),
+                                  borderRadius:
+                                      BorderRadius.circular(AppRadius.sm),
                                 ),
                                 child: Icon(
                                   result['icon'],
@@ -779,41 +792,177 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     final allTools = [
       // Core PDF Tools
-      {'title': 'Merge PDFs', 'subtitle': 'Combine multiple PDF files', 'icon': Icons.merge, 'route': '/tools/merge'},
-      {'title': 'Split PDF', 'subtitle': 'Divide PDF into separate files', 'icon': Icons.content_cut, 'route': '/tools/split'},
-      {'title': 'Compress PDF', 'subtitle': 'Reduce PDF file size', 'icon': Icons.compress, 'route': '/tools/compress'},
-      {'title': 'Rotate PDF', 'subtitle': 'Rotate page orientation', 'icon': Icons.rotate_right, 'route': '/tools/rotate'},
-      {'title': 'PDF OCR', 'subtitle': 'Extract text from scanned documents', 'icon': Icons.text_fields, 'route': '/tools/ocr'},
-      {'title': 'Add Password', 'subtitle': 'Protect PDF with password', 'icon': Icons.lock, 'route': '/tools/password'},
-      {'title': 'Add Watermark', 'subtitle': 'Add text or image watermarks', 'icon': Icons.water_drop, 'route': '/tools/watermark'},
-      {'title': 'PDF to Images', 'subtitle': 'Convert PDF pages to images', 'icon': Icons.image, 'route': '/tools/images'},
-      {'title': 'Grayscale PDF', 'subtitle': 'Convert to black and white', 'icon': Icons.filter_b_and_w, 'route': '/tools/grayscale'},
+      {
+        'title': 'Merge PDFs',
+        'subtitle': 'Combine multiple PDF files',
+        'icon': Icons.merge,
+        'route': '/tools/merge'
+      },
+      {
+        'title': 'Split PDF',
+        'subtitle': 'Divide PDF into separate files',
+        'icon': Icons.content_cut,
+        'route': '/tools/split'
+      },
+      {
+        'title': 'Compress PDF',
+        'subtitle': 'Reduce PDF file size',
+        'icon': Icons.compress,
+        'route': '/tools/compress'
+      },
+      {
+        'title': 'Rotate PDF',
+        'subtitle': 'Rotate page orientation',
+        'icon': Icons.rotate_right,
+        'route': '/tools/rotate'
+      },
+      {
+        'title': 'PDF OCR',
+        'subtitle': 'Extract text from scanned documents',
+        'icon': Icons.text_fields,
+        'route': '/tools/ocr'
+      },
+      {
+        'title': 'Add Password',
+        'subtitle': 'Protect PDF with password',
+        'icon': Icons.lock,
+        'route': '/tools/password'
+      },
+      {
+        'title': 'Add Watermark',
+        'subtitle': 'Add text or image watermarks',
+        'icon': Icons.water_drop,
+        'route': '/tools/watermark'
+      },
+      {
+        'title': 'PDF to Images',
+        'subtitle': 'Convert PDF pages to images',
+        'icon': Icons.image,
+        'route': '/tools/images'
+      },
+      {
+        'title': 'Grayscale PDF',
+        'subtitle': 'Convert to black and white',
+        'icon': Icons.filter_b_and_w,
+        'route': '/tools/grayscale'
+      },
 
       // AI Tools
-      {'title': 'Smart Summarizer', 'subtitle': 'Extract key insights from documents', 'icon': Icons.auto_awesome, 'route': '/ai/summarizer'},
-      {'title': 'Offline Translator', 'subtitle': 'Translate documents offline', 'icon': Icons.translate, 'route': '/ai/translator'},
-      {'title': 'Voice to Text', 'subtitle': 'Convert speech to text notes', 'icon': Icons.mic, 'route': '/ai/voice'},
-      {'title': 'Form Detector', 'subtitle': 'Detect and fill form fields', 'icon': Icons.assignment, 'route': '/ai/form'},
-      {'title': 'Redaction Tool', 'subtitle': 'Remove sensitive information', 'icon': Icons.block, 'route': '/ai/redaction'},
-      {'title': 'Keyword Analytics', 'subtitle': 'Analyze document keywords and frequency', 'icon': Icons.analytics, 'route': '/ai/analytics'},
-      {'title': 'Handwriting Recognition', 'subtitle': 'Convert handwritten text to digital', 'icon': Icons.edit, 'route': '/ai/handwriting'},
-      {'title': 'Content Cleanup', 'subtitle': 'Clean and enhance document content', 'icon': Icons.cleaning_services, 'route': '/ai/cleanup'},
+      {
+        'title': 'Smart Summarizer',
+        'subtitle': 'Extract key insights from documents',
+        'icon': Icons.auto_awesome,
+        'route': '/ai/summarizer'
+      },
+      {
+        'title': 'Offline Translator',
+        'subtitle': 'Translate documents offline',
+        'icon': Icons.translate,
+        'route': '/ai/translator'
+      },
+      {
+        'title': 'Voice to Text',
+        'subtitle': 'Convert speech to text notes',
+        'icon': Icons.mic,
+        'route': '/ai/voice'
+      },
+      {
+        'title': 'Form Detector',
+        'subtitle': 'Detect and fill form fields',
+        'icon': Icons.assignment,
+        'route': '/ai/form'
+      },
+      {
+        'title': 'Redaction Tool',
+        'subtitle': 'Remove sensitive information',
+        'icon': Icons.block,
+        'route': '/ai/redaction'
+      },
+      {
+        'title': 'Keyword Analytics',
+        'subtitle': 'Analyze document keywords and frequency',
+        'icon': Icons.analytics,
+        'route': '/ai/analytics'
+      },
+      {
+        'title': 'Handwriting Recognition',
+        'subtitle': 'Convert handwritten text to digital',
+        'icon': Icons.edit,
+        'route': '/ai/handwriting'
+      },
+      {
+        'title': 'Content Cleanup',
+        'subtitle': 'Clean and enhance document content',
+        'icon': Icons.cleaning_services,
+        'route': '/ai/cleanup'
+      },
 
       // Advanced Tools
-      {'title': 'Layout Designer', 'subtitle': 'Design custom page layouts', 'icon': Icons.design_services, 'route': '/advanced/layout'},
-      {'title': 'Color Converter', 'subtitle': 'Convert colors with threshold control', 'icon': Icons.palette, 'route': '/advanced/color'},
-      {'title': 'Dual Page View', 'subtitle': 'View two pages side by side', 'icon': Icons.view_column, 'route': '/advanced/dual'},
-      {'title': 'Custom Stamps', 'subtitle': 'Add custom stamps to documents', 'icon': Icons.bookmark, 'route': '/advanced/stamps'},
-      {'title': 'Version History', 'subtitle': 'Track document versions', 'icon': Icons.history, 'route': '/advanced/version'},
-      {'title': 'PDF Indexer', 'subtitle': 'Index and search documents', 'icon': Icons.search, 'route': '/advanced/indexer'},
-      {'title': 'Auto Tagging', 'subtitle': 'Automatically tag documents', 'icon': Icons.local_offer, 'route': '/advanced/tagging'},
-      {'title': 'Batch Tool Chain', 'subtitle': 'Process multiple files efficiently', 'icon': Icons.settings_suggest, 'route': '/advanced/batch'},
-      {'title': 'Table Extractor', 'subtitle': 'Extract tables from documents', 'icon': Icons.table_chart, 'route': '/advanced/table'},
+      {
+        'title': 'Layout Designer',
+        'subtitle': 'Design custom page layouts',
+        'icon': Icons.design_services,
+        'route': '/advanced/layout'
+      },
+      {
+        'title': 'Color Converter',
+        'subtitle': 'Convert colors with threshold control',
+        'icon': Icons.palette,
+        'route': '/advanced/color'
+      },
+      {
+        'title': 'Dual Page View',
+        'subtitle': 'View two pages side by side',
+        'icon': Icons.view_column,
+        'route': '/advanced/dual'
+      },
+      {
+        'title': 'Custom Stamps',
+        'subtitle': 'Add custom stamps to documents',
+        'icon': Icons.bookmark,
+        'route': '/advanced/stamps'
+      },
+      {
+        'title': 'Version History',
+        'subtitle': 'Track document versions',
+        'icon': Icons.history,
+        'route': '/advanced/version'
+      },
+      {
+        'title': 'PDF Indexer',
+        'subtitle': 'Index and search documents',
+        'icon': Icons.search,
+        'route': '/advanced/indexer'
+      },
+      {
+        'title': 'Auto Tagging',
+        'subtitle': 'Automatically tag documents',
+        'icon': Icons.local_offer,
+        'route': '/advanced/tagging'
+      },
+      {
+        'title': 'Batch Tool Chain',
+        'subtitle': 'Process multiple files efficiently',
+        'icon': Icons.settings_suggest,
+        'route': '/advanced/batch'
+      },
+      {
+        'title': 'Table Extractor',
+        'subtitle': 'Extract tables from documents',
+        'icon': Icons.table_chart,
+        'route': '/advanced/table'
+      },
     ];
 
     return allTools.where((tool) {
-      return tool['title'].toString().toLowerCase().contains(query.toLowerCase()) ||
-          tool['subtitle'].toString().toLowerCase().contains(query.toLowerCase());
+      return tool['title']
+              .toString()
+              .toLowerCase()
+              .contains(query.toLowerCase()) ||
+          tool['subtitle']
+              .toString()
+              .toLowerCase()
+              .contains(query.toLowerCase());
     }).toList();
   }
 

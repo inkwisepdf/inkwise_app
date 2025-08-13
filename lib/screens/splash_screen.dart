@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import '../routes.dart';
-import '../theme.dart';
-import '../services/performance_service.dart';
+import 'package:inkwise_pdf/routes.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _logoController;
   late AnimationController _textController;
   late AnimationController _gradientController;
-  
+
   late Animation<double> _logoScale;
   late Animation<double> _logoOpacity;
   late Animation<double> _textOpacity;
@@ -25,17 +25,17 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    
+
     _logoController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _textController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    
+
     _gradientController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -44,15 +44,15 @@ class _SplashScreenState extends State<SplashScreen>
     _logoScale = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.elasticOut),
     );
-    
+
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
     );
-    
+
     _textOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _textController, curve: Curves.easeInOut),
     );
-    
+
     _gradientOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _gradientController, curve: Curves.easeInOut),
     );
@@ -65,10 +65,10 @@ class _SplashScreenState extends State<SplashScreen>
     _logoController.forward();
     _textController.forward();
     _gradientController.forward();
-    
+
     // Preload essential services for faster app startup
     await _preloadServices();
-    
+
     // Navigate to home after shorter delay for better performance
     await Future.delayed(const Duration(milliseconds: 1500));
     if (mounted) {
@@ -80,10 +80,10 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _preloadServices() async {
     // Preload performance service
     await PerformanceService().initialize();
-    
+
     // Preload common directories
     await getApplicationDocumentsDirectory();
-    
+
     // Preload theme data
     await Future.microtask(() {
       // Warm up theme calculations
@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Stack(
         children: [
           // Animated gradient background
@@ -116,18 +116,20 @@ class _SplashScreenState extends State<SplashScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppColors.gradientStart.withValues(alpha: _gradientOpacity.value * 0.1),
-                      AppColors.gradientEnd.withValues(alpha: _gradientOpacity.value * 0.05),
+                      AppColors.gradientStart
+                          .withValues(alpha: _gradientOpacity.value * 0.1),
+                      AppColors.gradientEnd
+                          .withValues(alpha: _gradientOpacity.value * 0.05),
                     ],
                   ),
                 ),
               );
             },
           ),
-          
+
           // Floating particles effect
           ...List.generate(20, (index) => _buildParticle(index)),
-          
+
           // Main content
           Center(
             child: Column(
@@ -146,14 +148,18 @@ class _SplashScreenState extends State<SplashScreen>
                           height: 120,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                              colors: [
+                                AppColors.gradientStart,
+                                AppColors.gradientEnd
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(AppRadius.xl),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.gradientStart.withValues(alpha: 0.4),
+                                color: AppColors.gradientStart
+                                    .withValues(alpha: 0.4),
                                 blurRadius: 30,
                                 offset: const Offset(0, 15),
                               ),
@@ -169,9 +175,9 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: AppSpacing.xl),
-                
+
                 // App name with animation
                 AnimatedBuilder(
                   animation: _textController,
@@ -186,8 +192,12 @@ class _SplashScreenState extends State<SplashScreen>
                               fontWeight: FontWeight.w800,
                               foreground: Paint()
                                 ..shader = const LinearGradient(
-                                  colors: [AppColors.gradientStart, AppColors.gradientEnd],
-                                ).createShader(const Rect.fromLTWH(0.0, 0.0, 300.0, 70.0)),
+                                  colors: [
+                                    AppColors.gradientStart,
+                                    AppColors.gradientEnd
+                                  ],
+                                ).createShader(
+                                    const Rect.fromLTWH(0.0, 0.0, 300.0, 70.0)),
                             ),
                           ),
                           const SizedBox(height: AppSpacing.md),
@@ -203,9 +213,9 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: AppSpacing.xxl),
-                
+
                 // Loading indicator
                 AnimatedBuilder(
                   animation: _textController,
@@ -219,10 +229,11 @@ class _SplashScreenState extends State<SplashScreen>
                             height: 40,
                             child: CircularProgressIndicator(
                               strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(
+                              valueColor: const AlwaysStoppedAnimation<Color>(
                                 AppColors.gradientStart,
                               ),
-                              backgroundColor: AppColors.gradientStart.withValues(alpha: 0.1),
+                              backgroundColor: AppColors.gradientStart
+                                  .withValues(alpha: 0.1),
                             ),
                           ),
                           const SizedBox(height: AppSpacing.lg),
@@ -240,7 +251,7 @@ class _SplashScreenState extends State<SplashScreen>
               ],
             ),
           ),
-          
+
           // Bottom info
           Positioned(
             bottom: AppSpacing.xl,
@@ -263,7 +274,8 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         "© 2024 Inkwise PDF. All rights reserved.",
                         style: AppTypography.labelMedium.copyWith(
-                          color: AppColors.textSecondaryLight.withValues(alpha: 0.7),
+                          color: AppColors.textSecondaryLight
+                              .withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -282,7 +294,7 @@ class _SplashScreenState extends State<SplashScreen>
     final size = 2.0 + random * 4.0;
     final left = random * MediaQuery.of(context).size.width;
     final top = random * MediaQuery.of(context).size.height;
-    
+
     return Positioned(
       left: left,
       top: top,

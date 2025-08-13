@@ -9,7 +9,8 @@ class PasswordProtectionScreen extends StatefulWidget {
   const PasswordProtectionScreen({super.key});
 
   @override
-  State<PasswordProtectionScreen> createState() => _PasswordProtectionScreenState();
+  State<PasswordProtectionScreen> createState() =>
+      _PasswordProtectionScreenState();
 }
 
 class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
@@ -28,7 +29,8 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
   String _encryptionLevel = '128'; // '40', '128', '256'
 
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final Map<String, String> _modeOptions = {
     'add': 'Add Password Protection',
@@ -68,9 +70,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProtectionMode(),
             const SizedBox(height: 24),
-            if (_selectedFile != null && _protectionMode != 'remove') _buildPasswordSettings(),
+            if (_selectedFile != null && _protectionMode != 'remove')
+              _buildPasswordSettings(),
             const SizedBox(height: 24),
-            if (_selectedFile != null && _protectionMode != 'remove') _buildSecurityOptions(),
+            if (_selectedFile != null && _protectionMode != 'remove')
+              _buildSecurityOptions(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
@@ -86,7 +90,10 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.primaryRed.withValues(alpha: 0.1), AppColors.primaryRed.withValues(alpha: 0.05)],
+          colors: [
+            AppColors.primaryRed.withValues(alpha: 0.1),
+            AppColors.primaryRed.withValues(alpha: 0.05)
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -114,16 +121,16 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                 Text(
                   "Password Protection",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w700,
-                  ),
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w700,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   "Secure your PDF documents with password protection and encryption",
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondaryLight,
-                  ),
+                        color: AppColors.textSecondaryLight,
+                      ),
                 ),
               ],
             ),
@@ -149,8 +156,8 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                 Text(
                   "Select PDF File",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
             ),
@@ -170,13 +177,15 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                                  color: AppColors.lightBlue.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.3)),
+                  color: AppColors.lightBlue.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: AppColors.primaryBlue.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.picture_as_pdf, color: AppColors.primaryBlue),
+                    const Icon(Icons.picture_as_pdf,
+                        color: AppColors.primaryBlue),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -191,7 +200,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                             builder: (context, snapshot) {
                               return Text(
                                 snapshot.data ?? 'Loading...',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.textSecondaryLight,
                                   fontSize: 12,
                                 ),
@@ -224,11 +233,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.security, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.security, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Protection Mode",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -238,12 +247,13 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
             ),
             const SizedBox(height: 16),
             ..._modeOptions.entries.map((entry) => RadioListTile<String>(
-              title: Text(entry.value),
-              value: entry.key,
-              groupValue: _protectionMode,
-              onChanged: (value) => setState(() => _protectionMode = value!),
-              activeColor: AppColors.primaryBlue,
-            )),
+                  title: Text(entry.value),
+                  value: entry.key,
+                  groupValue: _protectionMode,
+                  onChanged: (value) =>
+                      setState(() => _protectionMode = value!),
+                  activeColor: AppColors.primaryBlue,
+                )),
           ],
         ),
       ),
@@ -259,11 +269,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.key, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.key, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Password Settings",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -279,10 +289,13 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                 labelText: "Password",
                 hintText: "Enter password",
                 suffixIcon: IconButton(
-                  icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () => setState(() => _showPassword = !_showPassword),
+                  icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () =>
+                      setState(() => _showPassword = !_showPassword),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onChanged: (value) => setState(() => _password = value),
             ),
@@ -294,10 +307,14 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                 labelText: "Confirm Password",
                 hintText: "Confirm password",
                 suffixIcon: IconButton(
-                  icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
+                  icon: Icon(_showConfirmPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () => setState(
+                      () => _showConfirmPassword = !_showConfirmPassword),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onChanged: (value) => setState(() => _confirmPassword = value),
             ),
@@ -306,12 +323,15 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
               value: _encryptionLevel,
               decoration: InputDecoration(
                 labelText: "Encryption Level",
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              items: _encryptionOptions.entries.map((entry) => DropdownMenuItem(
-                value: entry.key,
-                child: Text(entry.value),
-              )).toList(),
+              items: _encryptionOptions.entries
+                  .map((entry) => DropdownMenuItem(
+                        value: entry.key,
+                        child: Text(entry.value),
+                      ))
+                  .toList(),
               onChanged: (value) => setState(() => _encryptionLevel = value!),
             ),
           ],
@@ -329,11 +349,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.settings, color: AppColors.primaryBlue),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.settings, color: AppColors.primaryBlue),
+                SizedBox(width: 12),
+                Text(
                   "Security Options",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -344,16 +364,20 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
             const SizedBox(height: 16),
             SwitchListTile(
               title: const Text("Require password to open"),
-              subtitle: const Text("Users must enter password to view the document"),
+              subtitle:
+                  const Text("Users must enter password to view the document"),
               value: _requirePasswordToOpen,
-              onChanged: (value) => setState(() => _requirePasswordToOpen = value),
+              onChanged: (value) =>
+                  setState(() => _requirePasswordToOpen = value),
               activeColor: AppColors.primaryBlue,
             ),
             SwitchListTile(
               title: const Text("Require password to edit"),
-              subtitle: const Text("Users must enter password to modify the document"),
+              subtitle: const Text(
+                  "Users must enter password to modify the document"),
               value: _requirePasswordToEdit,
-              onChanged: (value) => setState(() => _requirePasswordToEdit = value),
+              onChanged: (value) =>
+                  setState(() => _requirePasswordToEdit = value),
               activeColor: AppColors.primaryBlue,
             ),
             SwitchListTile(
@@ -377,27 +401,31 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-      (_protectionMode == 'remove' || 
-       (_password.isNotEmpty && _password == _confirmPassword));
+    bool canProcess = _selectedFile != null &&
+        (_protectionMode == 'remove' ||
+            (_password.isNotEmpty && _password == _confirmPassword));
 
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: canProcess && !_isProcessing ? _processPasswordProtection : null,
-        icon: _isProcessing 
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-            )
-          : const Icon(Icons.lock),
-        label: Text(_isProcessing ? "Processing..." : "Apply Password Protection"),
+        onPressed:
+            canProcess && !_isProcessing ? _processPasswordProtection : null,
+        icon: _isProcessing
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              )
+            : const Icon(Icons.lock),
+        label:
+            Text(_isProcessing ? "Processing..." : "Apply Password Protection"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryRed,
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 48),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );
@@ -412,11 +440,11 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.check_circle, color: AppColors.primaryGreen),
-                const SizedBox(width: 12),
-                const Text(
+                Icon(Icons.check_circle, color: AppColors.primaryGreen),
+                SizedBox(width: 12),
+                Text(
                   "Success!",
                   style: TextStyle(
                     color: AppColors.primaryGreen,
@@ -431,19 +459,20 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
               decoration: BoxDecoration(
                 color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
+                border: Border.all(
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Protected PDF saved successfully",
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     _outputPath!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.textSecondaryLight,
                       fontSize: 12,
                     ),
@@ -461,7 +490,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
                     label: const Text("Open File"),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.primaryBlue,
-                      side: BorderSide(color: AppColors.primaryBlue),
+                      side: const BorderSide(color: AppColors.primaryBlue),
                     ),
                   ),
                 ),
@@ -514,20 +543,23 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
 
     try {
       String outputPath = '';
-      
+
       final pdfService = PDFService();
-      
+
       switch (_protectionMode) {
         case 'add':
-          final outputFile = await pdfService.addPassword(_selectedFile!, _password);
+          final outputFile =
+              await pdfService.addPassword(_selectedFile!, _password);
           outputPath = outputFile.path;
           break;
         case 'remove':
-          final outputFile = await pdfService.removePassword(_selectedFile!, _password);
+          final outputFile =
+              await pdfService.removePassword(_selectedFile!, _password);
           outputPath = outputFile.path;
           break;
         case 'change':
-          final outputFile = await pdfService.addPassword(_selectedFile!, _password);
+          final outputFile =
+              await pdfService.addPassword(_selectedFile!, _password);
           outputPath = outputFile.path;
           break;
       }
@@ -539,7 +571,7 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Password protection applied successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
@@ -558,4 +590,3 @@ class _PasswordProtectionScreenState extends State<PasswordProtectionScreen> {
     }
   }
 }
-

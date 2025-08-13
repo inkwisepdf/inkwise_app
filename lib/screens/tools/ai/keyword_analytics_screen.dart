@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
-import 'package:inkwise_pdf/services/ai_summarizer_service.dart';
 
 class KeywordAnalyticsScreen extends StatefulWidget {
   const KeywordAnalyticsScreen({super.key});
@@ -16,7 +15,8 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
   File? _selectedFile;
   bool _isProcessing = false;
   Map<String, dynamic>? _analyticsData;
-  String _analysisType = 'keyword_density'; // 'keyword_density', 'tf_idf', 'reading_time'
+  String _analysisType =
+      'keyword_density'; // 'keyword_density', 'tf_idf', 'reading_time'
   bool _includeStopWords = false;
   int _minWordLength = 3;
   int _topKeywords = 20;
@@ -103,9 +103,9 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                 Text(
                   "Keyword Analytics",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -204,7 +204,10 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -247,7 +250,6 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _analysisType,
             decoration: InputDecoration(
@@ -268,9 +270,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _selectedLanguage,
             decoration: InputDecoration(
@@ -291,9 +291,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Top Keywords: $_topKeywords",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -309,9 +307,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Minimum Word Length: $_minWordLength",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -327,12 +323,11 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Include Stop Words"),
-            subtitle: const Text("Include common words like 'the', 'and', 'is'"),
+            subtitle:
+                const Text("Include common words like 'the', 'and', 'is'"),
             value: _includeStopWords,
             onChanged: (value) {
               setState(() {
@@ -407,22 +402,22 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               Text(
                 "Analysis Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // Document Statistics
           _buildDocumentStats(),
           const SizedBox(height: 24),
-          
+
           // Keyword Analysis
           _buildKeywordAnalysis(),
           const SizedBox(height: 24),
-          
+
           // Action Buttons
           _buildActionButtons(),
         ],
@@ -432,11 +427,11 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
 
   Widget _buildDocumentStats() {
     final stats = _analyticsData!['document_stats'] as Map<String, dynamic>;
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-                        color: AppColors.primaryBlue.withValues(alpha: 0.1),
+        color: AppColors.primaryBlue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -445,11 +440,10 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
           Text(
             "Document Statistics",
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 12),
-          
           Row(
             children: [
               Expanded(
@@ -471,9 +465,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               ),
             ],
           ),
-          
           const SizedBox(height: 12),
-          
           Row(
             children: [
               Expanded(
@@ -500,13 +492,14 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-                        color: color.withValues(alpha: 0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -524,7 +517,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
             title,
             style: TextStyle(
               fontSize: 12,
-                              color: color.withValues(alpha: 0.8),
+              color: color.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -534,24 +527,23 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
 
   Widget _buildKeywordAnalysis() {
     final keywords = _analyticsData!['keywords'] as List<dynamic>;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Top Keywords",
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+                fontWeight: FontWeight.w600,
+              ),
         ),
         const SizedBox(height: 12),
-        
         Container(
           height: 300,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+            border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
           ),
           child: ListView.builder(
             itemCount: keywords.length,
@@ -559,13 +551,14 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
               final keyword = keywords[index] as Map<String, dynamic>;
               final frequency = keyword['frequency'] as double;
               final percentage = keyword['percentage'] as double;
-              
+
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AppColors.primaryPurple.withValues(alpha: 0.1),
+                  backgroundColor:
+                      AppColors.primaryPurple.withValues(alpha: 0.1),
                   child: Text(
                     '${index + 1}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primaryPurple,
                       fontWeight: FontWeight.w600,
                     ),
@@ -578,18 +571,22 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                 subtitle: Text(
                   "Frequency: ${frequency.toInt()} times",
                   style: TextStyle(
-                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
                   ),
                 ),
                 trailing: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppColors.primaryPurple.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     "${percentage.toStringAsFixed(1)}%",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primaryPurple,
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
@@ -614,7 +611,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
             label: const Text("Export Report"),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.primaryPurple,
-              side: BorderSide(color: AppColors.primaryPurple),
+              side: const BorderSide(color: AppColors.primaryPurple),
             ),
           ),
         ),
@@ -669,7 +666,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     try {
       // Simulate analysis process
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // Mock analytics data
       final mockAnalytics = {
         'document_stats': {
@@ -704,8 +701,8 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Analysis completed successfully!'),
+          const SnackBar(
+            content: Text('Analysis completed successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -714,7 +711,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -728,12 +725,13 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
 
   Future<void> _exportAnalytics() async {
     if (_analyticsData == null) return;
-    
+
     try {
       final report = _generateAnalyticsReport();
-      final filename = 'analytics_report_${DateTime.now().millisecondsSinceEpoch}.txt';
+      final filename =
+          'analytics_report_${DateTime.now().millisecondsSinceEpoch}.txt';
       await FileService.saveTextAsFile(report, filename);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -756,15 +754,15 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
 
   Future<void> _shareAnalytics() async {
     if (_analyticsData == null) return;
-    
+
     try {
       final report = _generateAnalyticsReport();
       await FileService.copyToClipboard(report);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Analytics report copied to clipboard'),
+          const SnackBar(
+            content: Text('Analytics report copied to clipboard'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -784,14 +782,14 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
   String _generateAnalyticsReport() {
     final stats = _analyticsData!['document_stats'] as Map<String, dynamic>;
     final keywords = _analyticsData!['keywords'] as List<dynamic>;
-    
+
     StringBuffer report = StringBuffer();
     report.writeln('KEYWORD ANALYTICS REPORT');
     report.writeln('========================');
     report.writeln('Generated: ${DateTime.now().toString()}');
     report.writeln('Document: ${_selectedFile!.path.split('/').last}');
     report.writeln('');
-    
+
     report.writeln('DOCUMENT STATISTICS');
     report.writeln('-------------------');
     report.writeln('Total Words: ${stats['total_words']}');
@@ -799,15 +797,15 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     report.writeln('Reading Time: ${stats['reading_time']} minutes');
     report.writeln('Complexity Level: ${stats['complexity_level']}');
     report.writeln('');
-    
+
     report.writeln('TOP KEYWORDS');
     report.writeln('------------');
     for (int i = 0; i < keywords.length; i++) {
       final keyword = keywords[i] as Map<String, dynamic>;
-      report.writeln('${i + 1}. ${keyword['word']} - ${keyword['frequency']} times (${keyword['percentage']}%)');
+      report.writeln(
+          '${i + 1}. ${keyword['word']} - ${keyword['frequency']} times (${keyword['percentage']}%)');
     }
-    
+
     return report.toString();
   }
 }
-

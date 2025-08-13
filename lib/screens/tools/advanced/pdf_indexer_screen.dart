@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:inkwise_pdf/theme.dart';
 
 class PDFIndexerScreen extends StatefulWidget {
@@ -108,9 +107,9 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                 Text(
                   "PDF Indexer",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -158,7 +157,6 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -189,13 +187,13 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               ),
             ],
           ),
-          
           if (_isIndexing) ...[
             const SizedBox(height: 16),
             LinearProgressIndicator(
               value: _indexingProgress,
               backgroundColor: Colors.grey.withValues(alpha: 0.3),
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -211,7 +209,8 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -261,7 +260,6 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -284,9 +282,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             },
             onSubmitted: (_) => _performSearch(),
           ),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -320,7 +316,8 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                         height: 16,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
                     : const Icon(Icons.search),
@@ -332,9 +329,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Advanced Search"),
             subtitle: const Text("Show additional search options"),
@@ -346,7 +341,6 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             },
             activeColor: AppColors.primaryBlue,
           ),
-          
           if (_showAdvancedSearch) ...[
             const SizedBox(height: 16),
             _buildAdvancedSearchOptions(),
@@ -360,10 +354,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-                  color: AppColors.primaryBlue.withValues(alpha: 0.05),
+        color: AppColors.primaryBlue.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-                      color: AppColors.primaryBlue.withValues(alpha: 0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -372,11 +366,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
           Text(
             "Advanced Search Options",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 12),
-          
           Row(
             children: [
               Expanded(
@@ -401,7 +394,6 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               ),
             ],
           ),
-          
           Row(
             children: [
               Expanded(
@@ -449,7 +441,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                                        color: AppColors.primaryGreen.withValues(alpha: 0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -462,14 +454,13 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               Text(
                 "Search Results (${_searchResults.length})",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -501,14 +492,17 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                       Text(
                         result['path'],
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.6),
                           fontSize: 12,
                         ),
                       ),
                       if (result['snippet'] != null)
                         Text(
                           result['snippet'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.primaryGreen,
                             fontSize: 12,
                             fontStyle: FontStyle.italic,
@@ -519,11 +513,14 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
+                      Text(
                         result['size'],
                         style: TextStyle(
                           fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -560,25 +557,30 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           if (_indexedFiles.isEmpty)
             Container(
               padding: const EdgeInsets.all(32),
               child: Center(
                 child: Column(
                   children: [
-                                          Icon(
-                        Icons.search_off,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
-                      ),
+                    Icon(
+                      Icons.search_off,
+                      size: 64,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withValues(alpha: 0.5),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       "No indexed files",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -586,7 +588,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                       "Start indexing to enable search functionality",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -625,14 +630,20 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                         Text(
                           file['path'],
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           "Indexed: ${file['indexedDate']} • Pages: ${file['pages']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -645,7 +656,10 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                           file['size'],
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -734,7 +748,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
         'tags': ['project', 'proposal', 'planning'],
       },
     ];
-    
+
     _totalFiles = 4;
     _indexedFilesCount = 4;
     _indexingProgress = 1.0;
@@ -782,7 +796,8 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     // Mock search results
     _searchResults = _indexedFiles.where((file) {
       return file['name'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
-             file['tags'].any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
+          file['tags'].any(
+              (tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
     }).map((file) {
       return {
         ...file,
@@ -851,4 +866,3 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
     }
   }
 }
-

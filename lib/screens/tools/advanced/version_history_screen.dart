@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 
-
 class VersionHistoryScreen extends StatefulWidget {
   const VersionHistoryScreen({super.key});
 
@@ -103,9 +102,9 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                 Text(
                   "Version History",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -204,7 +203,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -257,7 +259,6 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -307,9 +308,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Show Deleted Versions"),
             subtitle: const Text("Display versions marked for deletion"),
@@ -328,7 +327,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
 
   Widget _buildVersionList() {
     final filteredVersions = _getFilteredVersions();
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -346,7 +345,6 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           if (filteredVersions.isEmpty)
             Container(
               padding: const EdgeInsets.all(32),
@@ -356,7 +354,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     Icon(
                       Icons.history,
                       size: 64,
-                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -364,7 +365,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -372,7 +376,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       "Create your first snapshot to start tracking changes",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -387,14 +394,15 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               itemBuilder: (context, index) {
                 final version = filteredVersions[index];
                 final isSelected = _selectedVersion?['id'] == version['id'];
-                
+
                 return Card(
                   margin: const EdgeInsets.only(bottom: 8),
                   child: ListTile(
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _getVersionColor(version['type']).withValues(alpha: 0.1),
+                        color: _getVersionColor(version['type'])
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -406,7 +414,8 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     title: Text(
                       version['name'],
                       style: TextStyle(
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.normal,
                       ),
                     ),
                     subtitle: Column(
@@ -415,14 +424,20 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                         Text(
                           "Created: ${version['date']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           "Size: ${version['size']} • Type: ${version['type']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -433,9 +448,11 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       children: [
                         if (version['isCurrent'])
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
+                              color:
+                                  AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
@@ -449,7 +466,8 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                           ),
                         const SizedBox(width: 8),
                         PopupMenuButton<String>(
-                          onSelected: (value) => _handleVersionAction(value, version),
+                          onSelected: (value) =>
+                              _handleVersionAction(value, version),
                           itemBuilder: (context) => [
                             const PopupMenuItem(
                               value: 'restore',
@@ -516,7 +534,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         color: AppColors.primaryPurple.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-                      color: AppColors.primaryPurple.withValues(alpha: 0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -540,40 +558,39 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               Text(
                 "Version Details",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryPurple,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryPurple,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           _buildDetailRow("Name", _selectedVersion!['name']),
           _buildDetailRow("Type", _selectedVersion!['type']),
           _buildDetailRow("Created", _selectedVersion!['date']),
           _buildDetailRow("Size", _selectedVersion!['size']),
           _buildDetailRow("Pages", "${_selectedVersion!['pages']}"),
           _buildDetailRow("Description", _selectedVersion!['description']),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => _handleVersionAction('restore', _selectedVersion!),
+                  onPressed: () =>
+                      _handleVersionAction('restore', _selectedVersion!),
                   icon: const Icon(Icons.restore),
                   label: const Text("Restore"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryPurple,
-                    side: BorderSide(color: AppColors.primaryPurple),
+                    side: const BorderSide(color: AppColors.primaryPurple),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () => _handleVersionAction('download', _selectedVersion!),
+                  onPressed: () =>
+                      _handleVersionAction('download', _selectedVersion!),
                   icon: const Icon(Icons.download),
                   label: const Text("Download"),
                   style: ElevatedButton.styleFrom(
@@ -601,7 +618,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               "$label:",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.7),
               ),
             ),
           ),
@@ -755,8 +775,8 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
   void _createSnapshot() {
     // In a real implementation, this would create a snapshot of the current file
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Snapshot creation feature coming soon!'),
+      const SnackBar(
+        content: Text('Snapshot creation feature coming soon!'),
         backgroundColor: AppColors.primaryOrange,
       ),
     );
@@ -810,7 +830,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
     setState(() {
       version['isDeleted'] = true;
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Version deleted: ${version['name']}'),
@@ -819,4 +839,3 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
     );
   }
 }
-

@@ -110,9 +110,9 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 Text(
                   "OCR Text Extraction",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -152,9 +152,9 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 Text(
                   "OCR Not Available",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -253,7 +253,10 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -296,12 +299,11 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           Text(
             "Document Language",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
@@ -310,7 +312,8 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
             items: _languages.entries.map((entry) {
               return DropdownMenuItem(
@@ -324,9 +327,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -336,16 +337,16 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 color: AppColors.primaryPurple.withValues(alpha: 0.3),
               ),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline,
                   color: AppColors.primaryPurple,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
-                  child: const Text(
+                  child: Text(
                     "Select the language of the text in your document for better OCR accuracy",
                     style: TextStyle(
                       color: AppColors.primaryPurple,
@@ -420,21 +421,23 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               Text(
                 "Text Extraction Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                color: Theme.of(context)
+                    .colorScheme
+                    .outline
+                    .withValues(alpha: 0.2),
               ),
             ),
             child: Column(
@@ -445,14 +448,17 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                     Text(
                       "Extracted Text",
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     const Spacer(),
                     Text(
                       "${_extractedText!.split(' ').length} words",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
                         fontSize: 12,
                       ),
                     ),
@@ -471,7 +477,6 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -481,27 +486,27 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                     try {
                       await FileService.copyToClipboard(_extractedText!);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('Text copied to clipboard'),
+                        const SnackBar(
+                          content: Text('Text copied to clipboard'),
                           backgroundColor: AppColors.primaryGreen,
                         ),
                       );
-                                          } catch (e) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error copying text: $e'),
-                              backgroundColor: AppColors.primaryRed,
-                            ),
-                          );
-                        }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error copying text: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
                       }
+                    }
                   },
                   icon: const Icon(Icons.copy),
                   label: const Text("Copy Text"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -510,24 +515,26 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     try {
-                      final filename = 'ocr_extracted_${DateTime.now().millisecondsSinceEpoch}.txt';
-                      await FileService.saveTextAsFile(_extractedText!, filename);
+                      final filename =
+                          'ocr_extracted_${DateTime.now().millisecondsSinceEpoch}.txt';
+                      await FileService.saveTextAsFile(
+                          _extractedText!, filename);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Text saved as $filename'),
                           backgroundColor: AppColors.primaryGreen,
                         ),
                       );
-                                          } catch (e) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error saving text: $e'),
-                              backgroundColor: AppColors.primaryRed,
-                            ),
-                          );
-                        }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error saving text: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
                       }
+                    }
                   },
                   icon: const Icon(Icons.save),
                   label: const Text("Save as TXT"),
@@ -604,8 +611,8 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Text extracted successfully!'),
+          const SnackBar(
+            content: Text('Text extracted successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -614,7 +621,7 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -626,4 +633,3 @@ class _PDFOCRScreenState extends State<PDFOCRScreen> {
     }
   }
 }
-

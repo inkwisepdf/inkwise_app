@@ -19,8 +19,9 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
   String _imageFormat = 'png'; // 'png', 'jpg', 'jpeg'
   double _quality = 0.8;
   double _scale = 2.0;
-  String _conversionMode = 'all_pages'; // 'all_pages', 'specific_pages', 'page_range'
-  List<int> _selectedPages = [];
+  String _conversionMode =
+      'all_pages'; // 'all_pages', 'specific_pages', 'page_range'
+  final List<int> _selectedPages = [];
   int? _startPage;
   int? _endPage;
   int _totalPages = 0;
@@ -99,9 +100,9 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                 Text(
                   "PDF to Images",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -200,7 +201,10 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB • Pages: $_totalPages",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -247,7 +251,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           RadioListTile<String>(
             title: const Text("Convert all pages"),
             subtitle: const Text("Convert every page to image"),
@@ -263,7 +266,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           RadioListTile<String>(
             title: const Text("Convert specific pages"),
             subtitle: const Text("Select individual pages to convert"),
@@ -278,7 +280,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           RadioListTile<String>(
             title: const Text("Convert page range"),
             subtitle: const Text("Convert a range of pages"),
@@ -292,14 +293,13 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
           if (_conversionMode == 'specific_pages') ...[
             const SizedBox(height: 16),
             Text(
               "Select Pages",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -319,12 +319,16 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primaryGreen : Colors.grey.withValues(alpha: 0.1),
+                      color: isSelected
+                          ? AppColors.primaryGreen
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected ? AppColors.primaryGreen : Colors.grey,
+                        color:
+                            isSelected ? AppColors.primaryGreen : Colors.grey,
                       ),
                     ),
                     child: Text(
@@ -339,7 +343,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               }),
             ),
           ],
-          
           if (_conversionMode == 'page_range') ...[
             const SizedBox(height: 16),
             Row(
@@ -405,7 +408,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _imageFormat,
             decoration: InputDecoration(
@@ -426,9 +428,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Quality: ${(_quality * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -444,9 +444,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Scale: ${_scale.toStringAsFixed(1)}x",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -462,25 +460,23 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 12),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline,
                   color: AppColors.primaryGreen,
                   size: 16,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
-                  child: const Text(
+                  child: Text(
                     "Higher scale produces larger, higher quality images but increases file size.",
                     style: TextStyle(
                       color: AppColors.primaryGreen,
@@ -497,10 +493,14 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-        (_conversionMode == 'all_pages' || 
-         (_conversionMode == 'specific_pages' && _selectedPages.isNotEmpty) ||
-         (_conversionMode == 'page_range' && _startPage != null && _endPage != null && _startPage! <= _endPage!));
+    bool canProcess = _selectedFile != null &&
+        (_conversionMode == 'all_pages' ||
+            (_conversionMode == 'specific_pages' &&
+                _selectedPages.isNotEmpty) ||
+            (_conversionMode == 'page_range' &&
+                _startPage != null &&
+                _endPage != null &&
+                _startPage! <= _endPage!));
 
     return SizedBox(
       width: double.infinity,
@@ -530,7 +530,9 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
   }
 
   Widget _buildResult() {
-    if (_convertedImages == null || _convertedImages!.isEmpty) return const SizedBox.shrink();
+    if (_convertedImages == null || _convertedImages!.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -562,14 +564,13 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               Text(
                 "Conversion Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -590,7 +591,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                     children: [
                       Text(
                         "${_convertedImages!.length} Images Created",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
@@ -608,7 +609,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -633,7 +633,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                   label: const Text("Open Folder"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -687,7 +687,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
           _startPage = null;
           _endPage = null;
         });
-        
+
         // Get total pages
         await _getTotalPages();
       }
@@ -748,12 +748,12 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
         if (_startPage == null || _endPage == null) {
           throw Exception('Please specify start and end pages');
         }
-        
+
         final pageNumbers = List.generate(
           _endPage! - _startPage! + 1,
           (index) => _startPage! + index,
         );
-        
+
         convertedImages = await pdfService.convertPDFToImages(
           _selectedFile!,
           format: _imageFormat,
@@ -771,7 +771,8 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Successfully converted ${convertedImages.length} pages to images!'),
+            content: Text(
+                'Successfully converted ${convertedImages.length} pages to images!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -780,7 +781,7 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -792,4 +793,3 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
     }
   }
 }
-

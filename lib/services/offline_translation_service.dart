@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
@@ -34,7 +33,8 @@ class OfflineTranslationService {
   };
 
   // Singleton pattern
-  static final OfflineTranslationService _instance = OfflineTranslationService._internal();
+  static final OfflineTranslationService _instance =
+      OfflineTranslationService._internal();
   factory OfflineTranslationService() => _instance;
   OfflineTranslationService._internal();
 
@@ -229,12 +229,42 @@ class OfflineTranslationService {
 
     // Create mock embeddings for common words
     final commonWords = [
-      'hello', 'world', 'document', 'pdf', 'text', 'translation',
-      'offline', 'model', 'flutter', 'app', 'free', 'open', 'source',
-      'powerful', 'feature', 'rich', 'editor', 'tool', 'ai', 'machine',
-      'learning', 'artificial', 'intelligence', 'neural', 'network',
-      'deep', 'natural', 'language', 'processing', 'nlp', 'computer',
-      'vision', 'ocr', 'optical', 'character', 'recognition'
+      'hello',
+      'world',
+      'document',
+      'pdf',
+      'text',
+      'translation',
+      'offline',
+      'model',
+      'flutter',
+      'app',
+      'free',
+      'open',
+      'source',
+      'powerful',
+      'feature',
+      'rich',
+      'editor',
+      'tool',
+      'ai',
+      'machine',
+      'learning',
+      'artificial',
+      'intelligence',
+      'neural',
+      'network',
+      'deep',
+      'natural',
+      'language',
+      'processing',
+      'nlp',
+      'computer',
+      'vision',
+      'ocr',
+      'optical',
+      'character',
+      'recognition'
     ];
 
     for (final word in commonWords) {
@@ -250,7 +280,8 @@ class OfflineTranslationService {
     final embedding = <String, double>{};
 
     for (int i = 0; i < dimension; i++) {
-      embedding['dim_$i'] = random.nextDouble() * 2 - 1; // Values between -1 and 1
+      embedding['dim_$i'] =
+          random.nextDouble() * 2 - 1; // Values between -1 and 1
     }
 
     return embedding;
@@ -258,10 +289,10 @@ class OfflineTranslationService {
 
   // Main translation method
   Future<String> translatePDF(
-      File pdfFile, {
-        String? sourceLanguage,
-        required String targetLanguage,
-      }) async {
+    File pdfFile, {
+    String? sourceLanguage,
+    required String targetLanguage,
+  }) async {
     try {
       // Initialize if not already done
       if (!_isInitialized) {
@@ -303,13 +334,12 @@ class OfflineTranslationService {
       final document = await PdfDocument.openFile(pdfFile.path);
 
       for (int i = 1; i <= document.pageCount; i++) {
-        final page = await document.getPage(i);
         // page.text is not available in pdf_render, will use OCR instead
         final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();
@@ -347,13 +377,14 @@ class OfflineTranslationService {
         // Save image temporarily
         final tempDir = await getTemporaryDirectory();
         final tempPath = '${tempDir.path}/ocr_page_$i.png';
-        final tempFile = await File(tempPath).writeAsBytes(byteData!.buffer.asUint8List());
+        final tempFile =
+            await File(tempPath).writeAsBytes(byteData!.buffer.asUint8List());
 
         final pageOcr = await FlutterTesseractOcr.extractText(tempPath);
         ocrText += '$pageOcr\n\n';
 
         await tempFile.delete();
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();
@@ -415,10 +446,8 @@ class OfflineTranslationService {
   }
 
   // Translate text offline
-  Future<String> _translateTextOffline(
-      String text,
-      {required String sourceLanguage, required String targetLanguage}
-      ) async {
+  Future<String> _translateTextOffline(String text,
+      {required String sourceLanguage, required String targetLanguage}) async {
     try {
       // Tokenize input
       final tokens = _tokenizeText(text);
@@ -427,7 +456,8 @@ class OfflineTranslationService {
       final inputFeatures = _getTokenFeatures(tokens);
 
       // Run inference
-      final outputTokens = await _runModernInference(inputFeatures, targetLanguage);
+      final outputTokens =
+          await _runModernInference(inputFeatures, targetLanguage);
 
       // Decode output
       final translated = _decodeTokens(outputTokens);
@@ -484,7 +514,8 @@ class OfflineTranslationService {
   }
 
   // Run inference using modern ML algorithms
-  Future<List<int>> _runModernInference(Map<String, dynamic> inputFeatures, String targetLanguage) async {
+  Future<List<int>> _runModernInference(
+      Map<String, dynamic> inputFeatures, String targetLanguage) async {
     // In a real implementation, you would run the modern ML model
     // For now, we'll return a mock translation using improved algorithms
 
@@ -492,21 +523,25 @@ class OfflineTranslationService {
     await Future.delayed(const Duration(milliseconds: 300));
 
     // Use word embeddings for better translation quality
-    final sourceEmbeddings = inputFeatures['embeddings'] as List<Map<String, double>>;
-    final translatedTokens = _translateUsingEmbeddings(sourceEmbeddings, targetLanguage);
+    final sourceEmbeddings =
+        inputFeatures['embeddings'] as List<Map<String, double>>;
+    final translatedTokens =
+        _translateUsingEmbeddings(sourceEmbeddings, targetLanguage);
 
     return translatedTokens;
   }
 
   // Translate using word embeddings
-  List<int> _translateUsingEmbeddings(List<Map<String, double>> sourceEmbeddings, String targetLanguage) {
+  List<int> _translateUsingEmbeddings(
+      List<Map<String, double>> sourceEmbeddings, String targetLanguage) {
     // Simple translation using embedding similarity
     final translatedTokens = <int>[];
 
     for (final embedding in sourceEmbeddings) {
       // Find most similar word in target language
       final translatedWord = _findSimilarWord(embedding, targetLanguage);
-      final tokenId = _vocabulary![translatedWord] ?? _vocabulary!['<UNK>'] ?? 1;
+      final tokenId =
+          _vocabulary![translatedWord] ?? _vocabulary!['<UNK>'] ?? 1;
       translatedTokens.add(tokenId);
     }
 
@@ -514,13 +549,15 @@ class OfflineTranslationService {
   }
 
   // Find similar word using embedding similarity
-  String _findSimilarWord(Map<String, double> sourceEmbedding, String targetLanguage) {
+  String _findSimilarWord(
+      Map<String, double> sourceEmbedding, String targetLanguage) {
     // Simple cosine similarity calculation
     double bestSimilarity = -1;
     String bestWord = '<UNK>';
 
     for (final entry in _wordEmbeddings!.entries) {
-      final similarity = _calculateCosineSimilarity(sourceEmbedding, entry.value);
+      final similarity =
+          _calculateCosineSimilarity(sourceEmbedding, entry.value);
       if (similarity > bestSimilarity) {
         bestSimilarity = similarity;
         bestWord = entry.key;
@@ -531,7 +568,8 @@ class OfflineTranslationService {
   }
 
   // Calculate cosine similarity between two embeddings
-  double _calculateCosineSimilarity(Map<String, double> embedding1, Map<String, double> embedding2) {
+  double _calculateCosineSimilarity(
+      Map<String, double> embedding1, Map<String, double> embedding2) {
     double dotProduct = 0;
     double norm1 = 0;
     double norm2 = 0;
@@ -573,7 +611,8 @@ class OfflineTranslationService {
   }
 
   // Simple translation fallback
-  String _simpleTranslation(String text, String sourceLanguage, String targetLanguage) {
+  String _simpleTranslation(
+      String text, String sourceLanguage, String targetLanguage) {
     // Simple word-by-word translation dictionary
     final translations = {
       'en_es': {
@@ -676,16 +715,17 @@ class OfflineTranslationService {
 
   // Create translated PDF with original layout preserved
   Future<File> createTranslatedPDF(
-      File originalPDF,
-      String translatedText, {
-        required String targetLanguage,
-      }) async {
+    File originalPDF,
+    String translatedText, {
+    required String targetLanguage,
+  }) async {
     try {
       // This would create a new PDF with translated text
       // while preserving the original layout and formatting
 
       final tempDir = await getTemporaryDirectory();
-      final outputFile = File('${tempDir.path}/translated_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputFile = File(
+          '${tempDir.path}/translated_${DateTime.now().millisecondsSinceEpoch}.pdf');
 
       // Placeholder implementation - in reality, you would:
       // 1. Extract original PDF layout
@@ -704,11 +744,11 @@ class OfflineTranslationService {
 
   // Get translation statistics
   Map<String, dynamic> getTranslationStats(
-      String originalText,
-      String translatedText,
-      String sourceLanguage,
-      String targetLanguage,
-      ) {
+    String originalText,
+    String translatedText,
+    String sourceLanguage,
+    String targetLanguage,
+  ) {
     final originalWords = originalText.split(RegExp(r'\s+')).length;
     final translatedWords = translatedText.split(RegExp(r'\s+')).length;
     final originalChars = originalText.length;

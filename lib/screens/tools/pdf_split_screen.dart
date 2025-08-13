@@ -17,7 +17,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
   bool _isProcessing = false;
   List<File>? _splitFiles;
   String _splitMode = 'all_pages'; // 'all_pages', 'custom_ranges'
-  List<int> _pageRanges = [];
+  final List<int> _pageRanges = [];
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +85,9 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                 Text(
                   "Split PDF",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -186,7 +186,10 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -229,16 +232,16 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
+
           // Split Mode Selection
           Text(
             "Split Mode",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-          
+
           RadioListTile<String>(
             title: const Text("Split each page"),
             subtitle: const Text("Create separate file for each page"),
@@ -251,7 +254,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
+
           RadioListTile<String>(
             title: const Text("Custom ranges"),
             subtitle: const Text("Split by specific page ranges"),
@@ -264,14 +267,14 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
             },
             activeColor: AppColors.primaryGreen,
           ),
-          
+
           if (_splitMode == 'custom_ranges') ...[
             const SizedBox(height: 16),
             Text(
               "Page Ranges (e.g., 1-3, 5, 7-9)",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -351,22 +354,20 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
               Text(
                 "Split Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Text(
             "Created ${_splitFiles!.length} file(s):",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 12),
-          
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -384,7 +385,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                   children: [
                     Text(
                       "${index + 1}.",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primaryBlue,
                         fontWeight: FontWeight.w600,
                       ),
@@ -399,7 +400,10 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                     Text(
                       "${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
                         fontSize: 12,
                       ),
                     ),
@@ -408,7 +412,6 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
               );
             },
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -433,7 +436,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
                   label: const Text("Open Folder"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryBlue,
-                    side: BorderSide(color: AppColors.primaryBlue),
+                    side: const BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -477,7 +480,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
     // This is a basic implementation - could be enhanced
     final ranges = input.split(',');
     _pageRanges.clear();
-    
+
     for (final range in ranges) {
       final trimmed = range.trim();
       if (trimmed.contains('-')) {
@@ -535,11 +538,12 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
     try {
       final pdfService = PDFService();
       List<File> splitFiles;
-      
+
       if (_splitMode == 'all_pages') {
         splitFiles = await pdfService.splitPDF(_selectedFile!);
       } else {
-        splitFiles = await pdfService.splitPDF(_selectedFile!, pageRanges: _pageRanges);
+        splitFiles =
+            await pdfService.splitPDF(_selectedFile!, pageRanges: _pageRanges);
       }
 
       setState(() {
@@ -550,7 +554,8 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('PDF split successfully into ${splitFiles.length} files!'),
+            content:
+                Text('PDF split successfully into ${splitFiles.length} files!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -559,7 +564,7 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -571,4 +576,3 @@ class _PDFSplitScreenState extends State<PDFSplitScreen> {
     }
   }
 }
-

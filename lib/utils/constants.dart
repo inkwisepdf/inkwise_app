@@ -12,7 +12,8 @@ class AppConstants {
   static const Color lightBackground = Colors.white;
 
   // Paths
-  static const String privacyPolicyURL = 'https://yourdomain.com/privacy-policy';
+  static const String privacyPolicyURL =
+      'https://yourdomain.com/privacy-policy';
 
   // Others
   static const double defaultPadding = 16.0;

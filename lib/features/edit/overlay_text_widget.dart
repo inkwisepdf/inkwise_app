@@ -40,7 +40,9 @@ class _OverlayTextWidgetState extends State<OverlayTextWidget> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: widget.eraseOnly ? Colors.white : Colors.black.withValues(alpha: 0.7),
+          color: widget.eraseOnly
+              ? Colors.white
+              : Colors.black.withValues(alpha: 0.7),
           border: Border.all(color: Colors.blueAccent),
         ),
         child: widget.eraseOnly
@@ -50,11 +52,11 @@ class _OverlayTextWidgetState extends State<OverlayTextWidget> {
                 child: TextField(
                   controller: controller,
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration.collapsed(hintText: 'Enter text'),
+                  decoration:
+                      const InputDecoration.collapsed(hintText: 'Enter text'),
                 ),
               ),
       ),
     );
   }
 }
-

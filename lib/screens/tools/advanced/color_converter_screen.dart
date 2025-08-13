@@ -109,9 +109,9 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                 Text(
                   "Color Converter",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -210,7 +210,10 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -254,7 +257,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-
           DropdownButtonFormField<String>(
             value: _conversionMode,
             decoration: InputDecoration(
@@ -275,9 +277,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           DropdownButtonFormField<String>(
             value: _outputFormat,
             decoration: InputDecoration(
@@ -298,9 +298,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           Text(
             "Threshold: ${(_threshold * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -316,17 +314,14 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           Text(
             "Processing Options",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
-
           SwitchListTile(
             title: const Text("Preserve Text"),
             subtitle: const Text("Keep text readable in output"),
@@ -338,7 +333,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
             },
             activeColor: AppColors.primaryBlue,
           ),
-
           SwitchListTile(
             title: const Text("Enhance Contrast"),
             subtitle: const Text("Improve black and white contrast"),
@@ -350,7 +344,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
             },
             activeColor: AppColors.primaryBlue,
           ),
-
           SwitchListTile(
             title: const Text("Remove Background"),
             subtitle: const Text("Clean up background noise"),
@@ -385,7 +378,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-
           DropdownButtonFormField<String>(
             value: _pageRange,
             decoration: InputDecoration(
@@ -407,7 +399,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               });
             },
           ),
-
           if (_pageRange == 'range') ...[
             const SizedBox(height: 16),
             Row(
@@ -438,7 +429,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               ],
             ),
           ],
-
           if (_pageRange == 'specific') ...[
             const SizedBox(height: 16),
             TextField(
@@ -451,9 +441,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               ),
             ),
           ],
-
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -492,13 +480,13 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         onPressed: _isProcessing ? null : _convertColors,
         icon: _isProcessing
             ? const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        )
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
             : const Icon(Icons.palette),
         label: Text(_isProcessing ? "Converting..." : "Convert Colors"),
         style: ElevatedButton.styleFrom(
@@ -544,14 +532,13 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               Text(
                 "Conversion Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -590,9 +577,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               ],
             ),
           ),
-
           const SizedBox(height: 16),
-
           Row(
             children: [
               Expanded(
@@ -602,7 +587,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -662,7 +647,8 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
       // Simulate color conversion process
       await Future.delayed(const Duration(seconds: 3));
 
-      final outputPath = await _getOutputPath('converted_${DateTime.now().millisecondsSinceEpoch}.${_outputFormat == 'pdf' ? 'pdf' : 'png'}');
+      final outputPath = await _getOutputPath(
+          'converted_${DateTime.now().millisecondsSinceEpoch}.${_outputFormat == 'pdf' ? 'pdf' : 'png'}');
 
       setState(() {
         _outputPath = outputPath;
@@ -671,7 +657,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Color conversion completed successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),

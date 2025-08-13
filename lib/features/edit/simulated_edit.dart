@@ -39,7 +39,8 @@ class _SimulatedEditScreenState extends State<SimulatedEditScreen> {
       appBar: const CustomAppBar(title: 'Simulated Edit'),
       body: Stack(
         children: [
-          const Center(child: Text("PDF Preview Placeholder")), // Actual rendering later
+          const Center(
+              child: Text("PDF Preview Placeholder")), // Actual rendering later
           ...overlays,
         ],
       ),
@@ -64,4 +65,3 @@ class _SimulatedEditScreenState extends State<SimulatedEditScreen> {
     );
   }
 }
-

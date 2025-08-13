@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/pdf_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/pdf_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class PDFCompressorScreen extends StatefulWidget {
-  const PDFCompressorScreen({Key? key}) : super(key: key);
+  const PDFCompressorScreen({super.key});
 
   @override
   State<PDFCompressorScreen> createState() => _PDFCompressorScreenState();
@@ -54,13 +54,13 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryGreen.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -86,9 +86,9 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 Text(
                   "PDF Compression",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -110,7 +110,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -128,7 +128,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryGreen.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -159,10 +159,10 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -187,7 +187,10 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -221,7 +224,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -232,12 +235,11 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-
           Text(
             "Compression Quality",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -257,14 +259,15 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   "${(_compressionQuality * 100).round()}%",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w600,
                   ),
@@ -272,26 +275,24 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.primaryGreen.withOpacity(0.3),
+                color: AppColors.primaryGreen.withValues(alpha: 0.3),
               ),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline,
                   color: AppColors.primaryGreen,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     "Higher quality = larger file size, Lower quality = smaller file size",
@@ -316,13 +317,13 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         onPressed: _isProcessing ? null : _compressPDF,
         icon: _isProcessing
             ? const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        )
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
             : const Icon(Icons.compress),
         label: Text(_isProcessing ? "Compressing..." : "Compress PDF"),
         style: ElevatedButton.styleFrom(
@@ -339,16 +340,17 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
 
   Widget _buildResult() {
     final compressionRatio = _originalSize != null && _compressedSize != null
-        ? ((_originalSize! - _compressedSize!) / _originalSize! * 100).toStringAsFixed(1)
+        ? ((_originalSize! - _compressedSize!) / _originalSize! * 100)
+            .toStringAsFixed(1)
         : '0';
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.05),
+        color: AppColors.primaryBlue.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -359,7 +361,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryBlue.withOpacity(0.1),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -372,14 +374,13 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               Text(
                 "Compression Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-
           if (_originalSize != null && _compressedSize != null) ...[
             Row(
               children: [
@@ -404,7 +405,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -417,7 +418,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   const SizedBox(width: 8),
                   Text(
                     "Size reduced by $compressionRatio%",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primaryGreen,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -427,7 +428,6 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
               ),
             ),
           ],
-
           const SizedBox(height: 16),
           Row(
             children: [
@@ -436,7 +436,8 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService.openFile(file);  // Changed from instance to static method call
+                      await FileService.openFile(
+                          file); // Changed from instance to static method call
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -450,7 +451,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryBlue,
-                    side: BorderSide(color: AppColors.primaryBlue),
+                    side: const BorderSide(color: AppColors.primaryBlue),
                   ),
                 ),
               ),
@@ -460,7 +461,8 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService.shareFile(file);  // Changed from instance to static method call
+                      await FileService.shareFile(
+                          file); // Changed from instance to static method call
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -489,10 +491,10 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -566,7 +568,7 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('PDF compressed successfully!'),
           backgroundColor: AppColors.primaryGreen,
         ),

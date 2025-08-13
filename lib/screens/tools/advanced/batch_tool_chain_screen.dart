@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 
-
 class BatchToolChainScreen extends StatefulWidget {
   const BatchToolChainScreen({super.key});
 
@@ -53,7 +52,8 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             const SizedBox(height: 24),
             if (_selectedTools.isNotEmpty) _buildProcessingSettings(),
             const SizedBox(height: 24),
-            if (_selectedFiles.isNotEmpty && _selectedTools.isNotEmpty) _buildProcessButton(),
+            if (_selectedFiles.isNotEmpty && _selectedTools.isNotEmpty)
+              _buildProcessButton(),
             const SizedBox(height: 24),
             if (_processingResults.isNotEmpty) _buildProcessingResults(),
           ],
@@ -100,9 +100,9 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                 Text(
                   "Batch Tool Chain",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -139,7 +139,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               const Spacer(),
               Text(
                 "${_selectedFiles.length} files",
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.primaryRed,
                   fontWeight: FontWeight.w600,
                 ),
@@ -147,7 +147,6 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
           if (_selectedFiles.isEmpty)
             GestureDetector(
               onTap: _pickFiles,
@@ -205,13 +204,17 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         subtitle: Text(
                           "Size: ${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
                         trailing: IconButton(
                           onPressed: () => _removeFile(index),
-                          icon: const Icon(Icons.remove_circle, color: AppColors.primaryRed),
+                          icon: const Icon(Icons.remove_circle,
+                              color: AppColors.primaryRed),
                         ),
                       ),
                     );
@@ -227,7 +230,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         label: const Text("Add More Files"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.primaryRed,
-                          side: BorderSide(color: AppColors.primaryRed),
+                          side: const BorderSide(color: AppColors.primaryRed),
                         ),
                       ),
                     ),
@@ -274,7 +277,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               const Spacer(),
               Text(
                 "${_selectedTools.length} tools",
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.primaryRed,
                   fontWeight: FontWeight.w600,
                 ),
@@ -282,22 +285,22 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _availableTools.length,
             itemBuilder: (context, index) {
               final tool = _availableTools[index];
-              final isSelected = _selectedTools.any((t) => t['id'] == tool['id']);
-              
+              final isSelected =
+                  _selectedTools.any((t) => t['id'] == tool['id']);
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: isSelected 
+                      color: isSelected
                           ? AppColors.primaryRed.withValues(alpha: 0.1)
                           : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
@@ -311,27 +314,32 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                   title: Text(
                     tool['name'],
                     style: TextStyle(
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.normal,
                     ),
                   ),
-                                      subtitle: Text(
-                      tool['description'],
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        fontSize: 12,
-                      ),
+                  subtitle: Text(
+                    tool['description'],
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
+                      fontSize: 12,
                     ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isSelected)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: AppColors.primaryRed.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Selected",
                             style: TextStyle(
                               color: AppColors.primaryRed,
@@ -350,7 +358,8 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                             });
                           } else {
                             setState(() {
-                              _selectedTools.removeWhere((t) => t['id'] == tool['id']);
+                              _selectedTools
+                                  .removeWhere((t) => t['id'] == tool['id']);
                             });
                           }
                         },
@@ -362,7 +371,6 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               );
             },
           ),
-          
           if (_selectedTools.isNotEmpty) ...[
             const SizedBox(height: 16),
             Container(
@@ -377,7 +385,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Processing Order:",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -411,7 +419,8 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Icon(tool['icon'], size: 16, color: AppColors.primaryRed),
+                          Icon(tool['icon'],
+                              size: 16, color: AppColors.primaryRed),
                           const SizedBox(width: 8),
                           Text(
                             tool['name'],
@@ -420,7 +429,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
@@ -448,7 +457,6 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _processingMode,
             decoration: InputDecoration(
@@ -469,9 +477,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           SwitchListTile(
             title: const Text("Stop on Error"),
             subtitle: const Text("Stop processing if any tool fails"),
@@ -483,7 +489,6 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             },
             activeColor: AppColors.primaryRed,
           ),
-          
           SwitchListTile(
             title: const Text("Show Progress"),
             subtitle: const Text("Display detailed processing progress"),
@@ -559,14 +564,13 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               Text(
                 "Processing Results",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -574,21 +578,23 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             itemBuilder: (context, index) {
               final result = _processingResults[index];
               final isSuccess = result['status'] == 'success';
-              
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: isSuccess 
+                      color: isSuccess
                           ? AppColors.primaryGreen.withValues(alpha: 0.1)
                           : AppColors.primaryRed.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
                       isSuccess ? Icons.check_circle : Icons.error,
-                      color: isSuccess ? AppColors.primaryGreen : AppColors.primaryRed,
+                      color: isSuccess
+                          ? AppColors.primaryGreen
+                          : AppColors.primaryRed,
                       size: 20,
                     ),
                   ),
@@ -602,7 +608,9 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                       Text(
                         "Status: ${result['status']}",
                         style: TextStyle(
-                          color: isSuccess ? AppColors.primaryGreen : AppColors.primaryRed,
+                          color: isSuccess
+                              ? AppColors.primaryGreen
+                              : AppColors.primaryRed,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -610,7 +618,10 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         Text(
                           result['message'],
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -620,16 +631,17 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     result['duration'],
                     style: TextStyle(
                       fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
                     ),
                   ),
                 ),
               );
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Row(
             children: [
               Expanded(
@@ -639,7 +651,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                   label: const Text("Open Folder"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -689,7 +701,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         'id': 'grayscale',
         'name': 'Convert to Grayscale',
         'description': 'Convert PDF to black and white',
-        'icon': Icons.grayscale,
+        'icon': Icons.filter_b_and_w,
         'category': 'conversion',
       },
       {
@@ -741,12 +753,14 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         });
       }
     } catch (e) {
+      if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error selecting files: $e'),
           backgroundColor: AppColors.primaryRed,
         ),
       );
+    }
     }
   }
 
@@ -775,21 +789,21 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       for (int i = 0; i < _selectedFiles.length; i++) {
         final file = _selectedFiles[i];
         final fileName = file.path.split('/').last;
-        
+
         // Simulate processing time
         await Future.delayed(const Duration(seconds: 1));
-        
+
         // Mock processing result
         final isSuccess = i % 3 != 0; // Simulate some failures
         _processingResults.add({
           'fileName': fileName,
           'status': isSuccess ? 'success' : 'failed',
-          'message': isSuccess 
+          'message': isSuccess
               ? 'Processed successfully with ${_selectedTools.length} tools'
               : 'Failed at tool: ${_selectedTools[0]['name']}',
           'duration': '${1 + i}s',
         });
-        
+
         setState(() {});
       }
 
@@ -798,29 +812,35 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       });
 
       final successCount = _processingResults.where((r) => r['status'] == 'success').length;
+      if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Batch processing completed! $successCount/${_selectedFiles.length} files processed successfully.'),
-          backgroundColor: successCount == _selectedFiles.length ? AppColors.primaryGreen : AppColors.primaryOrange,
+          content: Text(
+              'Batch processing completed! $successCount/${_selectedFiles.length} files processed successfully.'),
+          backgroundColor: successCount == _selectedFiles.length
+              ? AppColors.primaryGreen
+              : AppColors.primaryOrange,
         ),
       );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error during batch processing: $e'),
-          backgroundColor: AppColors.primaryRed,
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error during batch processing: $e'),
+            backgroundColor: AppColors.primaryRed,
         ),
       );
+      }
     }
   }
 
   void _openResultsFolder() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Opening results folder...'),
         backgroundColor: AppColors.primaryGreen,
       ),
@@ -829,11 +849,10 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
 
   void _shareResults() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Sharing processing results...'),
         backgroundColor: AppColors.primaryGreen,
       ),
     );
   }
 }
-

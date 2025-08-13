@@ -125,7 +125,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.picture_as_pdf,
               size: 64,
               color: AppColors.primaryBlue,
@@ -135,15 +135,15 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Text(
             "No PDF Selected",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             "Select a PDF file to view and edit",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondaryLight,
-            ),
+                  color: AppColors.textSecondaryLight,
+                ),
           ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
@@ -232,9 +232,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
             child: Row(
               children: [
-                Icon(Icons.photo_library, color: AppColors.primaryBlue),
+                const Icon(Icons.photo_library, color: AppColors.primaryBlue),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   "Thumbnails",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -380,7 +380,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       child: Row(
         children: [
           IconButton(
-            onPressed: _currentPage > 1 ? () => _goToPage(_currentPage - 1) : null,
+            onPressed:
+                _currentPage > 1 ? () => _goToPage(_currentPage - 1) : null,
             icon: const Icon(Icons.chevron_left),
           ),
           Expanded(
@@ -395,7 +396,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     ),
                     onSubmitted: (value) {
                       int? page = int.tryParse(value);
@@ -414,7 +416,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
           ),
           IconButton(
-            onPressed: _currentPage < _totalPages ? () => _goToPage(_currentPage + 1) : null,
+            onPressed: _currentPage < _totalPages
+                ? () => _goToPage(_currentPage + 1)
+                : null,
             icon: const Icon(Icons.chevron_right),
           ),
           const SizedBox(width: 16),
@@ -424,11 +428,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           ),
           const SizedBox(width: 16),
           IconButton(
-            onPressed: () => setState(() => _zoomLevel = (_zoomLevel - 0.25).clamp(0.5, 3.0)),
+            onPressed: () => setState(
+                () => _zoomLevel = (_zoomLevel - 0.25).clamp(0.5, 3.0)),
             icon: const Icon(Icons.zoom_out),
           ),
           IconButton(
-            onPressed: () => setState(() => _zoomLevel = (_zoomLevel + 0.25).clamp(0.5, 3.0)),
+            onPressed: () => setState(
+                () => _zoomLevel = (_zoomLevel + 0.25).clamp(0.5, 3.0)),
             icon: const Icon(Icons.zoom_in),
           ),
         ],
@@ -579,7 +585,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Print PDF'),
-        content: const Text('Print functionality will be implemented in a future update.'),
+        content: const Text(
+            'Print functionality will be implemented in a future update.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

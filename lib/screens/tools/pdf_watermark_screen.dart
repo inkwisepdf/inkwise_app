@@ -17,9 +17,11 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
   bool _isProcessing = false;
   String? _outputPath;
   String _watermarkType = 'text'; // 'text' or 'image'
-  final TextEditingController _watermarkTextController = TextEditingController();
+  final TextEditingController _watermarkTextController =
+      TextEditingController();
   File? _watermarkImage;
-  String _watermarkPosition = 'center'; // 'center', 'top-left', 'top-right', 'bottom-left', 'bottom-right'
+  String _watermarkPosition =
+      'center'; // 'center', 'top-left', 'top-right', 'bottom-left', 'bottom-right'
   double _opacity = 0.5;
   double _rotation = 0.0;
   double _fontSize = 24.0;
@@ -123,9 +125,9 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 Text(
                   "Add Watermark",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -221,13 +223,16 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                             fontSize: 16,
                           ),
                         ),
-                                                  Text(
-                            "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                              fontSize: 14,
-                            ),
+                        Text(
+                          "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
+                            fontSize: 14,
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -268,7 +273,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           RadioListTile<String>(
             title: const Text("Text Watermark"),
             subtitle: const Text("Add text as watermark"),
@@ -282,7 +286,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
             },
             activeColor: AppColors.primaryBlue,
           ),
-          
           RadioListTile<String>(
             title: const Text("Image Watermark"),
             subtitle: const Text("Add image as watermark"),
@@ -318,7 +321,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           if (_watermarkType == 'text') ...[
             TextField(
               controller: _watermarkTextController,
@@ -330,9 +332,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 ),
               ),
             ),
-            
             const SizedBox(height: 16),
-            
             Row(
               children: [
                 Expanded(
@@ -387,9 +387,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 ),
               ],
             ),
-            
             const SizedBox(height: 16),
-            
             Text(
               "Font Size: ${_fontSize.toInt()}",
               style: Theme.of(context).textTheme.bodyMedium,
@@ -412,11 +410,11 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 child: Container(
                   height: 120,
                   decoration: BoxDecoration(
-                                      border: Border.all(
-                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
-                    width: 2,
-                  ),
+                    border: Border.all(
+                      color: AppColors.primaryBlue.withValues(alpha: 0.3),
+                      style: BorderStyle.solid,
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Column(
@@ -444,11 +442,11 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                ),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -476,7 +474,10 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                           Text(
                             "Image selected",
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.6),
                               fontSize: 14,
                             ),
                           ),
@@ -519,7 +520,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           DropdownButtonFormField<String>(
             value: _watermarkPosition,
             decoration: InputDecoration(
@@ -540,9 +540,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Opacity: ${(_opacity * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -558,9 +556,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
               });
             },
           ),
-          
           const SizedBox(height: 16),
-          
           Text(
             "Rotation: ${_rotation.toInt()}°",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -582,9 +578,9 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-        (_watermarkType == 'text' || 
-         (_watermarkType == 'image' && _watermarkImage != null));
+    bool canProcess = _selectedFile != null &&
+        (_watermarkType == 'text' ||
+            (_watermarkType == 'image' && _watermarkImage != null));
 
     return SizedBox(
       width: double.infinity,
@@ -644,14 +640,13 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
               Text(
                 "Watermark Added",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -690,7 +685,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -715,7 +709,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -818,23 +812,25 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
         content: Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: colors.map((color) => GestureDetector(
-            onTap: () {
-              setState(() {
-                _textColor = color;
-              });
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey),
-              ),
-            ),
-          )).toList(),
+          children: colors
+              .map((color) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _textColor = color;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                    ),
+                  ))
+              .toList(),
         ),
       ),
     );
@@ -866,7 +862,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
         if (_watermarkImage == null) {
           throw Exception('Please select an image for watermark');
         }
-        
+
         watermarkedFile = await pdfService.addImageWatermark(
           _selectedFile!,
           _watermarkImage!,
@@ -883,8 +879,8 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Watermark added successfully!'),
+          const SnackBar(
+            content: Text('Watermark added successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
@@ -893,7 +889,7 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -905,4 +901,3 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
     }
   }
 }
-

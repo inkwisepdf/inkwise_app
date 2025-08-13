@@ -18,7 +18,8 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
   String? _outputPath;
   String _operation = 'add'; // 'add' or 'remove'
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _showPassword = false;
   bool _showConfirmPassword = false;
 
@@ -48,7 +49,8 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildOperationSelector(),
             const SizedBox(height: 24),
-            if (_selectedFile != null && _operation == 'add') _buildPasswordForm(),
+            if (_selectedFile != null && _operation == 'add')
+              _buildPasswordForm(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildProcessButton(),
             const SizedBox(height: 24),
@@ -97,9 +99,9 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 Text(
                   "Password Protection",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -198,7 +200,10 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -243,7 +248,6 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           RadioListTile<String>(
             title: const Text("Add Password Protection"),
             subtitle: const Text("Encrypt PDF with a password"),
@@ -257,7 +261,6 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
             },
             activeColor: AppColors.primaryRed,
           ),
-          
           RadioListTile<String>(
             title: const Text("Remove Password Protection"),
             subtitle: const Text("Decrypt PDF (requires current password)"),
@@ -294,7 +297,6 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-          
           TextField(
             controller: _passwordController,
             obscureText: !_showPassword,
@@ -305,7 +307,8 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               suffixIcon: IconButton(
-                icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(
+                    _showPassword ? Icons.visibility : Icons.visibility_off),
                 onPressed: () {
                   setState(() {
                     _showPassword = !_showPassword;
@@ -314,9 +317,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
               ),
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           TextField(
             controller: _confirmPasswordController,
             obscureText: !_showConfirmPassword,
@@ -327,7 +328,9 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               suffixIcon: IconButton(
-                icon: Icon(_showConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(_showConfirmPassword
+                    ? Icons.visibility
+                    : Icons.visibility_off),
                 onPressed: () {
                   setState(() {
                     _showConfirmPassword = !_showConfirmPassword;
@@ -336,25 +339,23 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
               ),
             ),
           ),
-          
           const SizedBox(height: 12),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColors.primaryRed.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline,
                   color: AppColors.primaryRed,
                   size: 16,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
-                  child: const Text(
+                  child: Text(
                     "Use a strong password with at least 8 characters including letters, numbers, and symbols.",
                     style: TextStyle(
                       color: AppColors.primaryRed,
@@ -371,12 +372,12 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
   }
 
   Widget _buildProcessButton() {
-    bool canProcess = _selectedFile != null && 
-        (_operation == 'remove' || 
-         (_operation == 'add' && 
-          _passwordController.text.isNotEmpty && 
-          _confirmPasswordController.text.isNotEmpty &&
-          _passwordController.text == _confirmPasswordController.text));
+    bool canProcess = _selectedFile != null &&
+        (_operation == 'remove' ||
+            (_operation == 'add' &&
+                _passwordController.text.isNotEmpty &&
+                _confirmPasswordController.text.isNotEmpty &&
+                _passwordController.text == _confirmPasswordController.text));
 
     return SizedBox(
       width: double.infinity,
@@ -392,9 +393,11 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                 ),
               )
             : Icon(_operation == 'add' ? Icons.lock : Icons.lock_open),
-        label: Text(_isProcessing 
-            ? (_operation == 'add' ? "Encrypting..." : "Decrypting...") 
-            : (_operation == 'add' ? "Add Password Protection" : "Remove Password Protection")),
+        label: Text(_isProcessing
+            ? (_operation == 'add' ? "Encrypting..." : "Decrypting...")
+            : (_operation == 'add'
+                ? "Add Password Protection"
+                : "Remove Password Protection")),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryRed,
           foregroundColor: Colors.white,
@@ -436,16 +439,17 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
               ),
               const SizedBox(width: 12),
               Text(
-                _operation == 'add' ? "Encryption Complete" : "Decryption Complete",
+                _operation == 'add'
+                    ? "Encryption Complete"
+                    : "Decryption Complete",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -465,18 +469,20 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _operation == 'add' ? "Protected PDF" : "Unprotected PDF",
-                        style: TextStyle(
+                        _operation == 'add'
+                            ? "Protected PDF"
+                            : "Unprotected PDF",
+                        style: const TextStyle(
                           color: AppColors.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        _operation == 'add' 
+                        _operation == 'add'
                             ? "Password protection added successfully"
                             : "Password protection removed successfully",
                         style: TextStyle(
-                                                      color: AppColors.primaryGreen.withValues(alpha: 0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -486,7 +492,6 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
           Row(
             children: [
@@ -511,7 +516,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -593,7 +598,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         if (_passwordController.text.length < 8) {
           throw Exception('Password must be at least 8 characters long');
         }
-        
+
         processedFile = await pdfService.addPassword(
           _selectedFile!,
           _passwordController.text,
@@ -603,7 +608,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
         if (_passwordController.text.isEmpty) {
           throw Exception('Current password is required to remove protection');
         }
-        
+
         processedFile = await pdfService.removePassword(
           _selectedFile!,
           _passwordController.text,
@@ -618,8 +623,8 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_operation == 'add' 
-                ? 'Password protection added successfully!' 
+            content: Text(_operation == 'add'
+                ? 'Password protection added successfully!'
                 : 'Password protection removed successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
@@ -629,7 +634,7 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
       setState(() {
         _isProcessing = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -641,4 +646,3 @@ class _PDFPasswordScreenState extends State<PDFPasswordScreen> {
     }
   }
 }
-

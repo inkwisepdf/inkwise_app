@@ -57,7 +57,8 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildStampLibrary(),
             const SizedBox(height: 24),
-            if (_selectedFile != null && _selectedStamp.isNotEmpty) _buildStampSettings(),
+            if (_selectedFile != null && _selectedStamp.isNotEmpty)
+              _buildStampSettings(),
             const SizedBox(height: 24),
             if (_selectedFile != null) _buildPreview(),
             const SizedBox(height: 24),
@@ -108,9 +109,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                 Text(
                   "Custom Stamps",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryGreen,
-                    fontWeight: FontWeight.w600,
-                  ),
+                        color: AppColors.primaryGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -209,7 +210,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -264,7 +268,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             ],
           ),
           const SizedBox(height: 16),
-
           DropdownButtonFormField<String>(
             value: _stampCategory,
             decoration: InputDecoration(
@@ -285,9 +288,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           SizedBox(
             height: 200,
             child: GridView.builder(
@@ -327,16 +328,17 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         Icon(
                           _getStampIcon(stamp['type']),
                           size: 32,
-                          color: isSelected
-                              ? AppColors.primaryGreen
-                              : Colors.grey,
+                          color:
+                              isSelected ? AppColors.primaryGreen : Colors.grey,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           stamp['name'],
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
                             color: isSelected
                                 ? AppColors.primaryGreen
                                 : Colors.grey,
@@ -373,7 +375,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-
           Text(
             "Opacity: ${(_stampOpacity * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -389,9 +390,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           Text(
             "Size: ${(_stampSize * 100).toInt()}%",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -407,9 +406,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           Text(
             "Rotation: ${_rotation.toInt()}°",
             style: Theme.of(context).textTheme.bodyMedium,
@@ -425,9 +422,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               });
             },
           ),
-
           const SizedBox(height: 16),
-
           Row(
             children: [
               Expanded(
@@ -437,7 +432,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   label: const Text("Add to Page"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -449,7 +444,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   label: const Text("Clear All"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryRed,
-                    side: BorderSide(color: AppColors.primaryRed),
+                    side: const BorderSide(color: AppColors.primaryRed),
                   ),
                 ),
               ),
@@ -478,7 +473,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
-
           Container(
             height: 300,
             decoration: BoxDecoration(
@@ -496,7 +490,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                       Icon(
                         Icons.description,
                         size: 64,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -504,7 +501,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -525,10 +525,12 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
+                              color:
+                                  AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: AppColors.primaryGreen.withValues(alpha: 0.3),
+                                color: AppColors.primaryGreen
+                                    .withValues(alpha: 0.3),
                               ),
                             ),
                             child: Icon(
@@ -541,18 +543,17 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                       ),
                     ),
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),
-
           if (_appliedStamps.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
               "Applied Stamps (${_appliedStamps.length})",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             SizedBox(
@@ -616,14 +617,14 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         onPressed: _isProcessing ? null : _applyStamps,
         icon: _isProcessing
             ? const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        )
-            : Icon(Icons.assignment),
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : const Icon(Icons.assignment),
         label: Text(_isProcessing ? "Applying..." : "Apply Stamps"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -668,14 +669,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               Text(
                 "Stamps Applied",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: AppColors.primaryGreen,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -714,9 +714,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               ],
             ),
           ),
-
           const SizedBox(height: 16),
-
           Row(
             children: [
               Expanded(
@@ -726,7 +724,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   label: const Text("Open File"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryGreen,
-                    side: BorderSide(color: AppColors.primaryGreen),
+                    side: const BorderSide(color: AppColors.primaryGreen),
                   ),
                 ),
               ),
@@ -751,17 +749,67 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
 
   void _loadStamps() {
     _stamps = [
-      {'id': 'approved', 'name': 'Approved', 'type': 'business', 'category': 'business'},
-      {'id': 'rejected', 'name': 'Rejected', 'type': 'business', 'category': 'business'},
-      {'id': 'confidential', 'name': 'Confidential', 'type': 'legal', 'category': 'legal'},
-      {'id': 'draft', 'name': 'Draft', 'type': 'business', 'category': 'business'},
-      {'id': 'urgent', 'name': 'Urgent', 'type': 'business', 'category': 'business'},
-      {'id': 'reviewed', 'name': 'Reviewed', 'type': 'business', 'category': 'business'},
+      {
+        'id': 'approved',
+        'name': 'Approved',
+        'type': 'business',
+        'category': 'business'
+      },
+      {
+        'id': 'rejected',
+        'name': 'Rejected',
+        'type': 'business',
+        'category': 'business'
+      },
+      {
+        'id': 'confidential',
+        'name': 'Confidential',
+        'type': 'legal',
+        'category': 'legal'
+      },
+      {
+        'id': 'draft',
+        'name': 'Draft',
+        'type': 'business',
+        'category': 'business'
+      },
+      {
+        'id': 'urgent',
+        'name': 'Urgent',
+        'type': 'business',
+        'category': 'business'
+      },
+      {
+        'id': 'reviewed',
+        'name': 'Reviewed',
+        'type': 'business',
+        'category': 'business'
+      },
       {'id': 'signed', 'name': 'Signed', 'type': 'legal', 'category': 'legal'},
-      {'id': 'verified', 'name': 'Verified', 'type': 'business', 'category': 'business'},
-      {'id': 'personal', 'name': 'Personal', 'type': 'personal', 'category': 'personal'},
-      {'id': 'custom1', 'name': 'Custom 1', 'type': 'custom', 'category': 'custom'},
-      {'id': 'custom2', 'name': 'Custom 2', 'type': 'custom', 'category': 'custom'},
+      {
+        'id': 'verified',
+        'name': 'Verified',
+        'type': 'business',
+        'category': 'business'
+      },
+      {
+        'id': 'personal',
+        'name': 'Personal',
+        'type': 'personal',
+        'category': 'personal'
+      },
+      {
+        'id': 'custom1',
+        'name': 'Custom 1',
+        'type': 'custom',
+        'category': 'custom'
+      },
+      {
+        'id': 'custom2',
+        'name': 'Custom 2',
+        'type': 'custom',
+        'category': 'custom'
+      },
     ];
   }
 
@@ -769,7 +817,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     if (_stampCategory == 'all') {
       return _stamps;
     }
-    return _stamps.where((stamp) => stamp['category'] == _stampCategory).toList();
+    return _stamps
+        .where((stamp) => stamp['category'] == _stampCategory)
+        .toList();
   }
 
   IconData _getStampIcon(String type) {
@@ -817,8 +867,8 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
   void _addCustomStamp() {
     // In a real implementation, this would open a dialog to create custom stamps
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Custom stamp creation feature coming soon!'),
+      const SnackBar(
+        content: Text('Custom stamp creation feature coming soon!'),
         backgroundColor: AppColors.primaryOrange,
       ),
     );
@@ -864,7 +914,8 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       // Simulate stamp application process
       await Future.delayed(const Duration(seconds: 2));
 
-      final outputPath = await _getOutputPath('stamped_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final outputPath = await _getOutputPath(
+          'stamped_${DateTime.now().millisecondsSinceEpoch}.pdf');
 
       setState(() {
         _outputPath = outputPath;
@@ -873,8 +924,8 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Stamps applied successfully!'),
+          const SnackBar(
+            content: Text('Stamps applied successfully!'),
             backgroundColor: AppColors.primaryGreen,
           ),
         );
