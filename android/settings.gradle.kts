@@ -16,3 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "inkwisepdf"
 include(":app")
+
+// Flutter plugin configuration
+apply(from = "${settingsDir.parentFile}/packages/flutter_tools/gradle/app_plugin_loader.gradle")
