@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inkwise_pdf/routes.dart';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/local_analytics_service.dart';

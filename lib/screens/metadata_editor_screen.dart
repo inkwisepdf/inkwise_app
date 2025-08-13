@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:inkwise_pdf/features/metadata/metadata_editor.dart';
 
 class MetadataEditorScreen extends StatefulWidget {
   const MetadataEditorScreen({super.key});
