@@ -302,7 +302,6 @@ class OfflineTranslationService {
       final document = await PdfDocument.openFile(pdfFile.path);
 
       for (int i = 1; i <= document.pageCount; i++) {
-        final page = await document.getPage(i);
         // page.text is not available in pdf_render, will use OCR instead
         final pageText = null;
         if (pageText != null) {
