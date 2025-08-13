@@ -689,7 +689,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         'id': 'grayscale',
         'name': 'Convert to Grayscale',
         'description': 'Convert PDF to black and white',
-        'icon': Icons.grayscale,
+        'icon': Icons.filter_b_and_w,
         'category': 'conversion',
       },
       {

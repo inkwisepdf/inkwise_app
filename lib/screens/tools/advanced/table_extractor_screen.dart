@@ -446,7 +446,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                                color: AppColors.primaryGreen.withValues(alpha: 0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(

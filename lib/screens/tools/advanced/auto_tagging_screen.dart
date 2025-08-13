@@ -510,7 +510,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.label_off,
                       size: 64,
                       color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
