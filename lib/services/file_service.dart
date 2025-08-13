@@ -77,8 +77,8 @@ class FileService {
 
   static Future<void> shareFile(File file) async {
     try {
-      await SharePlus.instance.shareXFiles(
-        [XFile(file.path)],
+      await SharePlus.instance.shareFiles(
+        [file.path],
         text: 'Shared from Inkwise PDF',
       );
     } catch (e) {
