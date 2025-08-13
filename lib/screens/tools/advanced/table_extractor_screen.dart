@@ -393,7 +393,7 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               "No tables were detected in the PDF. Try adjusting the confidence level or check if the PDF contains tabular data.",
               textAlign: TextAlign.center,
               style: TextStyle(
