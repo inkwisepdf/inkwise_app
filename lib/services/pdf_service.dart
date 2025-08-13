@@ -42,7 +42,12 @@ class PDFService {
 
         for (final sourceDoc in documents) {
           // Import all pages from source document
-          document.importPageRange(sourceDoc, 0, sourceDoc.pages.count - 1);
+          for (int i = 0; i < sourceDoc.pages.count; i++) {
+            document.pages.add().graphics.drawPdfTemplate(
+              sourceDoc.pages[i].createTemplate(),
+              Offset.zero,
+            );
+          }
           sourceDoc.dispose();
         }
 
@@ -89,7 +94,10 @@ class PDFService {
             final pageIndex = entry.value;
 
             final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
-            newDoc.importPageRange(document, pageIndex, pageIndex);
+            newDoc.pages.add().graphics.drawPdfTemplate(
+              document.pages[pageIndex].createTemplate(),
+              Offset.zero,
+            );
 
             final List<int> bytes = await newDoc.save();
             newDoc.dispose();
@@ -105,7 +113,10 @@ class PDFService {
           // Split each page into separate file - process in parallel
           final futures = List.generate(document.pages.count, (i) async {
             final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
-            newDoc.importPageRange(document, i, i);
+            newDoc.pages.add().graphics.drawPdfTemplate(
+              document.pages[i].createTemplate(),
+              Offset.zero,
+            );
 
             final List<int> bytes = await newDoc.save();
             newDoc.dispose();
@@ -197,7 +208,10 @@ class PDFService {
       // Import all pages except the ones to be removed
       for (int i = 0; i < document.pages.count; i++) {
         if (!pageNumbers.contains(i + 1)) {
-          newDoc.importPageRange(document, i, i);
+          newDoc.pages.add().graphics.drawPdfTemplate(
+            document.pages[i].createTemplate(),
+            Offset.zero,
+          );
         }
       }
 
@@ -580,8 +594,7 @@ class PDFService {
           await outputFile.writeAsBytes(bytes);
           imageFiles.add(outputFile);
 
-          // Close the page
-          await page.close();
+          // PdfPage from pdf_render doesn't have a close method
         }
       }
 
