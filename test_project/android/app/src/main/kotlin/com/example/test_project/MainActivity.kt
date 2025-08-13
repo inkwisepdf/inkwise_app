@@ -1,4 +1,4 @@
-package com.example.inkwise_pdf
+package com.example.test_project
 
 import io.flutter.embedding.android.FlutterActivity
 
