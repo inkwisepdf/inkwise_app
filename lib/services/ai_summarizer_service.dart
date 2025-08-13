@@ -108,7 +108,7 @@ class AISummarizerService {
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();
@@ -153,7 +153,7 @@ class AISummarizerService {
 
         // Clean up
         await tempFile.delete();
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();

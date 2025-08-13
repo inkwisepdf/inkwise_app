@@ -583,7 +583,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
 
     try {
       final filename = 'voice_notes_${DateTime.now().millisecondsSinceEpoch}.txt';
-      await FileService().saveTextAsFile(_textController.text, filename);
+      await FileService.saveTextAsFile(_textController.text, filename);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
