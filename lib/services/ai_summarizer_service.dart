@@ -1,13 +1,8 @@
 import 'dart:io';
-import 'dart:convert';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart' as pdf_package;
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
-import 'package:ml_algo/ml_algo.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'dart:ui' as ui;
 
 class AISummarizerService {
@@ -102,13 +97,12 @@ class AISummarizerService {
       final document = await PdfDocument.openFile(pdfFile.path);
 
       for (int i = 1; i <= document.pageCount; i++) {
-        final page = await document.getPage(i);
         // page.text is not available in pdf_render, will use OCR instead
         final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();
@@ -153,7 +147,7 @@ class AISummarizerService {
 
         // Clean up
         await tempFile.delete();
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();

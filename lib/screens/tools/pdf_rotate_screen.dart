@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/pdf_service.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart' as sf_pdf;
 
 class PDFRotateScreen extends StatefulWidget {
   const PDFRotateScreen({super.key});
@@ -570,16 +571,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     }
   }
 
-  int _getRotationAngle() {
+  sf_pdf.PdfPageRotateAngle _getRotationAngle() {
     switch (_rotationAngle) {
       case '90':
-        return 90;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle90;
       case '180':
-        return 180;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle180;
       case '270':
-        return 270;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle270;
       default:
-        return 90;
+        return sf_pdf.PdfPageRotateAngle.rotateAngle90;
     }
   }
 }

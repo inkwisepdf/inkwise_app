@@ -42,7 +42,12 @@ class PDFService {
 
         for (final sourceDoc in documents) {
           // Import all pages from source document
-          document.importPageRange(sourceDoc, 0, sourceDoc.pages.count - 1);
+          for (int i = 0; i < sourceDoc.pages.count; i++) {
+            document.pages.add().graphics.drawPdfTemplate(
+              sourceDoc.pages[i].createTemplate(),
+              Offset.zero,
+            );
+          }
           sourceDoc.dispose();
         }
 
@@ -89,7 +94,10 @@ class PDFService {
             final pageIndex = entry.value;
 
             final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
-            newDoc.importPageRange(document, pageIndex, pageIndex);
+            newDoc.pages.add().graphics.drawPdfTemplate(
+              document.pages[pageIndex].createTemplate(),
+              Offset.zero,
+            );
 
             final List<int> bytes = await newDoc.save();
             newDoc.dispose();
@@ -105,7 +113,10 @@ class PDFService {
           // Split each page into separate file - process in parallel
           final futures = List.generate(document.pages.count, (i) async {
             final sf_pdf.PdfDocument newDoc = sf_pdf.PdfDocument();
-            newDoc.importPageRange(document, i, i);
+            newDoc.pages.add().graphics.drawPdfTemplate(
+              document.pages[i].createTemplate(),
+              Offset.zero,
+            );
 
             final List<int> bytes = await newDoc.save();
             newDoc.dispose();
@@ -197,7 +208,10 @@ class PDFService {
       // Import all pages except the ones to be removed
       for (int i = 0; i < document.pages.count; i++) {
         if (!pageNumbers.contains(i + 1)) {
-          newDoc.importPageRange(document, i, i);
+          newDoc.pages.add().graphics.drawPdfTemplate(
+            document.pages[i].createTemplate(),
+            Offset.zero,
+          );
         }
       }
 
@@ -221,7 +235,7 @@ class PDFService {
       final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
 
       for (int i = 0; i < count; i++) {
-        final sf_pdf.PdfPage newPage = document.pages.add();
+        document.pages.add();
         // Note: In Syncfusion, page size is typically set automatically
         // If you need specific size, you can set it during page creation
       }
@@ -448,9 +462,9 @@ class PDFService {
 
         // Draw watermark
         final sf_pdf.PdfBrush brush = sf_pdf.PdfSolidBrush(sf_pdf.PdfColor(
-          color.red,
-          color.green,
-          color.blue,
+          (color.red * 255.0).round() & 0xff,
+          (color.green * 255.0).round() & 0xff,
+          (color.blue * 255.0).round() & 0xff,
         ));
 
         // Apply opacity using transparency
@@ -580,8 +594,7 @@ class PDFService {
           await outputFile.writeAsBytes(bytes);
           imageFiles.add(outputFile);
 
-          // Close the page
-          await page.close();
+          // PdfPage from pdf_render doesn't have a close method
         }
       }
 
@@ -659,22 +672,7 @@ class PDFService {
     return '${appDir.path}/$filename';
   }
 
-  Future<Uint8List> _compressImage(Uint8List imageBytes, double quality) async {
-    try {
-      final img.Image? image = img.decodeImage(imageBytes);
-      if (image != null) {
-        // Resize image if too large
-        img.Image resizedImage = image;
-        if (image.width > 800 || image.height > 800) {
-          resizedImage = img.copyResize(image, width: 800, height: 800);
-        }
-        return Uint8List.fromList(img.encodeJpg(resizedImage, quality: (quality * 100).round()));
-      }
-      return imageBytes;
-    } catch (e) {
-      return imageBytes;
-    }
-  }
+  // Note: _compressImage method removed as it was unused
 
   img.Image _applyThreshold(img.Image image, double threshold) {
     final int thresholdValue = (threshold * 255).round();

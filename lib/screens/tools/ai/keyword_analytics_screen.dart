@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
-import 'package:inkwise_pdf/services/ai_summarizer_service.dart';
 
 class KeywordAnalyticsScreen extends StatefulWidget {
   const KeywordAnalyticsScreen({super.key});

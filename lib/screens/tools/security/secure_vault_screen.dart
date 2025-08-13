@@ -13,7 +13,6 @@ class SecureVaultScreen extends StatefulWidget {
 
 class _SecureVaultScreenState extends State<SecureVaultScreen> {
   bool _isUnlocked = false;
-  String _masterPassword = '';
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _showPassword = false;
@@ -532,7 +531,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
       if (_passwordController.text == 'vault123') { // Demo password
         setState(() {
           _isUnlocked = true;
-          _masterPassword = _passwordController.text;
           _isProcessing = false;
         });
         
@@ -568,7 +566,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   void _lockVault() {
     setState(() {
       _isUnlocked = false;
-      _masterPassword = '';
     });
     
     if (mounted) {

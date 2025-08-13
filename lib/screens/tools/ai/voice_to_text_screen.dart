@@ -14,7 +14,6 @@ class VoiceToTextScreen extends StatefulWidget {
 
 class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   File? _selectedFile;
-  bool _isProcessing = false;
   bool _isListening = false;
   String _transcribedText = '';
   String _selectedLanguage = 'en-US';
@@ -49,10 +48,12 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   Future<void> _initializeSpeech() async {
     bool available = await _speechToText.initialize(
       onError: (error) {
-        print('Speech recognition error: $error');
+        // Speech recognition error occurred
+        debugPrint('Speech recognition error: $error');
       },
       onStatus: (status) {
-        print('Speech recognition status: $status');
+        // Speech recognition status update
+        debugPrint('Speech recognition status: $status');
       },
     );
     
@@ -583,7 +584,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
 
     try {
       final filename = 'voice_notes_${DateTime.now().millisecondsSinceEpoch}.txt';
-      await FileService().saveTextAsFile(_textController.text, filename);
+      await FileService.saveTextAsFile(_textController.text, filename);
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

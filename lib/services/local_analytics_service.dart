@@ -83,7 +83,7 @@ class LocalAnalyticsService {
       });
 
       // Also log to user actions for detailed tracking
-      await logUserAction('analytics_event', {
+      await logUserAction('analytics_event', details: {
         'event_name': name,
         'parameters': parameters,
       });

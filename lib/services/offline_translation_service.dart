@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
@@ -303,13 +302,12 @@ class OfflineTranslationService {
       final document = await PdfDocument.openFile(pdfFile.path);
 
       for (int i = 1; i <= document.pageCount; i++) {
-        final page = await document.getPage(i);
         // page.text is not available in pdf_render, will use OCR instead
         final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();
@@ -353,7 +351,7 @@ class OfflineTranslationService {
         ocrText += '$pageOcr\n\n';
 
         await tempFile.delete();
-        await page.dispose();
+        // PdfPage from pdf_render doesn't have a dispose method
       }
 
       await document.dispose();

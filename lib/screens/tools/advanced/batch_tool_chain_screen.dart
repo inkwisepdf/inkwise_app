@@ -689,7 +689,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         'id': 'grayscale',
         'name': 'Convert to Grayscale',
         'description': 'Convert PDF to black and white',
-        'icon': Icons.grayscale,
+        'icon': Icons.filter_b_and_w,
         'category': 'conversion',
       },
       {
@@ -741,12 +741,14 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting files: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting files: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -798,23 +800,27 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       });
 
       final successCount = _processingResults.where((r) => r['status'] == 'success').length;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Batch processing completed! $successCount/${_selectedFiles.length} files processed successfully.'),
-          backgroundColor: successCount == _selectedFiles.length ? AppColors.primaryGreen : AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Batch processing completed! $successCount/${_selectedFiles.length} files processed successfully.'),
+            backgroundColor: successCount == _selectedFiles.length ? AppColors.primaryGreen : AppColors.primaryOrange,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error during batch processing: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error during batch processing: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 

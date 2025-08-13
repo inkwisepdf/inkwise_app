@@ -90,8 +90,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
                 colors: [AppColors.gradientStart, AppColors.gradientEnd],
               ),
               borderRadius: BorderRadius.circular(AppRadius.md),

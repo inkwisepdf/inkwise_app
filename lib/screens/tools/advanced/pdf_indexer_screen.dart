@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:inkwise_pdf/theme.dart';
 
 class PDFIndexerScreen extends StatefulWidget {
@@ -519,7 +518,7 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
+                      Text(
                         result['size'],
                         style: TextStyle(
                           fontSize: 12,
@@ -567,11 +566,11 @@ class _PDFIndexerScreenState extends State<PDFIndexerScreen> {
               child: Center(
                 child: Column(
                   children: [
-                                          Icon(
-                        Icons.search_off,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
-                      ),
+                    Icon(
+                      Icons.search_off,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       "No indexed files",
