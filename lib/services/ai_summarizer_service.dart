@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
+import 'package:pdf/pdf.dart' as pdf_package;
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 import 'package:ml_algo/ml_algo.dart';
@@ -10,12 +10,7 @@ import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 
 class AISummarizerService {
-  static const String _modelPath = 'assets/models/summarizer_model.json';
-  static const String _vocabPath = 'assets/models/vocab.json';
-  
   // Modern ML components
-  Map<String, dynamic>? _summarizerModel;
-  Map<String, int>? _vocabulary;
   Map<String, Map<String, double>>? _wordEmbeddings;
   bool _isInitialized = false;
   
@@ -24,113 +19,13 @@ class AISummarizerService {
     if (_isInitialized) return true;
     
     try {
-      // Load modern ML summarizer model
-      await _loadModel();
-      
-      // Load vocabulary and word embeddings
-      await _loadVocabulary();
+      // Load word embeddings
       await _initializeWordEmbeddings();
       
       _isInitialized = true;
-      print('AI summarizer service initialized successfully');
       return true;
     } catch (e) {
-      print('Error initializing AI summarizer service: $e');
       return false;
-    }
-  }
-
-  // Load modern ML summarizer model
-  Future<void> _loadModel() async {
-    try {
-      // In a real implementation, you would load the actual model file
-      // For now, we'll create a mock model with modern ML structure
-      _summarizerModel = {
-        'type': 'neural_summarizer',
-        'version': '2.0',
-        'architecture': 'transformer',
-        'layers': 4,
-        'embedding_dim': 256,
-        'vocab_size': 30000,
-        'max_length': 1024,
-        'dropout': 0.1,
-        'parameters': {
-          'encoder_weights': 'mock_weights',
-          'decoder_weights': 'mock_weights',
-          'attention_weights': 'mock_weights',
-        }
-      };
-      
-      // Real implementation would be:
-      // final modelFile = await rootBundle.loadString(_modelPath);
-      // _summarizerModel = json.decode(modelFile);
-    } catch (e) {
-      print('Error loading summarizer model: $e');
-      rethrow;
-    }
-  }
-
-  // Load vocabulary
-  Future<void> _loadVocabulary() async {
-    try {
-      // In a real implementation, you would load the vocabulary file
-      // For now, we'll create a mock vocabulary
-      _vocabulary = {
-        '<PAD>': 0,
-        '<UNK>': 1,
-        '<START>': 2,
-        '<END>': 3,
-        'summary': 4,
-        'document': 5,
-        'text': 6,
-        'important': 7,
-        'key': 8,
-        'point': 9,
-        'main': 10,
-        'idea': 11,
-        'concept': 12,
-        'information': 13,
-        'data': 14,
-        'analysis': 15,
-        'result': 16,
-        'conclusion': 17,
-        'finding': 18,
-        'research': 19,
-        'study': 20,
-        'report': 21,
-        'paper': 22,
-        'article': 23,
-        'content': 24,
-        'topic': 25,
-        'subject': 26,
-        'matter': 27,
-        'issue': 28,
-        'problem': 29,
-        'solution': 30,
-        'method': 31,
-        'approach': 32,
-        'technique': 33,
-        'strategy': 34,
-        'plan': 35,
-        'process': 36,
-        'procedure': 37,
-        'system': 38,
-        'framework': 39,
-        'model': 40,
-        'algorithm': 41,
-        'function': 42,
-        'feature': 43,
-        'capability': 44,
-        'performance': 45,
-        'efficiency': 46,
-        'effectiveness': 47,
-        'quality': 48,
-        'accuracy': 49,
-        'precision': 50,
-      };
-    } catch (e) {
-      print('Error loading vocabulary: $e');
-      rethrow;
     }
   }
 
@@ -435,65 +330,6 @@ class AISummarizerService {
         .toList();
   }
   
-  Map<String, double> _calculateSentenceScores(List<String> sentences) {
-    final scores = <String, double>{};
-    
-    // Calculate word frequency
-    final wordFreq = <String, int>{};
-    for (final sentence in sentences) {
-      final words = sentence.toLowerCase().split(RegExp(r'\s+'));
-      for (final word in words) {
-        if (word.length > 3) { // Ignore short words
-          wordFreq[word] = (wordFreq[word] ?? 0) + 1;
-        }
-      }
-    }
-    
-    // Calculate sentence scores based on word frequency
-    for (final sentence in sentences) {
-      double score = 0;
-      final words = sentence.toLowerCase().split(RegExp(r'\s+'));
-      
-      for (final word in words) {
-        if (word.length > 3) {
-          score += wordFreq[word] ?? 0;
-        }
-      }
-      
-      // Normalize by sentence length
-      score = score / words.length;
-      scores[sentence] = score;
-    }
-    
-    return scores;
-  }
-  
-  List<String> _selectTopSentences(
-    List<String> sentences,
-    Map<String, double> scores,
-    int targetLength,
-  ) {
-    // Sort sentences by score
-    final sortedSentences = sentences.toList()
-      ..sort((a, b) => (scores[b] ?? 0).compareTo(scores[a] ?? 0));
-    
-    // Select top sentences
-    final selected = <String>[];
-    int currentLength = 0;
-    
-    for (final sentence in sortedSentences) {
-      if (currentLength >= targetLength) break;
-      
-      selected.add(sentence);
-      currentLength++;
-    }
-    
-    // Sort back to original order
-    selected.sort((a, b) => sentences.indexOf(a).compareTo(sentences.indexOf(b)));
-    
-    return selected;
-  }
-  
   String _formatSummary(String summary, String language) {
     // Apply language-specific formatting
     switch (language.toLowerCase()) {
@@ -506,19 +342,6 @@ class AISummarizerService {
       default:
         return summary;
     }
-  }
-  
-  // Advanced summarization using modern ML algorithms
-  Future<String> _advancedSummarization(String text) async {
-    // This would implement more sophisticated summarization techniques
-    // such as:
-    // 1. TextRank algorithm with word embeddings
-    // 2. BERT-based sentence embeddings
-    // 3. Abstractive summarization using transformer models
-    // 4. Graph-based algorithms for sentence selection
-    
-    // For now, return a modern extractive summary
-    return _generateModernSummary(text, 'English', 3);
   }
   
   // Get summary statistics
@@ -568,13 +391,10 @@ class AISummarizerService {
   Future<void> dispose() async {
     try {
       // Clean up modern ML resources
-      _summarizerModel = null;
-      _vocabulary = null;
       _wordEmbeddings = null;
       _isInitialized = false;
     } catch (e) {
-      print('Error disposing AI summarizer service: $e');
+      // Error disposing AI summarizer service
     }
   }
 }
-

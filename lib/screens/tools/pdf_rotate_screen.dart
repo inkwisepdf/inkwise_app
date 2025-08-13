@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/pdf_service.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/pdf_service.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class PDFRotateScreen extends StatefulWidget {
-  const PDFRotateScreen({Key? key}) : super(key: key);
+  const PDFRotateScreen({super.key});
 
   @override
   State<PDFRotateScreen> createState() => _PDFRotateScreenState();
@@ -60,13 +60,13 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -116,7 +116,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -134,7 +134,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -165,10 +165,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -193,7 +193,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -225,7 +225,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -366,10 +366,10 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -380,7 +380,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -404,7 +404,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -419,7 +419,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Rotated PDF",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
@@ -429,7 +429,7 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                       Text(
                         "Rotation: ${_rotationOptions[_rotationAngle]}",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -448,14 +448,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().openFile(file);
+                      await FileService.openFile(file);
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error opening file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error opening file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.open_in_new),
@@ -472,14 +474,16 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                   onPressed: () async {
                     try {
                       final file = File(_outputPath!);
-                      await FileService().shareFile(file);
+                      await FileService.shareFile(file);
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error sharing file: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error sharing file: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.share),
@@ -511,12 +515,14 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -540,36 +546,41 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('PDF rotated successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('PDF rotated successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error rotating PDF: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error rotating PDF: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
-  dynamic _getRotationAngle() {
+  int _getRotationAngle() {
     switch (_rotationAngle) {
       case '90':
-        return PdfPageRotateAngle.rotateAngle90;
+        return 90;
       case '180':
-        return PdfPageRotateAngle.rotateAngle180;
+        return 180;
       case '270':
-        return PdfPageRotateAngle.rotateAngle270;
+        return 270;
       default:
-        return PdfPageRotateAngle.rotateAngle90;
+        return 90;
     }
   }
 }
+

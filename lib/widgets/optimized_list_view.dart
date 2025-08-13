@@ -119,7 +119,7 @@ class OptimizedStaggeredGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverStaggeredGrid.count(
+    return SliverMasonryGrid.count(
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
@@ -136,8 +136,7 @@ class OptimizedScrollView extends StatelessWidget {
   final ScrollController? controller;
   final bool? primary;
   final bool reverse;
-  final bool? shrinkWrap;
-  final DragStartBehavior dragStartBehavior;
+  final ScrollDragStartBehavior dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
@@ -150,8 +149,7 @@ class OptimizedScrollView extends StatelessWidget {
     this.controller,
     this.primary,
     this.reverse = false,
-    this.shrinkWrap,
-    this.dragStartBehavior = DragStartBehavior.start,
+    this.dragStartBehavior = ScrollDragStartBehavior.start,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
@@ -165,7 +163,7 @@ class OptimizedScrollView extends StatelessWidget {
       controller: controller,
       primary: primary,
       reverse: reverse,
-      shrinkWrap: shrinkWrap ?? false,
+      // shrinkWrap parameter removed as it's not needed for SingleChildScrollView
       dragStartBehavior: dragStartBehavior,
       keyboardDismissBehavior: keyboardDismissBehavior,
       restorationId: restorationId,
@@ -267,3 +265,4 @@ class OptimizedImage extends StatelessWidget {
     );
   }
 }
+

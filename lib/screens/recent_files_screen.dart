@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:io';
-import '../theme.dart';
-import '../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class RecentFilesScreen extends StatefulWidget {
   const RecentFilesScreen({super.key});
@@ -234,10 +234,10 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.folder_open,
               size: 64,
               color: AppColors.primaryBlue,
@@ -274,7 +274,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
 
   Widget _buildFileList() {
     if (_showGrid) {
-      return StaggeredGridView.countBuilder(
+      return MasonryGridView.count(
         padding: const EdgeInsets.all(16),
         crossAxisCount: 2,
         mainAxisSpacing: 8,
@@ -284,7 +284,6 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           final file = _filteredFiles[index];
           return _buildFileCard(file);
         },
-        staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
       );
     } else {
       return ListView.builder(
@@ -315,7 +314,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: _getFileTypeColor(file['type']).withOpacity(0.1),
+                      color: _getFileTypeColor(file['type']).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -326,7 +325,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   ),
                   const Spacer(),
                   if (file['isFavorite'] == true)
-                    Icon(
+                    const Icon(
                       Icons.favorite,
                       color: AppColors.primaryRed,
                       size: 16,
@@ -375,7 +374,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: _getFileTypeColor(file['type']).withOpacity(0.1),
+            color: _getFileTypeColor(file['type']).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
@@ -398,7 +397,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (file['isFavorite'] == true)
-              Icon(
+              const Icon(
                 Icons.favorite,
                 color: AppColors.primaryRed,
                 size: 20,
@@ -410,9 +409,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'open',
                   child: Row(
                     children: [
-                      Icon(Icons.open_in_new),
-                      SizedBox(width: 8),
-                      Text('Open'),
+                      const Icon(Icons.open_in_new),
+                      const SizedBox(width: 8),
+                      const Text('Open'),
                     ],
                   ),
                 ),
@@ -420,9 +419,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'share',
                   child: Row(
                     children: [
-                      Icon(Icons.share),
-                      SizedBox(width: 8),
-                      Text('Share'),
+                      const Icon(Icons.share),
+                      const SizedBox(width: 8),
+                      const Text('Share'),
                     ],
                   ),
                 ),
@@ -430,9 +429,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'favorite',
                   child: Row(
                     children: [
-                      Icon(Icons.favorite_border),
-                      SizedBox(width: 8),
-                      Text('Toggle Favorite'),
+                      const Icon(Icons.favorite_border),
+                      const SizedBox(width: 8),
+                      const Text('Toggle Favorite'),
                     ],
                   ),
                 ),
@@ -440,9 +439,9 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete),
-                      SizedBox(width: 8),
-                      Text('Remove from Recent'),
+                      const Icon(Icons.delete),
+                      const SizedBox(width: 8),
+                      const Text('Remove from Recent'),
                     ],
                   ),
                 ),
@@ -657,7 +656,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
               'name': file.name,
               'path': file.path!,
               'type': _getFileType(file.name),
-              'size': FileService.getFileSize(file.path!),
+              'size': await FileService.getFileSize(File(file.path!)),
               'date': 'Just now',
               'isFavorite': false,
             };
@@ -669,9 +668,11 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error adding files: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error adding files: $e')),
+        );
+      }
     }
   }
 
@@ -698,7 +699,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
 
   void _openFile(Map<String, dynamic> file) {
     try {
-      FileService.openFile(file['path']);
+      FileService.openFile(File(file['path']));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error opening file: $e')),
@@ -712,7 +713,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         _openFile(file);
         break;
       case 'share':
-        FileService.shareFile(file['path']);
+        FileService.shareFile(File(file['path']));
         break;
       case 'favorite':
         setState(() {
@@ -729,4 +730,3 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
     }
   }
 }
-

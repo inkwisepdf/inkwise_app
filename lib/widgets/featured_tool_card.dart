@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 class FeaturedToolCard extends StatelessWidget {
   final String title;
@@ -26,7 +26,7 @@ class FeaturedToolCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: gradient.colors.first.withOpacity(0.3),
+            color: gradient.colors.first.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -42,7 +42,7 @@ class FeaturedToolCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.xl),
               border: Border.all(
-                color: AppColors.glassLight.withOpacity(0.2),
+                color: AppColors.glassLight.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -54,10 +54,10 @@ class FeaturedToolCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
-                        color: AppColors.glassLight.withOpacity(0.2),
+                        color: AppColors.glassLight.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(
-                          color: AppColors.glassLight.withOpacity(0.3),
+                          color: AppColors.glassLight.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
@@ -74,17 +74,17 @@ class FeaturedToolCard extends StatelessWidget {
                         vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.glassLight.withOpacity(0.2),
+                        color: AppColors.glassLight.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppRadius.full),
                         border: Border.all(
-                          color: AppColors.glassLight.withOpacity(0.3),
+                          color: AppColors.glassLight.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.auto_awesome,
                             color: Colors.white,
                             size: 12,
@@ -114,7 +114,7 @@ class FeaturedToolCard extends StatelessWidget {
                 Text(
                   subtitle,
                   style: AppTypography.bodyMedium.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -126,17 +126,17 @@ class FeaturedToolCard extends StatelessWidget {
                         vertical: AppSpacing.sm,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.glassLight.withOpacity(0.2),
+                        color: AppColors.glassLight.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppRadius.full),
                         border: Border.all(
-                          color: AppColors.glassLight.withOpacity(0.3),
+                          color: AppColors.glassLight.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.play_arrow,
                             color: Colors.white,
                             size: 16,
@@ -155,7 +155,7 @@ class FeaturedToolCard extends StatelessWidget {
                     const Spacer(),
                     Icon(
                       Icons.arrow_forward,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       size: 20,
                     ),
                   ],
@@ -168,3 +168,4 @@ class FeaturedToolCard extends StatelessWidget {
     );
   }
 }
+

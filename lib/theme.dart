@@ -114,6 +114,12 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
   );
+  
+  static const labelSmall = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.5,
+  );
 }
 
 // Modern Border Radius
@@ -229,7 +235,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Card Theme
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: AppColors.surfaceLight,
     elevation: 2,
     shadowColor: AppColors.shadowLight,
@@ -283,8 +289,8 @@ final ThemeData lightTheme = ThemeData(
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryLight,
     onBackground: AppColors.textPrimaryLight,
-    outline: AppColors.textSecondaryLight.withOpacity(0.2),
-    outlineVariant: AppColors.textSecondaryLight.withOpacity(0.1),
+    outline: AppColors.textSecondaryLight.withValues(alpha: 0.2),
+    outlineVariant: AppColors.textSecondaryLight.withValues(alpha: 0.1),
   ),
   
   // Modern Input Decoration Theme
@@ -294,14 +300,14 @@ final ThemeData lightTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryLight.withOpacity(0.2),
+        color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryLight.withOpacity(0.2),
+        color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
@@ -327,7 +333,7 @@ final ThemeData lightTheme = ThemeData(
       color: AppColors.textSecondaryLight,
     ),
     hintStyle: AppTypography.bodyMedium.copyWith(
-      color: AppColors.textSecondaryLight.withOpacity(0.7),
+      color: AppColors.textSecondaryLight.withValues(alpha: 0.7),
     ),
   ),
   
@@ -338,34 +344,34 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Divider Theme
-  dividerTheme: const DividerThemeData(
-    color: AppColors.textSecondaryLight.withOpacity(0.1),
+  dividerTheme: DividerThemeData(
+    color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
   
   // Modern Switch Theme
   switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
         return AppColors.primaryBlue;
       }
       return AppColors.textSecondaryLight;
     }),
-    trackColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
-        return AppColors.primaryBlue.withOpacity(0.3);
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primaryBlue.withValues(alpha: 0.3);
       }
-      return AppColors.textSecondaryLight.withOpacity(0.2);
+      return AppColors.textSecondaryLight.withValues(alpha: 0.2);
     }),
   ),
   
   // Modern Slider Theme
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
-    inactiveTrackColor: AppColors.textSecondaryLight.withOpacity(0.2),
+    inactiveTrackColor: AppColors.textSecondaryLight.withValues(alpha: 0.2),
     thumbColor: AppColors.primaryBlue,
-    overlayColor: AppColors.primaryBlue.withOpacity(0.1),
+    overlayColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     valueIndicatorColor: AppColors.primaryBlue,
     valueIndicatorTextStyle: AppTypography.labelMedium.copyWith(
       color: Colors.white,
@@ -376,7 +382,7 @@ final ThemeData lightTheme = ThemeData(
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.lightBlue,
     selectedColor: AppColors.primaryBlue,
-    disabledColor: AppColors.textSecondaryLight.withOpacity(0.1),
+    disabledColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
     labelStyle: AppTypography.labelMedium.copyWith(
       color: AppColors.primaryBlue,
     ),
@@ -402,7 +408,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryLight,
     indicatorColor: AppColors.primaryBlue,
@@ -410,7 +416,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   
   // Modern Dialog Theme
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceLight,
     elevation: 8,
     shadowColor: AppColors.shadowDark,
@@ -543,7 +549,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Card Theme - Dark
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: AppColors.surfaceDark,
     elevation: 2,
     shadowColor: AppColors.shadowLight,
@@ -598,8 +604,8 @@ final ThemeData darkTheme = ThemeData(
     onSecondary: Colors.white,
     onSurface: AppColors.textPrimaryDark,
     onBackground: AppColors.textPrimaryDark,
-    outline: AppColors.textSecondaryDark.withOpacity(0.2),
-    outlineVariant: AppColors.textSecondaryDark.withOpacity(0.1),
+    outline: AppColors.textSecondaryDark.withValues(alpha: 0.2),
+    outlineVariant: AppColors.textSecondaryDark.withValues(alpha: 0.1),
   ),
   
   // Modern Input Decoration Theme - Dark
@@ -609,14 +615,14 @@ final ThemeData darkTheme = ThemeData(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryDark.withOpacity(0.2),
+        color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
-        color: AppColors.textSecondaryDark.withOpacity(0.2),
+        color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
         width: 1,
       ),
     ),
@@ -642,7 +648,7 @@ final ThemeData darkTheme = ThemeData(
       color: AppColors.textSecondaryDark,
     ),
     hintStyle: AppTypography.bodyMedium.copyWith(
-      color: AppColors.textSecondaryDark.withOpacity(0.7),
+      color: AppColors.textSecondaryDark.withValues(alpha: 0.7),
     ),
   ),
   
@@ -653,34 +659,34 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Divider Theme - Dark
-  dividerTheme: const DividerThemeData(
-    color: AppColors.textSecondaryDark.withOpacity(0.1),
+  dividerTheme: DividerThemeData(
+    color: AppColors.textSecondaryDark.withValues(alpha: 0.1),
     thickness: 1,
     space: AppSpacing.md,
   ),
   
   // Modern Switch Theme - Dark
   switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
         return AppColors.primaryBlue;
       }
       return AppColors.textSecondaryDark;
     }),
-    trackColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
-        return AppColors.primaryBlue.withOpacity(0.3);
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColors.primaryBlue.withValues(alpha: 0.3);
       }
-      return AppColors.textSecondaryDark.withOpacity(0.2);
+      return AppColors.textSecondaryDark.withValues(alpha: 0.2);
     }),
   ),
   
   // Modern Slider Theme - Dark
   sliderTheme: SliderThemeData(
     activeTrackColor: AppColors.primaryBlue,
-    inactiveTrackColor: AppColors.textSecondaryDark.withOpacity(0.2),
+    inactiveTrackColor: AppColors.textSecondaryDark.withValues(alpha: 0.2),
     thumbColor: AppColors.primaryBlue,
-    overlayColor: AppColors.primaryBlue.withOpacity(0.1),
+    overlayColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     valueIndicatorColor: AppColors.primaryBlue,
     valueIndicatorTextStyle: AppTypography.labelMedium.copyWith(
       color: Colors.white,
@@ -689,9 +695,9 @@ final ThemeData darkTheme = ThemeData(
   
   // Modern Chip Theme - Dark
   chipTheme: ChipThemeData(
-    backgroundColor: AppColors.primaryBlue.withOpacity(0.1),
+    backgroundColor: AppColors.primaryBlue.withValues(alpha: 0.1),
     selectedColor: AppColors.primaryBlue,
-    disabledColor: AppColors.textSecondaryDark.withOpacity(0.1),
+    disabledColor: AppColors.textSecondaryDark.withValues(alpha: 0.1),
     labelStyle: AppTypography.labelMedium.copyWith(
       color: AppColors.primaryBlue,
     ),
@@ -717,7 +723,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Tab Bar Theme - Dark
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: AppColors.primaryBlue,
     unselectedLabelColor: AppColors.textSecondaryDark,
     indicatorColor: AppColors.primaryBlue,
@@ -725,7 +731,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   
   // Modern Dialog Theme - Dark
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     backgroundColor: AppColors.surfaceDark,
     elevation: 8,
     shadowColor: AppColors.shadowDark,
@@ -765,4 +771,3 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
 );
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'overlay_text_widget.dart';
-import '../../widgets/custom_app_bar.dart';
+import 'package:inkwise_pdf/features/edit/overlay_text_widget.dart';
+import 'package:inkwise_pdf/widgets/custom_app_bar.dart';
 
 class SimulatedEditScreen extends StatefulWidget {
   final String filePath;
@@ -39,7 +39,7 @@ class _SimulatedEditScreenState extends State<SimulatedEditScreen> {
       appBar: const CustomAppBar(title: 'Simulated Edit'),
       body: Stack(
         children: [
-          Center(child: Text("PDF Preview Placeholder")), // Actual rendering later
+          const Center(child: Text("PDF Preview Placeholder")), // Actual rendering later
           ...overlays,
         ],
       ),
@@ -49,18 +49,19 @@ class _SimulatedEditScreenState extends State<SimulatedEditScreen> {
           FloatingActionButton(
             heroTag: 'erase',
             onPressed: _simulateEraseArea,
-            child: const Icon(Icons.square),
             tooltip: 'Erase Area',
+            child: const Icon(Icons.square),
           ),
           const SizedBox(height: 10),
           FloatingActionButton(
             heroTag: 'addText',
             onPressed: _addOverlay,
-            child: const Icon(Icons.text_fields),
             tooltip: 'Add Text',
+            child: const Icon(Icons.text_fields),
           ),
         ],
       ),
     );
   }
 }
+

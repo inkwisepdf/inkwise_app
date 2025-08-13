@@ -73,13 +73,13 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -129,7 +129,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -147,7 +147,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -178,10 +178,10 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -206,7 +206,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -239,7 +239,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -350,7 +350,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -387,7 +387,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
             ),
             child: Stack(
               children: [
@@ -395,7 +395,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                 if (_showGrid) _buildGrid(),
                 
                 // Layout elements
-                ..._layoutElements.asMap().entries.map((entry) {
+                ..._layoutElements.toList().asMap().entries.map((entry) {
                   final index = entry.key;
                   final element = entry.value;
                   return Positioned(
@@ -408,12 +408,12 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                         height: element['height'].toDouble(),
                         decoration: BoxDecoration(
                           color: _selectedElementIndex == index 
-                              ? AppColors.primaryPurple.withOpacity(0.2)
+                              ? AppColors.primaryPurple.withValues(alpha: 0.2)
                               : Colors.transparent,
                           border: Border.all(
                             color: _selectedElementIndex == index 
                                 ? AppColors.primaryPurple
-                                : Colors.grey.withOpacity(0.5),
+                                : Colors.grey.withValues(alpha: 0.5),
                             width: _selectedElementIndex == index ? 2 : 1,
                           ),
                           borderRadius: BorderRadius.circular(4),
@@ -422,7 +422,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                       ),
                     ),
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),
@@ -471,7 +471,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -556,10 +556,10 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -570,7 +570,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -594,7 +594,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -609,7 +609,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "New layout saved successfully",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
@@ -619,7 +619,7 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                       Text(
                         "File: ${_outputPath!.split('/').last}",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -679,12 +679,14 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -778,23 +780,27 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Layout generated successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Layout generated successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error generating layout: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error generating layout: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -803,14 +809,16 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error opening file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -819,19 +827,21 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();
     return '$directory/$filename';
   }
 }
@@ -840,7 +850,7 @@ class GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.grey.withOpacity(0.3)
+      ..color = Colors.grey.withValues(alpha: 0.3)
       ..strokeWidth = 1;
 
     const gridSize = 20.0;
@@ -857,3 +867,4 @@ class GridPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+
 
 class SecureVaultScreen extends StatefulWidget {
   const SecureVaultScreen({super.key});
@@ -17,7 +17,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _showPassword = false;
-  bool _showConfirmPassword = false;
   List<Map<String, dynamic>> _vaultFiles = [];
   bool _isProcessing = false;
 
@@ -77,15 +76,15 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryRed.withOpacity(0.1),
-            AppColors.primaryPurple.withOpacity(0.05),
+            AppColors.primaryRed.withValues(alpha: 0.1),
+            AppColors.primaryPurple.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.primaryRed.withOpacity(0.2),
-          width: 1,
-        ),
+                  border: Border.all(
+            color: AppColors.primaryRed.withValues(alpha: 0.2),
+            width: 1,
+          ),
       ),
       child: Row(
         children: [
@@ -96,7 +95,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
-              _isUnlocked ? Icons.vault_open : Icons.vault,
+              _isUnlocked ? Icons.lock_open : Icons.lock,
               color: Colors.white,
               size: 24,
             ),
@@ -135,7 +134,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -200,12 +199,12 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryRed.withOpacity(0.1),
+              color: AppColors.primaryRed.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.security,
                   color: AppColors.primaryRed,
                   size: 16,
@@ -235,10 +234,10 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -246,7 +245,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
           Expanded(
             child: Column(
               children: [
-                Icon(
+                const Icon(
                   Icons.folder,
                   color: AppColors.primaryGreen,
                   size: 32,
@@ -262,7 +261,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 Text(
                   "Files",
                   style: TextStyle(
-                    color: AppColors.primaryGreen.withOpacity(0.8),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.8),
                     fontSize: 12,
                   ),
                 ),
@@ -272,7 +271,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
           Expanded(
             child: Column(
               children: [
-                Icon(
+                const Icon(
                   Icons.storage,
                   color: AppColors.primaryGreen,
                   size: 32,
@@ -288,7 +287,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 Text(
                   "Total Size",
                   style: TextStyle(
-                    color: AppColors.primaryGreen.withOpacity(0.8),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.8),
                     fontSize: 12,
                   ),
                 ),
@@ -307,7 +306,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -361,21 +360,21 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.folder_open,
               size: 64,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+              color: AppColors.primaryRed,
             ),
             const SizedBox(height: 16),
             Text(
               "No Files in Vault",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: 8),
@@ -383,7 +382,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
               "Add files to your secure vault to keep them encrypted and protected",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -396,7 +395,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -419,10 +418,10 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 leading: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryRed.withOpacity(0.1),
+                    color: AppColors.primaryRed.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.description,
                     color: AppColors.primaryRed,
                     size: 20,
@@ -435,7 +434,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
                 subtitle: Text(
                   "${(file['size'] / 1024 / 1024).toStringAsFixed(2)} MB • Added ${file['date']}",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                     fontSize: 12,
                   ),
                 ),
@@ -539,12 +538,14 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         
         _passwordController.clear();
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Vault unlocked successfully!'),
-            backgroundColor: AppColors.primaryGreen,
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Vault unlocked successfully!'),
+              backgroundColor: AppColors.primaryGreen,
+            ),
+          );
+        }
       } else {
         throw Exception('Incorrect master password');
       }
@@ -553,12 +554,14 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to unlock vault: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to unlock vault: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -568,12 +571,14 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
       _masterPassword = '';
     });
     
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Vault locked'),
-        backgroundColor: AppColors.primaryOrange,
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Vault locked'),
+          backgroundColor: AppColors.primaryOrange,
+        ),
+      );
+    }
   }
 
   Future<void> _addFileToVault() async {
@@ -587,12 +592,14 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         await _encryptAndAddFile(file);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error adding file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error adding file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -610,12 +617,14 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error adding files: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error adding files: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -709,3 +718,4 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
     }
   }
 }
+

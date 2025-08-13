@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
 
 class CustomStampsScreen extends StatefulWidget {
   const CustomStampsScreen({super.key});
@@ -20,9 +20,9 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
   double _stampOpacity = 1.0;
   double _stampSize = 1.0;
   double _rotation = 0.0;
-  Offset _position = const Offset(100, 100);
+  final Offset _position = const Offset(100, 100);
   List<Map<String, dynamic>> _stamps = [];
-  List<Map<String, dynamic>> _appliedStamps = [];
+  final List<Map<String, dynamic>> _appliedStamps = [];
 
   final Map<String, String> _categories = {
     'all': 'All Stamps',
@@ -76,13 +76,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryGreen.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -95,7 +95,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.stamp,
+              Icons.assignment,
               color: Colors.white,
               size: 24,
             ),
@@ -132,7 +132,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -150,7 +150,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryGreen.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -181,10 +181,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -209,7 +209,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -243,7 +243,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -311,13 +311,13 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected 
-                          ? AppColors.primaryGreen.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
+                          ? AppColors.primaryGreen.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected 
                             ? AppColors.primaryGreen
-                            : Colors.grey.withOpacity(0.3),
+                            : Colors.grey.withValues(alpha: 0.3),
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -362,7 +362,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -467,7 +467,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -484,7 +484,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
             ),
             child: Stack(
               children: [
@@ -493,18 +493,18 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.description,
                         size: 64,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 16),
-                      Text(
+                      const Text(
                         "PDF Preview",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                         ),
                       ),
                     ],
@@ -525,10 +525,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withOpacity(0.1),
+                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: AppColors.primaryGreen.withOpacity(0.3),
+                                color: AppColors.primaryGreen.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Icon(
@@ -566,10 +566,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.1),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: AppColors.primaryGreen.withOpacity(0.3),
+                        color: AppColors.primaryGreen.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
@@ -581,7 +581,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                           size: 16,
                         ),
                         const SizedBox(width: 4),
-                        Text(
+                        const Text(
                           stamp['name'],
                           style: TextStyle(
                             fontSize: 12,
@@ -623,7 +623,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Icon(Icons.stamp),
+            : Icon(Icons.assignment),
         label: Text(_isProcessing ? "Applying..." : "Apply Stamps"),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryGreen,
@@ -641,10 +641,10 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -655,7 +655,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -679,7 +679,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -694,7 +694,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Stamped PDF saved successfully",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
@@ -704,7 +704,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                       Text(
                         "File: ${_outputPath!.split('/').last}",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -783,7 +783,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
       case 'custom':
         return Icons.star;
       default:
-        return Icons.stamp;
+        return Icons.assignment;
     }
   }
 
@@ -803,12 +803,14 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -816,7 +818,7 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     // In a real implementation, this would open a dialog to create custom stamps
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Custom stamp creation feature coming soon!'),
+        content: const Text('Custom stamp creation feature coming soon!'),
         backgroundColor: AppColors.primaryOrange,
       ),
     );
@@ -869,23 +871,27 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Stamps applied successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Stamps applied successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error applying stamps: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error applying stamps: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -894,14 +900,16 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().openFile(file);
+      await FileService.openFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error opening file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -910,19 +918,22 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
     
     try {
       final file = File(_outputPath!);
-      await FileService().shareFile(file);
+      await FileService.shareFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
   Future<String> _getOutputPath(String filename) async {
-    final directory = await FileService().getAppDirectoryPath();
+    final directory = await FileService.getAppDirectoryPath();
     return '$directory/$filename';
   }
 }
+

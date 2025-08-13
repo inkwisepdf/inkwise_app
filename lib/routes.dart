@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/pdf_viewer_screen.dart';
-import 'screens/settings_screen.dart';
-import 'screens/find_replace_screen.dart';
-import 'screens/metadata_editor_screen.dart';
-import 'screens/ai_tools_screen.dart';
-import 'screens/advanced_tools_screen.dart';
-import 'screens/analytics_dashboard_screen.dart';
+import 'package:inkwise_pdf/screens/splash_screen.dart';
+import 'package:inkwise_pdf/screens/home_screen.dart';
+import 'package:inkwise_pdf/screens/pdf_viewer_screen.dart';
+import 'package:inkwise_pdf/screens/settings_screen.dart';
+import 'package:inkwise_pdf/screens/find_replace_screen.dart';
+import 'package:inkwise_pdf/screens/metadata_editor_screen.dart';
+import 'package:inkwise_pdf/screens/ai_tools_screen.dart';
+import 'package:inkwise_pdf/screens/advanced_tools_screen.dart';
+import 'package:inkwise_pdf/screens/analytics_dashboard_screen.dart';
 
 class Routes {
   static const splash = '/';
@@ -32,4 +32,3 @@ final Map<String, WidgetBuilder> appRoutes = {
   Routes.advancedTools: (context) => const AdvancedToolsScreen(),
   Routes.analyticsDashboard: (context) => const AnalyticsDashboardScreen(),
 };
-

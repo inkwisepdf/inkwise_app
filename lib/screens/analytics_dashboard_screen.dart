@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../theme.dart';
-import '../services/local_analytics_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/local_analytics_service.dart';
 
 class AnalyticsDashboardScreen extends StatefulWidget {
   const AnalyticsDashboardScreen({super.key});
@@ -12,7 +12,6 @@ class AnalyticsDashboardScreen extends StatefulWidget {
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   Map<String, dynamic> _usageStats = {};
-  Map<String, dynamic> _analyticsData = {};
   bool _isLoading = true;
 
   @override
@@ -25,23 +24,23 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     try {
       final analyticsService = LocalAnalyticsService();
       final usageStats = await analyticsService.getUsageStatistics();
-      final analyticsData = await analyticsService.getAnalyticsData();
 
       setState(() {
         _usageStats = usageStats;
-        _analyticsData = analyticsData;
         _isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error loading analytics: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading analytics: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 
@@ -95,13 +94,13 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withOpacity(0.1),
-            AppColors.gradientEnd.withOpacity(0.05),
+            AppColors.gradientStart.withValues(alpha: 0.1),
+            AppColors.gradientEnd.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.gradientStart.withOpacity(0.1),
+          color: AppColors.gradientStart.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -179,7 +178,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
               child: _buildStatCard(
                 "Total Sessions",
                 totalSessions.toString(),
-                Icons.session,
+                Icons.analytics,
                 AppColors.primaryGreen,
               ),
             ),
@@ -203,7 +202,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
@@ -222,7 +221,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Icon(
@@ -268,7 +267,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -291,11 +290,11 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 maxY: topFeatures.isNotEmpty 
                     ? (topFeatures.first['count'] as int).toDouble() * 1.2 
                     : 10,
-                barTouchData: BarTouchData(enabled: false),
+                barTouchData: const BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
                   show: true,
-                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -331,8 +330,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     ),
                   ),
                 ),
-                borderData: FlBorderData(show: false),
-                barGroups: topFeatures.asMap().entries.map((entry) {
+                borderData: const FlBorderData(show: false),
+                barGroups: topFeatures.toList().asMap().entries.map((entry) {
                   final index = entry.key;
                   final feature = entry.value;
                   return BarChartGroupData(
@@ -371,7 +370,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -406,7 +405,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     flex: 1,
                     child: LinearProgressIndicator(
                       value: count / (topScreens.first['count'] as int),
-                      backgroundColor: AppColors.textSecondaryLight.withOpacity(0.1),
+                      backgroundColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
                       valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
                     ),
                   ),
@@ -420,7 +419,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -439,7 +438,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -502,7 +501,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -521,7 +520,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -536,7 +535,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          ...topFeatures.take(10).asMap().entries.map((entry) {
+          ...topFeatures.take(10).toList().asMap().entries.map((entry) {
             final index = entry.key;
             final feature = entry.value;
             final featureName = feature['action_type'] as String? ?? 'Unknown';
@@ -550,7 +549,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     width: 24,
                     height: 24,
                     decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.1),
+                      color: AppColors.primaryBlue.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
@@ -578,7 +577,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                       vertical: AppSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.1),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                     child: Text(
@@ -605,13 +604,13 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.analytics_outlined,
             size: 48,
             color: AppColors.textSecondaryLight,
@@ -652,19 +651,24 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       
       // In a real implementation, you would save this to a file
       // For now, just show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Analytics data exported (${exportData.length} characters)'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Analytics data exported (${exportData.length} characters)'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error exporting analytics: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting analytics: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 }
+

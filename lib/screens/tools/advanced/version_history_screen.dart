@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+
 
 class VersionHistoryScreen extends StatefulWidget {
   const VersionHistoryScreen({super.key});
@@ -13,7 +13,6 @@ class VersionHistoryScreen extends StatefulWidget {
 
 class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
   File? _selectedFile;
-  bool _isProcessing = false;
   List<Map<String, dynamic>> _versions = [];
   Map<String, dynamic>? _selectedVersion;
   bool _showDeleted = false;
@@ -72,13 +71,13 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryPurple.withOpacity(0.1),
-            AppColors.primaryBlue.withOpacity(0.05),
+            AppColors.primaryPurple.withValues(alpha: 0.1),
+            AppColors.primaryBlue.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+          color: AppColors.primaryPurple.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -128,7 +127,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -146,7 +145,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryPurple.withOpacity(0.3),
+                    color: AppColors.primaryPurple.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -177,10 +176,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryPurple.withOpacity(0.1),
+                color: AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryPurple.withOpacity(0.3),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -205,7 +204,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -237,7 +236,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -336,7 +335,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -357,7 +356,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     Icon(
                       Icons.history,
                       size: 64,
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -365,7 +364,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -373,7 +372,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                       "Create your first snapshot to start tracking changes",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -395,7 +394,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _getVersionColor(version['type']).withOpacity(0.1),
+                        color: _getVersionColor(version['type']).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -416,14 +415,14 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                         Text(
                           "Created: ${version['date']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           "Size: ${version['size']} • Type: ${version['type']}",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -436,10 +435,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryGreen.withOpacity(0.1),
+                              color: AppColors.primaryGreen.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(
+                            child: const Text(
                               "Current",
                               style: TextStyle(
                                 color: AppColors.primaryGreen,
@@ -514,10 +513,10 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryPurple.withOpacity(0.05),
+        color: AppColors.primaryPurple.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryPurple.withOpacity(0.2),
+                      color: AppColors.primaryPurple.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -528,7 +527,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryPurple.withOpacity(0.1),
+                  color: AppColors.primaryPurple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -602,7 +601,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
               "$label:",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ),
@@ -742,12 +741,14 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -755,7 +756,7 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
     // In a real implementation, this would create a snapshot of the current file
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Snapshot creation feature coming soon!'),
+        content: const Text('Snapshot creation feature coming soon!'),
         backgroundColor: AppColors.primaryOrange,
       ),
     );
@@ -818,3 +819,4 @@ class _VersionHistoryScreenState extends State<VersionHistoryScreen> {
     );
   }
 }
+

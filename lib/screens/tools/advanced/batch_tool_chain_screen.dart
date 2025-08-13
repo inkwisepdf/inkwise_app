@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+
 
 class BatchToolChainScreen extends StatefulWidget {
   const BatchToolChainScreen({super.key});
@@ -12,14 +12,14 @@ class BatchToolChainScreen extends StatefulWidget {
 }
 
 class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
-  List<File> _selectedFiles = [];
+  final List<File> _selectedFiles = [];
   bool _isProcessing = false;
   List<Map<String, dynamic>> _availableTools = [];
-  List<Map<String, dynamic>> _selectedTools = [];
+  final List<Map<String, dynamic>> _selectedTools = [];
   String _processingMode = 'sequential'; // 'sequential', 'parallel'
   bool _stopOnError = true;
   bool _showProgress = true;
-  List<Map<String, dynamic>> _processingResults = [];
+  final List<Map<String, dynamic>> _processingResults = [];
 
   final Map<String, String> _modeOptions = {
     'sequential': 'Sequential Processing',
@@ -68,13 +68,13 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryRed.withOpacity(0.1),
-            AppColors.primaryPurple.withOpacity(0.05),
+            AppColors.primaryRed.withValues(alpha: 0.1),
+            AppColors.primaryPurple.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryRed.withOpacity(0.2),
+          color: AppColors.primaryRed.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -124,7 +124,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -155,7 +155,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryRed.withOpacity(0.3),
+                    color: AppColors.primaryRed.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -205,7 +205,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         subtitle: Text(
                           "Size: ${(file.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -259,7 +259,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -298,8 +298,8 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: isSelected 
-                          ? AppColors.primaryRed.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
+                          ? AppColors.primaryRed.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -314,13 +314,13 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                     ),
                   ),
-                  subtitle: Text(
-                    tool['description'],
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                      fontSize: 12,
+                                      subtitle: Text(
+                      tool['description'],
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -328,7 +328,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryRed.withOpacity(0.1),
+                            color: AppColors.primaryRed.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -368,10 +368,10 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.primaryRed.withOpacity(0.05),
+                color: AppColors.primaryRed.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryRed.withOpacity(0.2),
+                  color: AppColors.primaryRed.withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -385,7 +385,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ..._selectedTools.asMap().entries.map((entry) {
+                  ..._selectedTools.toList().asMap().entries.map((entry) {
                     final index = entry.key;
                     final tool = entry.value;
                     return Padding(
@@ -437,7 +437,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -532,10 +532,10 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -546,7 +546,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -582,8 +582,8 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: isSuccess 
-                          ? AppColors.primaryGreen.withOpacity(0.1)
-                          : AppColors.primaryRed.withOpacity(0.1),
+                          ? AppColors.primaryGreen.withValues(alpha: 0.1)
+                          : AppColors.primaryRed.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -610,7 +610,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                         Text(
                           result['message'],
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -620,7 +620,7 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
                     result['duration'],
                     style: TextStyle(
                       fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -836,3 +836,4 @@ class _BatchToolChainScreenState extends State<BatchToolChainScreen> {
     );
   }
 }
+

@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../../../theme.dart';
 import '../../../services/file_service.dart';
-import '../../../services/pdf_service.dart';
+
 
 class ColorConverterScreen extends StatefulWidget {
   const ColorConverterScreen({super.key});
@@ -78,13 +78,13 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -134,7 +134,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -152,7 +152,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryBlue.withOpacity(0.3),
+                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -183,10 +183,10 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: AppColors.primaryBlue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(0.3),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -211,7 +211,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -244,7 +244,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -375,7 +375,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -458,7 +458,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withOpacity(0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -473,7 +473,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                   child: Text(
                     _getPageRangeInfo(),
                     style: TextStyle(
-                      color: AppColors.primaryBlue.withOpacity(0.8),
+                      color: AppColors.primaryBlue.withValues(alpha: 0.8),
                       fontSize: 12,
                     ),
                   ),
@@ -518,10 +518,10 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -532,7 +532,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -556,7 +556,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.1),
+              color: AppColors.primaryGreen.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -571,7 +571,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Color conversion completed successfully",
                         style: TextStyle(
                           color: AppColors.primaryGreen,
@@ -581,7 +581,7 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                       Text(
                         "File: ${_outputPath!.split('/').last}",
                         style: TextStyle(
-                          color: AppColors.primaryGreen.withOpacity(0.8),
+                          color: AppColors.primaryGreen.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),
@@ -641,12 +641,14 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -668,23 +670,27 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Color conversion completed successfully!'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Color conversion completed successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error converting colors: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error converting colors: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -695,12 +701,14 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
       final file = File(_outputPath!);
       await FileService().openFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error opening file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -711,12 +719,14 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
       final file = File(_outputPath!);
       await FileService().shareFile(file);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error sharing file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sharing file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -738,3 +748,4 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
     }
   }
 }
+

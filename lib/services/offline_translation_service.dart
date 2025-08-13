@@ -1,23 +1,14 @@
 import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
-import 'package:ml_algo/ml_algo.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 
 class OfflineTranslationService {
-  static const String _modelPath = 'assets/models/translation_model.json';
-  static const String _vocabPath = 'assets/models/translation_vocab.json';
-  static const String _tokenizerPath = 'assets/models/tokenizer.json';
-  
   // Modern ML components
   Map<String, dynamic>? _translationModel;
   Map<String, int>? _vocabulary;
-  Map<String, int>? _tokenizer;
   Map<String, Map<String, double>>? _wordEmbeddings;
   bool _isInitialized = false;
   
@@ -58,10 +49,8 @@ class OfflineTranslationService {
       await _loadTokenizer();
       
       _isInitialized = true;
-      print('Offline translation service initialized successfully');
       return true;
     } catch (e) {
-      print('Error initializing offline translation service: $e');
       return false;
     }
   }
@@ -94,7 +83,6 @@ class OfflineTranslationService {
       // final modelFile = await rootBundle.loadString(_modelPath);
       // _translationModel = json.decode(modelFile);
     } catch (e) {
-      print('Error loading translation model: $e');
       rethrow;
     }
   }
@@ -202,13 +190,11 @@ class OfflineTranslationService {
         'import': 94,
         'batch': 95,
         'bulk': 96,
-        'processing': 97,
         'automation': 98,
         'workflow': 99,
         'pipeline': 100,
       };
     } catch (e) {
-      print('Error loading vocabulary: $e');
       rethrow;
     }
   }
@@ -231,7 +217,6 @@ class OfflineTranslationService {
         'max_length': 10,
       };
     } catch (e) {
-      print('Error loading tokenizer: $e');
       rethrow;
     }
   }
@@ -317,14 +302,15 @@ class OfflineTranslationService {
       
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
-        final pageText = await page.text;
+        // page.text is not available in pdf_render, will use OCR instead
+        final pageText = null;
         if (pageText != null) {
           extractedText += pageText + '\n';
         }
-        await page.close();
+        // page.close() is not available in pdf_render
       }
       
-      await document.close();
+      // document.close() is not available in pdf_render
       
       // If no text extracted, use OCR
       if (extractedText.trim().isEmpty) {
@@ -348,28 +334,26 @@ class OfflineTranslationService {
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
         final pageImage = await page.render(
-          width: page.width * 2,
-          height: page.height * 2,
+          width: (page.width * 2).toInt(),
+          height: (page.height * 2).toInt(),
         );
         
-        if (pageImage != null) {
-          // Save image temporarily
-          final tempDir = await getTemporaryDirectory();
-          final imageFile = File('${tempDir.path}/page_$i.png');
-          await imageFile.writeAsBytes(pageImage.toByteData()!.buffer.asUint8List());
-          
-          // Perform OCR
-          final pageText = await FlutterTesseractOcr.extractText(imageFile.path);
-          ocrText += pageText + '\n';
-          
-          // Clean up
-          await imageFile.delete();
-        }
+        // Save image temporarily
+        final tempDir = await getTemporaryDirectory();
+        final imageFile = File('${tempDir.path}/page_$i.png');
+        await imageFile.writeAsBytes(pageImage.toByteData(format: ImageByteFormat.png)!.buffer.asUint8List());
         
-        await page.close();
+        // Perform OCR
+        final pageText = await FlutterTesseractOcr.extractText(imageFile.path);
+        ocrText += pageText + '\n';
+        
+        // Clean up
+        await imageFile.delete();
+        
+        // page.close() is not available in pdf_render
       }
       
-      await document.close();
+      // document.close() is not available in pdf_render
       return ocrText;
     } catch (e) {
       throw Exception('OCR failed: $e');
@@ -387,13 +371,13 @@ class OfflineTranslationService {
         'en': ['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'],
         'es': ['el', 'la', 'los', 'las', 'y', 'o', 'pero', 'en', 'con', 'por', 'para', 'de'],
         'fr': ['le', 'la', 'les', 'et', 'ou', 'mais', 'dans', 'avec', 'pour', 'de', 'du', 'des'],
-        'de': ['der', 'die', 'das', 'und', 'oder', 'aber', 'in', 'mit', 'für', 'von', 'zu'],
+        'de': ['der', 'die', 'das', 'und', 'oder', 'aber', 'in', 'mit', 'fÃ¼r', 'von', 'zu'],
         'it': ['il', 'la', 'gli', 'le', 'e', 'o', 'ma', 'in', 'con', 'per', 'di', 'da'],
         'pt': ['o', 'a', 'os', 'as', 'e', 'ou', 'mas', 'em', 'com', 'para', 'de', 'do'],
-        'ru': ['и', 'в', 'на', 'с', 'по', 'для', 'от', 'до', 'из', 'за', 'под', 'над'],
-        'ja': ['の', 'に', 'は', 'を', 'が', 'で', 'と', 'から', 'まで', 'より', 'へ', 'や'],
-        'ko': ['이', '가', '을', '를', '에', '에서', '로', '으로', '와', '과', '의', '도'],
-        'zh': ['的', '了', '在', '是', '我', '有', '和', '人', '这', '中', '大', '为'],
+        'ru': ['Ð¸', 'Ð²', 'Ð½Ð°', 'Ñ', 'Ð¿Ð¾', 'Ð´Ð»Ñ', 'Ð¾Ñ‚', 'Ð´Ð¾', 'Ð¸Ð·', 'Ð·Ð°', 'Ð¿Ð¾Ð´', 'Ð½Ð°Ð´'],
+        'ja': ['ã®', 'ã«', 'ã¯', 'ã‚'', 'ãŒ', 'ã§', 'ã¨', 'ã‹ã‚‰', 'ã¾ã§', 'ã‚ˆã‚Š', 'ã¸', 'ã‚„'],
+        'ko': ['ì´', 'ê°€', 'ì„', 'ë¥¼', 'ì—', 'ì—ì„œ', 'ë¡œ', 'ìœ¼ë¡œ', 'ì™€', 'ê³¼', 'ì˜', 'ë„'],
+        'zh': ['çš„', 'äº†', 'åœ¨', 'æ˜¯', 'æˆ'', 'æœ‰', 'å'Œ', 'äºº', 'è¿™', 'ä¸­', 'å¤§', 'ä¸º'],
       };
 
       final scores = <String, int>{};
@@ -633,23 +617,23 @@ class OfflineTranslationService {
         'document': 'documento',
         'pdf': 'pdf',
         'text': 'texto',
-        'translation': 'traducción',
-        'offline': 'sin conexión',
+        'translation': 'traducciÃ³n',
+        'offline': 'sin conexiÃ³n',
         'model': 'modelo',
         'ml_algo': 'ml_algo',
         'lite': 'lite',
         'flutter': 'flutter',
-        'app': 'aplicación',
+        'app': 'aplicaciÃ³n',
         'free': 'gratis',
         'open': 'abierto',
         'source': 'fuente',
         'powerful': 'potente',
-        'feature': 'característica',
+        'feature': 'caracterÃ­stica',
         'rich': 'rico',
         'editor': 'editor',
         'tool': 'herramienta',
         'ai': 'ia',
-        'machine': 'máquina',
+        'machine': 'mÃ¡quina',
         'learning': 'aprendizaje',
         'artificial': 'artificial',
         'intelligence': 'inteligencia',
@@ -662,7 +646,7 @@ class OfflineTranslationService {
         'text': 'texte',
         'translation': 'traduction',
         'offline': 'hors ligne',
-        'model': 'modèle',
+        'model': 'modÃ¨le',
         'ml_algo': 'ml_algo',
         'lite': 'lite',
         'flutter': 'flutter',
@@ -671,9 +655,9 @@ class OfflineTranslationService {
         'open': 'ouvert',
         'source': 'source',
         'powerful': 'puissant',
-        'feature': 'fonctionnalité',
+        'feature': 'fonctionnalitÃ©',
         'rich': 'riche',
-        'editor': 'éditeur',
+        'editor': 'Ã©diteur',
         'tool': 'outil',
         'ai': 'ia',
         'machine': 'machine',
@@ -687,7 +671,7 @@ class OfflineTranslationService {
         'document': 'dokument',
         'pdf': 'pdf',
         'text': 'text',
-        'translation': 'übersetzung',
+        'translation': 'Ã¼bersetzung',
         'offline': 'offline',
         'model': 'modell',
         'ml_algo': 'ml_algo',
@@ -705,7 +689,7 @@ class OfflineTranslationService {
         'ai': 'ki',
         'machine': 'maschine',
         'learning': 'lernen',
-        'artificial': 'künstlich',
+        'artificial': 'kÃ¼nstlich',
         'intelligence': 'intelligenz',
       },
     };
@@ -804,8 +788,7 @@ class OfflineTranslationService {
       _wordEmbeddings = null;
       _isInitialized = false;
     } catch (e) {
-      print('Error disposing translation service: $e');
+      // Error disposing translation service
     }
   }
 }
-

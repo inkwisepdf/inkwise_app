@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../theme.dart';
-import '../../services/file_service.dart';
-import '../../services/pdf_service.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/services/file_service.dart';
+
 
 class PDFEditorScreen extends StatefulWidget {
   const PDFEditorScreen({super.key});
@@ -18,7 +18,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
   String? _outputPath;
   String _editMode = 'text'; // 'text', 'image', 'draw'
   String _textContent = '';
-  bool _isTextVisible = true;
   double _textOpacity = 1.0;
   double _textSize = 16.0;
   Color _textColor = AppColors.textPrimaryLight;
@@ -78,13 +77,13 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withOpacity(0.1),
-            AppColors.gradientEnd.withOpacity(0.05),
+            AppColors.gradientStart.withValues(alpha: 0.1),
+            AppColors.gradientEnd.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.gradientStart.withOpacity(0.1),
+          color: AppColors.gradientStart.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -138,7 +137,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -159,7 +158,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               padding: const EdgeInsets.all(AppSpacing.xl),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.textSecondaryLight.withOpacity(0.2),
+                  color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
                   width: 2,
                   style: BorderStyle.solid,
                 ),
@@ -173,7 +172,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     color: AppColors.textSecondaryLight,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  Text(
+                  const Text(
                     "Click to select a PDF file",
                     style: AppTypography.bodyMedium.copyWith(
                       color: AppColors.textSecondaryLight,
@@ -186,10 +185,10 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: AppColors.primaryBlue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: AppColors.primaryBlue.withOpacity(0.2),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -212,11 +211,16 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                             color: AppColors.textPrimaryLight,
                           ),
                         ),
-                        Text(
-                          "Size: ${FileService.getFileSize(_selectedFile!.lengthSync())}",
-                          style: AppTypography.labelMedium.copyWith(
-                            color: AppColors.textSecondaryLight,
-                          ),
+                        FutureBuilder<String>(
+                          future: FileService.getFileSize(_selectedFile!),
+                          builder: (context, snapshot) {
+                            return Text(
+                              "Size: ${snapshot.data ?? 'Loading...'}",
+                              style: AppTypography.labelMedium.copyWith(
+                                color: AppColors.textSecondaryLight,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -258,7 +262,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+                          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -285,8 +289,8 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                     setState(() => _editMode = entry.key);
                   }
                 },
-                backgroundColor: AppColors.textSecondaryLight.withOpacity(0.1),
-                selectedColor: AppColors.primaryBlue.withOpacity(0.2),
+                backgroundColor: AppColors.textSecondaryLight.withValues(alpha: 0.1),
+                selectedColor: AppColors.primaryBlue.withValues(alpha: 0.2),
                 labelStyle: AppTypography.labelMedium.copyWith(
                   color: isSelected ? AppColors.primaryBlue : AppColors.textSecondaryLight,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
@@ -307,7 +311,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(
-            color: AppColors.textSecondaryLight.withOpacity(0.1),
+            color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -392,7 +396,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.textSecondaryLight.withOpacity(0.1),
+          color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -414,7 +418,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               color: AppColors.backgroundLight,
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
-                color: AppColors.textSecondaryLight.withOpacity(0.2),
+                color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -430,7 +434,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                         color: AppColors.textSecondaryLight,
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      Text(
+                      const Text(
                         "PDF Preview",
                         style: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textSecondaryLight,
@@ -495,10 +499,10 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.success.withOpacity(0.1),
+        color: AppColors.success.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.success.withOpacity(0.2),
+          color: AppColors.success.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -513,7 +517,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text(
+              const Text(
                 "PDF Edited Successfully!",
                 style: AppTypography.titleMedium.copyWith(
                   fontWeight: FontWeight.w600,
@@ -534,7 +538,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => FileService.openFile(_outputPath!),
+                  onPressed: () => FileService.openFile(File(_outputPath!)),
                   icon: const Icon(Icons.open_in_new),
                   label: const Text("Open File"),
                 ),
@@ -542,7 +546,7 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => FileService.shareFile(_outputPath!),
+                  onPressed: () => FileService.shareFile(File(_outputPath!)),
                   icon: const Icon(Icons.share),
                   label: const Text("Share"),
                 ),
@@ -567,12 +571,14 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error picking file: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error picking file: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 
@@ -585,27 +591,33 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
       // Mock processing for now
       await Future.delayed(const Duration(seconds: 2));
       
-      final outputPath = await FileService.getOutputPath('edited_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      final directory = await FileService.getAppDirectoryPath();
+      final outputPath = '$directory/edited_${DateTime.now().millisecondsSinceEpoch}.pdf';
       
       setState(() {
         _outputPath = outputPath;
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('PDF edited successfully!'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('PDF edited successfully!'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
     } catch (e) {
       setState(() => _isProcessing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error editing PDF: $e'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error editing PDF: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 }
+

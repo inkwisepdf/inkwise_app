@@ -4,7 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:open_filex/open_filex.dart';
-import 'performance_service.dart';
+import 'package:inkwise_pdf/services/performance_service.dart';
 
 class FileService {
   static Future<String> getAppDirectoryPath() async {
@@ -77,7 +77,7 @@ class FileService {
 
   static Future<void> shareFile(File file) async {
     try {
-      await Share.shareXFiles([XFile(file.path)], text: 'Shared from Inkwise PDF');
+      await SharePlus.instance.share([XFile(file.path)], text: 'Shared from Inkwise PDF');
     } catch (e) {
       throw Exception('Error sharing file: $e');
     }
@@ -168,4 +168,3 @@ class FileService {
     }
   }
 }
-

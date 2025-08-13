@@ -4,7 +4,7 @@ import 'package:pdf_render/pdf_render_widgets.dart';
 class PDFPageViewer extends StatelessWidget {
   final String pdfPath;
 
-  const PDFPageViewer({Key? key, required this.pdfPath}) : super(key: key);
+  const PDFPageViewer({super.key, required this.pdfPath});
 
   @override
   Widget build(BuildContext context) {
@@ -19,3 +19,4 @@ class PDFPageViewer extends StatelessWidget {
     );
   }
 }
+

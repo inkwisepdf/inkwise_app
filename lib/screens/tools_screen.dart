@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../theme.dart';
-import '../widgets/tool_card.dart';
-import 'tools/pdf_compressor_screen.dart';
-import 'tools/pdf_editor_screen.dart';
-import 'tools/pdf_merge_screen.dart';
-import 'tools/pdf_ocr_screen.dart';
-import 'tools/pdf_rotate_screen.dart';
-import 'tools/pdf_split_screen.dart';
-import 'tools/pdf_watermark_screen.dart';
-import 'tools/pdf_password_screen.dart';
-import 'tools/pdf_grayscale_screen.dart';
-import 'tools/pdf_images_screen.dart';
+import 'package:inkwise_pdf/theme.dart';
+import 'package:inkwise_pdf/widgets/tool_card.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_compressor_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_editor_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_merge_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_ocr_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_rotate_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_split_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_watermark_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_password_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_grayscale_screen.dart';
+import 'package:inkwise_pdf/screens/tools/pdf_images_screen.dart';
 
 class ToolsScreen extends StatelessWidget {
   const ToolsScreen({super.key});
@@ -75,7 +75,7 @@ class ToolsScreen extends StatelessWidget {
       },
       {
         "title": "Grayscale PDF",
-        "icon": Icons.filter_bw,
+        "icon": Icons.filter_alt,
         "color": AppColors.primaryOrange,
         "route": const PDFGrayscaleScreen(),
         "description": "Convert to black and white",
@@ -124,13 +124,13 @@ class ToolsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryBlue.withOpacity(0.1),
-            AppColors.primaryGreen.withOpacity(0.05),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+            AppColors.primaryGreen.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
+          color: AppColors.primaryBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -174,11 +174,13 @@ class ToolsScreen extends StatelessWidget {
   }
 
   Widget _buildToolsGrid(BuildContext context, List<Map<String, dynamic>> tools) {
-    return StaggeredGrid.count(
+    return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
-      children: tools.map((tool) {
+      itemCount: tools.length,
+      itemBuilder: (context, index) {
+        final tool = tools[index];
         return ToolCard(
           title: tool["title"] as String,
           icon: tool["icon"] as IconData,
@@ -188,8 +190,7 @@ class ToolsScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => tool["route"] as Widget),
           ),
         );
-      }).toList(),
+      },
     );
   }
 }
-

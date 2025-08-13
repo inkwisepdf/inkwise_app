@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import '../../../theme.dart';
-import '../../../services/file_service.dart';
+import 'package:inkwise_pdf/theme.dart';
 
 class AutoTaggingScreen extends StatefulWidget {
   const AutoTaggingScreen({super.key});
@@ -70,13 +69,13 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryOrange.withOpacity(0.1),
-            AppColors.primaryPurple.withOpacity(0.05),
+            AppColors.primaryOrange.withValues(alpha: 0.1),
+            AppColors.primaryPurple.withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryOrange.withOpacity(0.2),
+          color: AppColors.primaryOrange.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -126,7 +125,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -144,7 +143,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: AppColors.primaryOrange.withOpacity(0.3),
+                    color: AppColors.primaryOrange.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                     width: 2,
                   ),
@@ -175,10 +174,10 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryOrange.withOpacity(0.1),
+                color: AppColors.primaryOrange.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.primaryOrange.withOpacity(0.3),
+                  color: AppColors.primaryOrange.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -203,7 +202,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                         Text(
                           "Size: ${(_selectedFile!.lengthSync() / 1024 / 1024).toStringAsFixed(2)} MB",
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -235,7 +234,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -368,10 +367,10 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primaryGreen.withOpacity(0.05),
+        color: AppColors.primaryGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primaryGreen.withOpacity(0.2),
+          color: AppColors.primaryGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -382,7 +381,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -417,9 +416,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: color.withOpacity(0.3)),
+                  border: Border.all(color: color.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -442,7 +441,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                     Text(
                       "${(confidence * 100).toInt()}%",
                       style: TextStyle(
-                        color: color.withOpacity(0.8),
+                        color: color.withValues(alpha: 0.8),
                         fontSize: 10,
                       ),
                     ),
@@ -493,7 +492,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -511,10 +510,10 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.label_off,
                       size: 64,
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -522,7 +521,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -530,7 +529,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                       "Start tagging files to see them here",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -550,7 +549,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryOrange.withOpacity(0.1),
+                        color: AppColors.primaryOrange.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
@@ -569,7 +568,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                         Text(
                           file['path'],
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                             fontSize: 12,
                           ),
                         ),
@@ -581,7 +580,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: AppColors.primaryOrange.withOpacity(0.1),
+                                color: AppColors.primaryOrange.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -603,7 +602,7 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                           file['size'],
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -614,9 +613,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'open',
                               child: Row(
                                 children: [
-                                  Icon(Icons.open_in_new, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Open"),
+                                  const Icon(Icons.open_in_new, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Open"),
                                 ],
                               ),
                             ),
@@ -624,9 +623,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'edit_tags',
                               child: Row(
                                 children: [
-                                  Icon(Icons.edit, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Edit Tags"),
+                                  const Icon(Icons.edit, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Edit Tags"),
                                 ],
                               ),
                             ),
@@ -634,9 +633,9 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                               value: 'remove',
                               child: Row(
                                 children: [
-                                  Icon(Icons.remove_circle, size: 16),
-                                  SizedBox(width: 8),
-                                  Text("Remove"),
+                                  const Icon(Icons.remove_circle, size: 16),
+                                  const SizedBox(width: 8),
+                                  const Text("Remove"),
                                 ],
                               ),
                             ),
@@ -696,12 +695,14 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -766,23 +767,27 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Tag detection completed! ${_detectedTags.length} tags found.'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Tag detection completed! ${_detectedTags.length} tags found.'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isProcessing = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error detecting tags: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error detecting tags: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -853,3 +858,4 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
     }
   }
 }
+

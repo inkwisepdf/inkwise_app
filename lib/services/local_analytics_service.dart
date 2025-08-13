@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -89,23 +88,23 @@ class LocalAnalyticsService {
         'parameters': parameters,
       });
     } catch (e) {
-      print('Error logging analytics event: $e');
+      // Error logging analytics event
     }
   }
 
   // Log screen view
   Future<void> logScreenView(String screenName) async {
     try {
-      await logEvent('screen_view', {
+      await logEvent('screen_view', parameters: {
         'screen_name': screenName,
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       });
 
-      await logUserAction('screen_view', {
+      await logUserAction('screen_view', details: {
         'screen_name': screenName,
       });
     } catch (e) {
-      print('Error logging screen view: $e');
+      // Error logging screen view
     }
   }
 
@@ -122,7 +121,7 @@ class LocalAnalyticsService {
         'duration': 0, // Will be calculated when action completes
       });
     } catch (e) {
-      print('Error logging user action: $e');
+      // Error logging user action
     }
   }
 
@@ -143,7 +142,7 @@ class LocalAnalyticsService {
       // Store session ID in preferences
       await _setCurrentSessionId(sessionId);
     } catch (e) {
-      print('Error starting session: $e');
+      // Error starting session
     }
   }
 
@@ -164,7 +163,7 @@ class LocalAnalyticsService {
         );
       }
     } catch (e) {
-      print('Error ending session: $e');
+      // Error ending session
     }
   }
 
@@ -228,7 +227,6 @@ class LocalAnalyticsService {
         },
       };
     } catch (e) {
-      print('Error getting analytics data: $e');
       return {};
     }
   }
@@ -285,7 +283,6 @@ class LocalAnalyticsService {
         'last_updated': DateTime.now().millisecondsSinceEpoch,
       };
     } catch (e) {
-      print('Error getting usage statistics: $e');
       return {};
     }
   }
@@ -304,7 +301,6 @@ class LocalAnalyticsService {
 
       return jsonEncode(exportData);
     } catch (e) {
-      print('Error exporting analytics data: $e');
       return '{}';
     }
   }
@@ -319,7 +315,7 @@ class LocalAnalyticsService {
       await db.delete(_userActionsTable, where: 'timestamp < ?', whereArgs: [cutoffTime]);
       await db.delete(_appUsageTable, where: 'session_start < ?', whereArgs: [cutoffTime]);
     } catch (e) {
-      print('Error clearing old data: $e');
+      // Error clearing old data
     }
   }
 
@@ -353,7 +349,7 @@ class LocalAnalyticsService {
       await database; // Initialize database
       await startSession(); // Start first session
     } catch (e) {
-      print('Error initializing analytics: $e');
+      // Error initializing analytics
     }
   }
 
@@ -364,7 +360,8 @@ class LocalAnalyticsService {
       await _database?.close();
       _database = null;
     } catch (e) {
-      print('Error disposing analytics: $e');
+      // Error disposing analytics
     }
   }
 }
+
