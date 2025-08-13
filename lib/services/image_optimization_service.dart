@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as path;
 
 class ImageOptimizationService {
   static final ImageOptimizationService _instance = ImageOptimizationService._internal();
