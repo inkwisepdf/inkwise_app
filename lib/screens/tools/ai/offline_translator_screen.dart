@@ -466,19 +466,23 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                     try {
                       await FileService.copyToClipboard(
                           _translatedText!); // Changed from instance to static method call
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Translation copied to clipboard'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Translation copied to clipboard'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error copying translation: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error copying translation: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.copy),
@@ -498,19 +502,23 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                           'translated_${DateTime.now().millisecondsSinceEpoch}.txt';
                       await FileService.saveTextAsFile(_translatedText!,
                           filename); // Changed from instance to static method call
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Translation saved as $filename'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Translation saved as $filename'),
+                            backgroundColor: AppColors.primaryGreen,
+                          ),
+                        );
+                      }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error saving translation: $e'),
-                          backgroundColor: AppColors.primaryRed,
-                        ),
-                      );
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error saving translation: $e'),
+                            backgroundColor: AppColors.primaryRed,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.save),
@@ -542,12 +550,14 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -577,12 +587,14 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         _isProcessing = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error translating PDF: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error translating PDF: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }

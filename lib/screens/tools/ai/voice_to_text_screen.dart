@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+// import 'package:speech_to_text/speech_to_text.dart'; // Temporarily disabled
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
@@ -17,7 +17,7 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   bool _isListening = false;
   String _transcribedText = '';
   String _selectedLanguage = 'en-US';
-  final SpeechToText _speechToText = SpeechToText();
+  // final SpeechToText _speechToText = SpeechToText(); // Temporarily disabled
   final TextEditingController _textController = TextEditingController();
 
   final Map<String, String> _languageOptions = {
@@ -56,12 +56,14 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
     );
 
     if (!available) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Speech recognition not available'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Speech recognition not available'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -514,23 +516,27 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error selecting file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error selecting file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
   Future<void> _startListening() async {
     if (!_speechToText.isAvailable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Speech recognition not available'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Speech recognition not available'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
       return;
     }
 
@@ -549,12 +555,14 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
         _isListening = true;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error starting speech recognition: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error starting speech recognition: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 
@@ -574,12 +582,14 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
 
   Future<void> _saveToFile() async {
     if (_textController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No text to save'),
-          backgroundColor: AppColors.primaryOrange,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No text to save'),
+            backgroundColor: AppColors.primaryOrange,
+          ),
+        );
+      }
       return;
     }
 
@@ -588,19 +598,23 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
           'voice_notes_${DateTime.now().millisecondsSinceEpoch}.txt';
       await FileService.saveTextAsFile(_textController.text, filename);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Voice notes saved as $filename'),
-          backgroundColor: AppColors.primaryGreen,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Voice notes saved as $filename'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error saving file: $e'),
-          backgroundColor: AppColors.primaryRed,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving file: $e'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
     }
   }
 }
