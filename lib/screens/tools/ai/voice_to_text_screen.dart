@@ -48,10 +48,12 @@ class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   Future<void> _initializeSpeech() async {
     bool available = await _speechToText.initialize(
       onError: (error) {
-        print('Speech recognition error: $error');
+        // Speech recognition error occurred
+        debugPrint('Speech recognition error: $error');
       },
       onStatus: (status) {
-        print('Speech recognition status: $status');
+        // Speech recognition status update
+        debugPrint('Speech recognition status: $status');
       },
     );
     
