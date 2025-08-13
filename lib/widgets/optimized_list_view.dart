@@ -121,11 +121,20 @@ class OptimizedStaggeredGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverMasonryGrid.count(
+    return MasonryGridView.count(
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
-      children: children.map((child) => RepaintBoundary(child: child)).toList(),
+      padding: padding,
+      physics: physics ?? const BouncingScrollPhysics(),
+      shrinkWrap: shrinkWrap,
+      controller: controller,
+      itemCount: children.length,
+      itemBuilder: (context, index) {
+        return RepaintBoundary(
+          child: children[index],
+        );
+      },
     );
   }
 }
