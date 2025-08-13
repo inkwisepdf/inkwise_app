@@ -235,7 +235,7 @@ class PDFService {
       final sf_pdf.PdfDocument document = sf_pdf.PdfDocument(inputBytes: await pdfFile.readAsBytes());
 
       for (int i = 0; i < count; i++) {
-        final sf_pdf.PdfPage newPage = document.pages.add();
+        document.pages.add();
         // Note: In Syncfusion, page size is typically set automatically
         // If you need specific size, you can set it during page creation
       }
@@ -672,22 +672,7 @@ class PDFService {
     return '${appDir.path}/$filename';
   }
 
-  Future<Uint8List> _compressImage(Uint8List imageBytes, double quality) async {
-    try {
-      final img.Image? image = img.decodeImage(imageBytes);
-      if (image != null) {
-        // Resize image if too large
-        img.Image resizedImage = image;
-        if (image.width > 800 || image.height > 800) {
-          resizedImage = img.copyResize(image, width: 800, height: 800);
-        }
-        return Uint8List.fromList(img.encodeJpg(resizedImage, quality: (quality * 100).round()));
-      }
-      return imageBytes;
-    } catch (e) {
-      return imageBytes;
-    }
-  }
+  // Note: _compressImage method removed as it was unused
 
   img.Image _applyThreshold(img.Image image, double threshold) {
     final int thresholdValue = (threshold * 255).round();

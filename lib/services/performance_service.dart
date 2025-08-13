@@ -291,11 +291,10 @@ class PerformanceService {
 
 // Semaphore for limiting concurrent operations
 class Semaphore {
-  final int _maxCount;
   int _currentCount;
   final List<Completer<void>> _waiters = [];
 
-  Semaphore(this._maxCount) : _currentCount = _maxCount;
+  Semaphore(int maxCount) : _currentCount = maxCount;
 
   Future<T> run<T>(Future<T> Function() operation) async {
     await _acquire();
