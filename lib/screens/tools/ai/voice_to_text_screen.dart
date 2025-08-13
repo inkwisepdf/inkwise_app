@@ -14,7 +14,6 @@ class VoiceToTextScreen extends StatefulWidget {
 
 class _VoiceToTextScreenState extends State<VoiceToTextScreen> {
   File? _selectedFile;
-  bool _isProcessing = false;
   bool _isListening = false;
   String _transcribedText = '';
   String _selectedLanguage = 'en-US';
