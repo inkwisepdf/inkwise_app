@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:inkwise_pdf/theme.dart';
 
 class PDFIndexerScreen extends StatefulWidget {
