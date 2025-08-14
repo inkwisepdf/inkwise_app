@@ -8,4 +8,8 @@ linter:
     avoid_unnecessary_containers: true
     prefer_final_fields: true
     always_use_package_imports: true
+    use_build_context_synchronously: true
+    avoid_redundant_argument_values: true
+    prefer_const_literals_to_create_immutables: true
+
 

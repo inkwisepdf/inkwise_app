@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:flutter/services.dart';
+import 'package:pdfx/pdfx.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
+import 'package:inkwise_pdf/services/pdf_text_service.dart';
+import 'package:inkwise_pdf/screens/pdf_edit_screen.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   const PdfViewerScreen({super.key});
@@ -14,18 +17,29 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   File? _pdfFile;
-  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  PdfControllerPinch? _pdfController;
+  PdfDocument? _pdfDocument;
   bool _isLoading = false;
   int _currentPage = 1;
   int _totalPages = 0;
-  double _zoomLevel = 1.0;
   bool _showThumbnails = false;
   bool _showBookmarks = false;
   bool _isDarkMode = false;
   String _searchText = '';
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _pageController = TextEditingController();
-
+  
+  // Search functionality
+  List<TextSearchResult> _searchResults = [];
+  int _currentSearchIndex = -1;
+  bool _isSearching = false;
+  
+  // Text selection
+  String? _selectedText;
+  
+  // Text service
+  final PDFTextService _textService = PDFTextService();
+  
   @override
   void initState() {
     super.initState();
@@ -38,6 +52,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void dispose() {
     _searchController.dispose();
     _pageController.dispose();
+    _pdfController?.dispose();
+    _pdfDocument?.close();
     super.dispose();
   }
 
@@ -98,12 +114,32 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                 ),
               ),
               const PopupMenuItem(
-                value: 'print',
+                value: 'copy_page_text',
                 child: Row(
                   children: [
-                    Icon(Icons.print),
+                    Icon(Icons.copy),
                     SizedBox(width: 8),
-                    Text('Print'),
+                    Text('Copy Page Text'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'copy_all_text',
+                child: Row(
+                  children: [
+                    Icon(Icons.content_copy),
+                    SizedBox(width: 8),
+                    Text('Copy All Text'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'edit_text',
+                child: Row(
+                  children: [
+                    Icon(Icons.edit),
+                    SizedBox(width: 8),
+                    Text('Edit Text'),
                   ],
                 ),
               ),
@@ -169,39 +205,133 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         Expanded(
           child: Stack(
             children: [
-              SfPdfViewer.file(
-                _pdfFile!,
-                key: _pdfViewerKey,
-                enableDoubleTapZooming: true,
-                enableTextSelection: true,
-                canShowScrollHead: true,
-                canShowScrollStatus: true,
-                onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-                  setState(() {
-                    _totalPages = details.document.pages.count;
-                    _isLoading = false;
-                  });
-                },
-                onPageChanged: (PdfPageChangedDetails details) {
-                  setState(() {
-                    _currentPage = details.newPageNumber;
-                    _pageController.text = _currentPage.toString();
-                  });
-                },
-                onZoomLevelChanged: (PdfZoomDetails details) {
-                  setState(() {
-                    _zoomLevel = details.newZoomLevel;
-                  });
-                },
-              ),
+              if (_pdfController != null)
+                PdfViewPinch(
+                  controller: _pdfController!,
+                  onDocumentLoaded: (document) {
+                    setState(() {
+                      _totalPages = document.pagesCount;
+                      _isLoading = false;
+                      _pageController.text = _currentPage.toString();
+                    });
+                  },
+                  onPageChanged: (page) {
+                    setState(() {
+                      _currentPage = page;
+                      _pageController.text = _currentPage.toString();
+                    });
+                  },
+                  builders: PdfViewPinchBuilders<DefaultBuilderOptions>(
+                    options: const DefaultBuilderOptions(),
+                    documentLoaderBuilder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    pageLoaderBuilder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
               if (_isLoading)
                 const Center(
                   child: CircularProgressIndicator(),
                 ),
+              // Search results overlay
+              if (_searchResults.isNotEmpty) _buildSearchOverlay(),
+              // Text selection overlay
+              if (_selectedText != null) _buildTextSelectionOverlay(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSearchOverlay() {
+    return Positioned(
+      top: 16,
+      right: 16,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.black87,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Text(
+                _currentSearchIndex >= 0 
+                  ? '${_currentSearchIndex + 1} of ${_searchResults.length} matches - Page ${_searchResults[_currentSearchIndex].pageNumber}'
+                  : '${_searchResults.length} matches found',
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              iconSize: 16,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+              onPressed: _currentSearchIndex > 0 ? _previousSearchResult : null,
+              icon: const Icon(Icons.keyboard_arrow_up, color: Colors.white),
+            ),
+            IconButton(
+              iconSize: 16,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+              onPressed: _currentSearchIndex < _searchResults.length - 1 
+                ? _nextSearchResult : null,
+              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+            ),
+            IconButton(
+              iconSize: 16,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+              onPressed: _clearSearch,
+              icon: const Icon(Icons.close, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextSelectionOverlay() {
+    return Positioned(
+      bottom: 100,
+      left: 16,
+      right: 16,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.black87,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                _selectedText!.length > 100 
+                  ? '${_selectedText!.substring(0, 100)}...'
+                  : _selectedText!,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              onPressed: _copySelectedText,
+              icon: const Icon(Icons.copy, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () => setState(() => _selectedText = null),
+              icon: const Icon(Icons.close, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -271,11 +401,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   ),
                   title: Text('Page ${index + 1}'),
                   selected: _currentPage == index + 1,
-                  onTap: () {
-                    setState(() {
-                      _currentPage = index + 1;
-                    });
-                  },
+                  onTap: () => _goToPage(index + 1),
                 );
               },
             ),
@@ -337,25 +463,25 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Introduction'),
                   subtitle: const Text('Page 1'),
-                  onTap: () => setState(() => _currentPage = 1),
+                  onTap: () => _goToPage(1),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Chapter 1'),
                   subtitle: const Text('Page 5'),
-                  onTap: () => setState(() => _currentPage = 5),
+                  onTap: () => _goToPage(5),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Chapter 2'),
                   subtitle: const Text('Page 12'),
-                  onTap: () => setState(() => _currentPage = 12),
+                  onTap: () => _goToPage(12),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bookmark_border),
                   title: const Text('Conclusion'),
                   subtitle: const Text('Page 25'),
-                  onTap: () => setState(() => _currentPage = 25),
+                  onTap: () => _goToPage(25),
                 ),
               ],
             ),
@@ -380,8 +506,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       child: Row(
         children: [
           IconButton(
-            onPressed:
-                _currentPage > 1 ? () => _goToPage(_currentPage - 1) : null,
+            onPressed: _currentPage > 1 ? () => _goToPage(_currentPage - 1) : null,
             icon: const Icon(Icons.chevron_left),
           ),
           Expanded(
@@ -396,8 +521,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     ),
                     onSubmitted: (value) {
                       int? page = int.tryParse(value);
@@ -416,27 +540,20 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
           ),
           IconButton(
-            onPressed: _currentPage < _totalPages
-                ? () => _goToPage(_currentPage + 1)
-                : null,
+            onPressed: _currentPage < _totalPages ? () => _goToPage(_currentPage + 1) : null,
             icon: const Icon(Icons.chevron_right),
           ),
           const SizedBox(width: 16),
-          Text(
-            '${(_zoomLevel * 100).toInt()}%',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(width: 16),
-          IconButton(
-            onPressed: () => setState(
-                () => _zoomLevel = (_zoomLevel - 0.25).clamp(0.5, 3.0)),
-            icon: const Icon(Icons.zoom_out),
-          ),
-          IconButton(
-            onPressed: () => setState(
-                () => _zoomLevel = (_zoomLevel + 0.25).clamp(0.5, 3.0)),
-            icon: const Icon(Icons.zoom_in),
-          ),
+          if (_pdfController != null)
+            IconButton(
+              onPressed: () => _pdfController!.zoomOut(),
+              icon: const Icon(Icons.zoom_out),
+            ),
+          if (_pdfController != null)
+            IconButton(
+              onPressed: () => _pdfController!.zoomIn(),
+              icon: const Icon(Icons.zoom_in),
+            ),
         ],
       ),
     );
@@ -468,6 +585,32 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         _pdfFile = File(arguments);
         _isLoading = true;
       });
+      _initializePdfController();
+    }
+  }
+
+  Future<void> _initializePdfController() async {
+    if (_pdfFile == null) return;
+
+    try {
+      _pdfDocument = await PdfDocument.openFile(_pdfFile!.path);
+      _pdfController = PdfControllerPinch(
+        document: _pdfDocument!,
+        initialPage: 1,
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading PDF: $e')),
+        );
+      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -484,7 +627,14 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           _isLoading = true;
           _currentPage = 1;
           _totalPages = 0;
+          _searchResults.clear();
+          _currentSearchIndex = -1;
+          _selectedText = null;
         });
+        
+        _pdfController?.dispose();
+        _pdfDocument?.close();
+        await _initializePdfController();
       }
     } catch (e) {
       if (mounted) {
@@ -496,9 +646,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   }
 
   void _goToPage(int page) {
-    setState(() {
-      _currentPage = page;
-    });
+    if (_pdfController != null && page >= 1 && page <= _totalPages) {
+      _pdfController!.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   void _showSearchDialog() {
@@ -506,13 +660,39 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Search PDF'),
-        content: TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            labelText: 'Search text',
-            hintText: 'Enter text to search',
-          ),
-          onChanged: (value) => _searchText = value,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                labelText: 'Search text',
+                hintText: 'Enter text to search',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) => _searchText = value,
+              autofocus: true,
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  Navigator.pop(context);
+                  _performSearch(value);
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const Icon(Icons.info_outline, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Search will find matches across all pages',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -520,20 +700,197 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: _isSearching ? null : () {
               if (_searchText.isNotEmpty) {
-                // Search functionality will be implemented in a future update
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Searching for: $_searchText')),
-                );
                 Navigator.pop(context);
+                _performSearch(_searchText);
               }
             },
-            child: const Text('Search'),
+            child: _isSearching 
+              ? const SizedBox(
+                  width: 16, 
+                  height: 16, 
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Search'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _performSearch(String searchTerm) async {
+    if (_pdfFile == null) return;
+
+    setState(() {
+      _isSearching = true;
+      _searchResults.clear();
+      _currentSearchIndex = -1;
+    });
+
+    try {
+      // Use the text service to search for the term
+      final results = await _textService.searchText(_pdfFile!, searchTerm);
+      
+      setState(() {
+        _searchResults = results;
+      });
+
+      if (_searchResults.isNotEmpty) {
+        _currentSearchIndex = 0;
+        _goToSearchResult(_currentSearchIndex);
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Found ${_searchResults.length} matches for "$searchTerm"'),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No results found for "$searchTerm"')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Search error: $e')),
+        );
+      }
+    }
+
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  void _goToSearchResult(int index) {
+    if (index >= 0 && index < _searchResults.length) {
+      final result = _searchResults[index];
+      _goToPage(result.pageNumber);
+      setState(() {
+        _currentSearchIndex = index;
+      });
+    }
+  }
+
+  void _nextSearchResult() {
+    if (_currentSearchIndex < _searchResults.length - 1) {
+      _goToSearchResult(_currentSearchIndex + 1);
+    }
+  }
+
+  void _previousSearchResult() {
+    if (_currentSearchIndex > 0) {
+      _goToSearchResult(_currentSearchIndex - 1);
+    }
+  }
+
+  void _clearSearch() {
+    setState(() {
+      _searchResults.clear();
+      _currentSearchIndex = -1;
+      _searchText = '';
+    });
+    _searchController.clear();
+  }
+
+  Future<void> _extractAndSelectText(int pageNumber) async {
+    if (_pdfFile == null) return;
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      
+      // Extract text from the current page
+      final pageText = await _textService.extractPageText(_pdfFile!, pageNumber);
+      
+      setState(() {
+        _selectedText = pageText.isNotEmpty 
+          ? pageText 
+          : 'No text found on page $pageNumber';
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(pageText.isNotEmpty 
+              ? 'Text extracted from page $pageNumber' 
+              : 'No text found on page $pageNumber'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error extracting text: $e')),
+        );
+      }
+    }
+  }
+
+  void _copySelectedText() {
+    if (_selectedText != null && _selectedText!.isNotEmpty) {
+      Clipboard.setData(ClipboardData(text: _selectedText!));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${_selectedText!.length} characters copied to clipboard'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  // Copy all text from PDF
+  Future<void> _copyAllText() async {
+    if (_pdfFile == null) return;
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      final allText = await _textService.extractAllText(_pdfFile!);
+      
+      await Clipboard.setData(ClipboardData(text: allText));
+      
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('All PDF text (${allText.length} characters) copied to clipboard'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error copying text: $e')),
+        );
+      }
+    }
   }
 
   void _handleMenuAction(String action) {
@@ -544,10 +901,30 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       case 'info':
         _showFileInfo();
         break;
-      case 'print':
-        _showPrintDialog();
+      case 'copy_page_text':
+        _extractAndSelectText(_currentPage);
+        break;
+      case 'copy_all_text':
+        _copyAllText();
+        break;
+      case 'edit_text':
+        _openEditMode();
         break;
     }
+  }
+
+  void _openEditMode() {
+    if (_pdfFile == null) return;
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PDFEditScreen(
+          pdfFile: _pdfFile!,
+          initialPage: _currentPage,
+        ),
+      ),
+    );
   }
 
   void _showFileInfo() {
@@ -576,23 +953,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ],
           );
         },
-      ),
-    );
-  }
-
-  void _showPrintDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Print PDF'),
-        content: const Text(
-            'Print functionality will be implemented in a future update.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
       ),
     );
   }

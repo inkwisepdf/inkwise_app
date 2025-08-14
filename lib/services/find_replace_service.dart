@@ -25,7 +25,7 @@ class FindReplaceService {
       String pdfPath, String findText, String replaceText) async {
     try {
       // This is a placeholder implementation
-      // In a real implementation, you would use a PDF library like syncfusion_flutter_pdf
+      // In a real implementation, you would use a PDF library like pdf_text
       // to read the PDF, extract text, replace it, and save the modified PDF
 
       return 'Text replacement completed successfully for: $pdfPath\n'
@@ -35,3 +35,4 @@ class FindReplaceService {
     }
   }
 }
+
