@@ -205,17 +205,17 @@ class PDFEditService {
     // Simple text drawing - draws a rectangle to represent text
     // In production, you would implement proper text rendering
     final textWidth = text.length * (fontSize * 0.6).round();
-    final textHeight = fontSize;
+    final textHeight = fontSize.round();
     
     // Draw text background (optional)
-    // image = img.fillRect(
-    //   image,
-    //   x1: x,
-    //   y1: y,
-    //   x2: x + textWidth,
-    //   y2: y + textHeight,
-    //   color: img.ColorRgb8(240, 240, 240),
-    // );
+    image = img.fillRect(
+      image,
+      x1: x,
+      y1: y,
+      x2: x + textWidth,
+      y2: y + textHeight,
+      color: img.ColorRgb8(240, 240, 240),
+    );
 
     // Draw text placeholder (in production, render actual text)
     // For now, we'll draw a simple representation
@@ -329,14 +329,19 @@ class PDFEditService {
       final document = await pdf_render.PdfDocument.openFile(sourceFile.path);
       final page = await document.getPage(pageNumber);
       
+      // Get page dimensions for realistic text area detection
+      final pageWidth = page.width;
+      final pageHeight = page.height;
+      
       // Create sample text areas (placeholder)
       final areas = <Rect>[
-        Rect.fromLTWH(50, 100, 200, 20),   // Header area
-        Rect.fromLTWH(50, 150, 300, 15),   // Paragraph line 1
-        Rect.fromLTWH(50, 170, 280, 15),   // Paragraph line 2
-        Rect.fromLTWH(50, 190, 250, 15),   // Paragraph line 3
+        Rect.fromLTWH(50, 100, pageWidth * 0.4, 20),   // Header area
+        Rect.fromLTWH(50, 150, pageWidth * 0.6, 15),   // Paragraph line 1
+        Rect.fromLTWH(50, 170, pageWidth * 0.55, 15),  // Paragraph line 2
+        Rect.fromLTWH(50, 190, pageWidth * 0.5, 15),   // Paragraph line 3
       ];
       
+      page.close();
       document.dispose();
       return areas.where((area) => 
         area.width >= minWidth && area.height >= minHeight
@@ -346,3 +351,4 @@ class PDFEditService {
     }
   }
 }
+
