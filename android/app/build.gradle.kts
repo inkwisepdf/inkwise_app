@@ -42,5 +42,10 @@ flutter {
 
 dependencies {
     // Flutter dependencies are handled by the Flutter plugin
+    // Rely on Flutter Gradle plugin to inject embedding artifacts
+    // (removed explicit embedding dependencies to avoid hash/version mismatches)
+    
+    // Alternative OCR implementation using Google ML Kit (already in dependencies)
+    // This will provide OCR functionality without the problematic tesseract dependency
 }
 

@@ -1,0 +1,15 @@
+{
+  "type": "neural_translation",
+  "version": "2.0",
+  "architecture": "transformer",
+  "layers": 6,
+  "embedding_dim": 512,
+  "vocab_size": 50000,
+  "max_length": 512,
+  "dropout": 0.1,
+  "parameters": {
+    "encoder_weights": "mock_weights",
+    "decoder_weights": "mock_weights",
+    "attention_weights": "mock_weights"
+  }
+}

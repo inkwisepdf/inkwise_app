@@ -21,7 +21,7 @@ dependencies:
   image: ^4.1.3  # For image manipulation
 
   # OCR and permissions
-  flutter_tesseract_ocr: ^0.4.29
+  flutter_tesseract_ocr: ^0.4.16
   permission_handler: ^12.0.1
 
   # File handling
