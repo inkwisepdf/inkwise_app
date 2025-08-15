@@ -23,10 +23,9 @@ class ToolCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: color.withValues(alpha: 0.1),
-          width: 1,
         ),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 10,
             offset: Offset(0, 4),
@@ -57,7 +56,6 @@ class ToolCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(
                       color: color.withValues(alpha: 0.2),
-                      width: 1,
                     ),
                   ),
                   child: Icon(
@@ -88,7 +86,6 @@ class ToolCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.full),
                     border: Border.all(
                       color: color.withValues(alpha: 0.2),
-                      width: 1,
                     ),
                   ),
                   child: Row(

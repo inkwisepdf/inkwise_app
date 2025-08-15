@@ -76,7 +76,6 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryOrange.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -144,7 +143,6 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryOrange.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -276,7 +274,6 @@ class _AutoTaggingScreenState extends State<AutoTaggingScreen> {
           Slider(
             value: _confidenceThreshold,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {

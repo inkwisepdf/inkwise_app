@@ -80,7 +80,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryPurple.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -148,7 +147,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryPurple.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -301,7 +299,6 @@ class _LayoutDesignerScreenState extends State<LayoutDesignerScreen> {
           ),
           Slider(
             value: _margin,
-            min: 0,
             max: 50,
             divisions: 10,
             onChanged: (value) {

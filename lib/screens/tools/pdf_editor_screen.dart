@@ -83,7 +83,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.gradientStart.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Row(
@@ -137,7 +136,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -159,7 +157,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 border: Border.all(
                   color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
                   width: 2,
-                  style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
@@ -188,7 +185,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
                   color: AppColors.primaryBlue.withValues(alpha: 0.2),
-                  width: 1,
                 ),
               ),
               child: Row(
@@ -263,7 +259,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -315,7 +310,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(
             color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-            width: 1,
           ),
         ),
         child: Column(
@@ -376,7 +370,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
                       Slider(
                         value: _textOpacity,
                         min: 0.1,
-                        max: 1.0,
                         divisions: 9,
                         onChanged: (value) =>
                             setState(() => _textOpacity = value),
@@ -401,7 +394,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -423,7 +415,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
                 color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
-                width: 1,
               ),
             ),
             child: Stack(
@@ -507,7 +498,6 @@ class _PDFEditorScreenState extends State<PDFEditorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.success.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Column(

@@ -61,7 +61,6 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryGreen.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -129,7 +128,6 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryGreen.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -248,7 +246,6 @@ class _PDFCompressorScreenState extends State<PDFCompressorScreen> {
                 child: Slider(
                   value: _compressionQuality,
                   min: 0.1,
-                  max: 1.0,
                   divisions: 9,
                   activeColor: AppColors.primaryGreen,
                   onChanged: (value) {

@@ -43,7 +43,6 @@ class FeaturedToolCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.xl),
               border: Border.all(
                 color: AppColors.glassLight.withValues(alpha: 0.2),
-                width: 1,
               ),
             ),
             child: Column(
@@ -58,7 +57,6 @@ class FeaturedToolCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(
                           color: AppColors.glassLight.withValues(alpha: 0.3),
-                          width: 1,
                         ),
                       ),
                       child: Icon(
@@ -78,7 +76,6 @@ class FeaturedToolCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.full),
                         border: Border.all(
                           color: AppColors.glassLight.withValues(alpha: 0.3),
-                          width: 1,
                         ),
                       ),
                       child: Row(
@@ -130,7 +127,6 @@ class FeaturedToolCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.full),
                         border: Border.all(
                           color: AppColors.glassLight.withValues(alpha: 0.3),
-                          width: 1,
                         ),
                       ),
                       child: Row(

@@ -84,7 +84,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryBlue.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -152,7 +151,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -305,8 +303,6 @@ class _ColorConverterScreenState extends State<ColorConverterScreen> {
           ),
           Slider(
             value: _threshold,
-            min: 0.0,
-            max: 1.0,
             divisions: 20,
             onChanged: (value) {
               setState(() {

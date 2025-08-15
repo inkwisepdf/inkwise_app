@@ -75,7 +75,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryGreen.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -143,7 +142,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryGreen.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -436,7 +434,6 @@ class _PDFImagesScreenState extends State<PDFImagesScreen> {
           Slider(
             value: _quality,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {

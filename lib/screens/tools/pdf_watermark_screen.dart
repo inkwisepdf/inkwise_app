@@ -100,7 +100,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryBlue.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -168,7 +167,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -412,7 +410,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                      style: BorderStyle.solid,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(12),
@@ -548,7 +545,6 @@ class _PDFWatermarkScreenState extends State<PDFWatermarkScreen> {
           Slider(
             value: _opacity,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {

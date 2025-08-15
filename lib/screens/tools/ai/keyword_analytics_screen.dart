@@ -78,7 +78,6 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryPurple.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -146,7 +145,6 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryPurple.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -788,7 +786,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     report.writeln('========================');
     report.writeln('Generated: ${DateTime.now().toString()}');
     report.writeln('Document: ${_selectedFile!.path.split('/').last}');
-    report.writeln('');
+    report.writeln();
 
     report.writeln('DOCUMENT STATISTICS');
     report.writeln('-------------------');
@@ -796,7 +794,7 @@ class _KeywordAnalyticsScreenState extends State<KeywordAnalyticsScreen> {
     report.writeln('Unique Words: ${stats['unique_words']}');
     report.writeln('Reading Time: ${stats['reading_time']} minutes');
     report.writeln('Complexity Level: ${stats['complexity_level']}');
-    report.writeln('');
+    report.writeln();
 
     report.writeln('TOP KEYWORDS');
     report.writeln('------------');

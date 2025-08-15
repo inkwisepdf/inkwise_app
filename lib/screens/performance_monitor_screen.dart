@@ -90,7 +90,6 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.gradientStart.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Row(
@@ -195,7 +194,6 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Column(
@@ -246,7 +244,6 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
             borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
               color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-              width: 1,
             ),
           ),
           child: BarChart(
@@ -255,11 +252,10 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
               maxY: _getMaxResponseTime(),
               barTouchData: const BarTouchData(enabled: false),
               titlesData: FlTitlesData(
-                show: true,
                 rightTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(),
                 topTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -388,7 +384,6 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Column(
@@ -499,7 +494,6 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: (suggestion['color'] as Color).withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(

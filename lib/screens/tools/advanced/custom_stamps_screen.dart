@@ -84,7 +84,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryGreen.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -152,7 +151,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryGreen.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -296,7 +294,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
                 crossAxisCount: 3,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 1,
               ),
               itemCount: _getFilteredStamps().length,
               itemBuilder: (context, index) {
@@ -382,7 +379,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
           Slider(
             value: _stampOpacity,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {
@@ -413,7 +409,6 @@ class _CustomStampsScreenState extends State<CustomStampsScreen> {
           ),
           Slider(
             value: _rotation,
-            min: 0,
             max: 360,
             divisions: 36,
             onChanged: (value) {

@@ -649,7 +649,6 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
   void _addFiles() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
         allowMultiple: true,
       );
 

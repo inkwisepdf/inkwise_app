@@ -299,14 +299,12 @@ final ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
         color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
-        width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
         color: AppColors.textSecondaryLight.withValues(alpha: 0.2),
-        width: 1,
       ),
     ),
     focusedBorder: OutlineInputBorder(
@@ -320,7 +318,6 @@ final ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: const BorderSide(
         color: AppColors.error,
-        width: 1,
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(
@@ -612,14 +609,12 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
         color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
-        width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: BorderSide(
         color: AppColors.textSecondaryDark.withValues(alpha: 0.2),
-        width: 1,
       ),
     ),
     focusedBorder: OutlineInputBorder(
@@ -633,7 +628,6 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.circular(AppRadius.md),
       borderSide: const BorderSide(
         color: AppColors.error,
-        width: 1,
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(

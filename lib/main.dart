@@ -26,7 +26,6 @@ class InkwisePDFApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
       initialRoute: Routes.splash,
       routes: appRoutes,
     );

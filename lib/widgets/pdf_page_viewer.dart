@@ -14,7 +14,6 @@ class PDFPageViewer extends StatelessWidget {
         padding: 10,
         minScale: 1.0,
         maxScale: 3.0,
-        scrollDirection: Axis.vertical,
       ),
     );
   }

@@ -84,7 +84,6 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryGreen.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -152,7 +151,6 @@ class _OfflineTranslatorScreenState extends State<OfflineTranslatorScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryGreen.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),

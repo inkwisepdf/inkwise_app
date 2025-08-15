@@ -29,7 +29,6 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
   bool _isEditMode = false;
   bool _isSelectingArea = false;
   int _currentPage = 1;
-  int _totalPages = 1;
   
   Uint8List? _previewImage;
   Rect? _selectedArea;
@@ -225,7 +224,6 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
         border: Border(
           top: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 1,
           ),
         ),
       ),

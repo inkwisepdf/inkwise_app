@@ -69,7 +69,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryOrange.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -137,7 +136,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryOrange.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -408,8 +406,6 @@ class _PDFGrayscaleScreenState extends State<PDFGrayscaleScreen> {
           ),
           Slider(
             value: _threshold,
-            min: 0.0,
-            max: 1.0,
             divisions: 100,
             onChanged: (value) {
               setState(() {

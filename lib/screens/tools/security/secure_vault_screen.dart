@@ -82,7 +82,6 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryRed.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -589,7 +588,7 @@ class _SecureVaultScreenState extends State<SecureVaultScreen> {
   Future<void> _addFileToVault() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: false,
+        
       );
 
       if (result != null) {

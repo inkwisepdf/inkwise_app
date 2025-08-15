@@ -69,7 +69,6 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryPurple.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -137,7 +136,6 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryPurple.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -294,7 +292,6 @@ class _TableExtractorScreenState extends State<TableExtractorScreen> {
           Slider(
             value: _confidence,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {

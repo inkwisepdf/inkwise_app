@@ -43,14 +43,14 @@ class PDFEditService {
     try {
       // 1. Load the original PDF
       final document = await pdf_render.PdfDocument.openFile(sourceFile.path);
-      
+
       if (pageNumber > document.pageCount || pageNumber < 1) {
         throw Exception('Page $pageNumber does not exist. PDF has ${document.pageCount} pages.');
       }
 
       // 2. Create new PDF document
       final pdf = pw.Document();
-      
+
       // 3. Process each page
       for (int i = 1; i <= document.pageCount; i++) {
         if (i == pageNumber) {
@@ -66,10 +66,10 @@ class PDFEditService {
 
       // 4. Save the new PDF
       final outputFile = await _savePdfToFile(pdf, outputFileName);
-      
+
       // 5. Clean up
       document.dispose();
-      
+
       return outputFile;
     } catch (e) {
       throw Exception('Failed to edit PDF text: $e');
@@ -85,7 +85,7 @@ class PDFEditService {
     try {
       final document = await pdf_render.PdfDocument.openFile(sourceFile.path);
       final pdf = pw.Document();
-      
+
       for (int i = 1; i <= document.pageCount; i++) {
         if (pageEdits.containsKey(i)) {
           // Edit this page
@@ -100,7 +100,7 @@ class PDFEditService {
 
       final outputFile = await _savePdfToFile(pdf, outputFileName);
       document.dispose();
-      
+
       return outputFile;
     } catch (e) {
       throw Exception('Failed to edit multiple pages: $e');
@@ -109,8 +109,8 @@ class PDFEditService {
 
   /// Render a PDF page to image and apply text edits
   Future<Uint8List> _editPage(
-    pdf_render.PdfDocument document, 
-    int pageNumber, 
+    pdf_render.PdfDocument document,
+    int pageNumber,
     List<TextEdit> edits
   ) async {
     // 1. Render original page to high-resolution image
@@ -140,7 +140,7 @@ class PDFEditService {
 
   /// Render PDF page to image without edits
   Future<Uint8List> _renderPageToImage(
-    pdf_render.PdfDocument document, 
+    pdf_render.PdfDocument document,
     int pageNumber
   ) async {
     final page = await document.getPage(pageNumber);
@@ -195,18 +195,18 @@ class PDFEditService {
     // Note: This is a simplified text drawing implementation
     // For production use, consider using a proper text rendering library
     // or drawing text character by character using a bitmap font
-    
+
     final color = img.ColorRgb8(
-      textColor.red,
-      textColor.green,
-      textColor.blue,
+      (textColor.red * 255.0).round() & 0xff,
+      (textColor.green * 255.0).round() & 0xff,
+        (textColor.blue * 255.0).round() & 0xff,
     );
 
     // Simple text drawing - draws a rectangle to represent text
     // In production, you would implement proper text rendering
     final textWidth = text.length * (fontSize * 0.6).round();
     final textHeight = fontSize.round();
-    
+
     // Draw text background (optional)
     image = img.fillRect(
       image,
@@ -222,7 +222,7 @@ class PDFEditService {
     for (int i = 0; i < text.length; i++) {
       final charX = x + (i * (fontSize * 0.6).round());
       final charY = y;
-      
+
       // Draw a simple line to represent character
       if (charX < image.width && charY < image.height) {
         image = img.drawLine(
@@ -248,7 +248,6 @@ class PDFEditService {
         return pw.Center(
           child: pw.Image(
             pw.MemoryImage(imageBytes),
-            fit: pw.BoxFit.contain,
           ),
         );
       },
@@ -258,20 +257,20 @@ class PDFEditService {
   /// Save PDF document to file
   Future<File> _savePdfToFile(pw.Document pdf, String? fileName) async {
     final bytes = await pdf.save();
-    
+
     final directory = await getApplicationDocumentsDirectory();
     final appDir = Directory('${directory.path}/inkwise_pdf/edited');
     if (!await appDir.exists()) {
       await appDir.create(recursive: true);
     }
-    
+
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final outputFileName = fileName ?? 'edited_pdf_$timestamp.pdf';
     final outputPath = path.join(appDir.path, outputFileName);
-    
+
     final file = File(outputPath);
     await file.writeAsBytes(bytes);
-    
+
     return file;
   }
 
@@ -324,15 +323,14 @@ class PDFEditService {
   }) async {
     // This is a simplified implementation
     // In production, you would use OCR or text extraction to detect actual text areas
-    
+
     try {
       final document = await pdf_render.PdfDocument.openFile(sourceFile.path);
       final page = await document.getPage(pageNumber);
-      
+
       // Get page dimensions for realistic text area detection
       final pageWidth = page.width;
-      final pageHeight = page.height;
-      
+
       // Create sample text areas (placeholder)
       final areas = <Rect>[
         Rect.fromLTWH(50, 100, pageWidth * 0.4, 20),   // Header area
@@ -340,10 +338,9 @@ class PDFEditService {
         Rect.fromLTWH(50, 170, pageWidth * 0.55, 15),  // Paragraph line 2
         Rect.fromLTWH(50, 190, pageWidth * 0.5, 15),   // Paragraph line 3
       ];
-      
-      page.close();
+
       document.dispose();
-      return areas.where((area) => 
+      return areas.where((area) =>
         area.width >= minWidth && area.height >= minHeight
       ).toList();
     } catch (e) {

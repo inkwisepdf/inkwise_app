@@ -73,7 +73,6 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryPurple.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -141,7 +140,6 @@ class _SmartSummarizerScreenState extends State<SmartSummarizerScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),

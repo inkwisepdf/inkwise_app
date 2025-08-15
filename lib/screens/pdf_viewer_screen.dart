@@ -343,7 +343,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         border: Border(
           right: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 1,
           ),
         ),
       ),
@@ -356,7 +355,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
-                  width: 1,
                 ),
               ),
             ),
@@ -419,7 +417,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         border: Border(
           right: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 1,
           ),
         ),
       ),
@@ -432,7 +429,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
-                  width: 1,
                 ),
               ),
             ),
@@ -499,7 +495,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         border: Border(
           top: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 1,
           ),
         ),
       ),
@@ -606,7 +601,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       _pdfDocument = await PdfDocument.openFile(_pdfFile!.path);
       _pdfController = PdfControllerPinch(
         document: PdfDocument.openFile(_pdfFile!.path),
-        initialPage: 1,
       );
 
       setState(() {
@@ -660,7 +654,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       _pdfController!.animateToPage(
         pageNumber: page,
         duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
       );
     }
   }

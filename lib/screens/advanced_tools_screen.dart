@@ -93,7 +93,6 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen>
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryBlue.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -404,7 +403,6 @@ class _AdvancedToolsScreenState extends State<AdvancedToolsScreen>
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppColors.primaryGreen.withValues(alpha: 0.2),
-              width: 1,
             ),
           ),
           child: Column(

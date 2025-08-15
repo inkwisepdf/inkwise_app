@@ -239,7 +239,6 @@ class OCRService {
         OCRResult(
           text: text,
           confidence: 0.8,
-          boundingBox: null,
         ),
       ];
     } catch (e) {

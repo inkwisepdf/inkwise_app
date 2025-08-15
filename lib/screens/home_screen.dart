@@ -120,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget _buildModernAppBar() {
     return SliverAppBar(
       expandedHeight: 140,
-      floating: false,
       pinned: true,
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -177,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
               color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-              width: 1,
             ),
           ),
           child: IconButton(
@@ -196,7 +194,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: Border.all(
               color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-              width: 1,
             ),
           ),
           child: IconButton(
@@ -227,7 +224,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(
           color: AppColors.gradientStart.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -307,7 +303,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
             color: color.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
         child: Column(
@@ -528,10 +523,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: color.withValues(alpha: 0.1),
-          width: 1,
         ),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 10,
             offset: Offset(0, 4),
@@ -619,7 +613,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
               color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-              width: 1,
             ),
           ),
           child: Center(

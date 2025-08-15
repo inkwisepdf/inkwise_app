@@ -67,7 +67,6 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryPurple.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -135,7 +134,6 @@ class _PDFRotateScreenState extends State<PDFRotateScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryPurple.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),

@@ -102,7 +102,7 @@ class ImageOptimizationService {
     // Apply quality optimization techniques
     if (quality < 0.7) {
       // Reduce color depth for lower quality
-      return img.quantize(image, numberOfColors: 256);
+      return img.quantize(image);
     }
     return image;
   }
@@ -148,7 +148,6 @@ class ImageOptimizationService {
       maxWidth: size,
       maxHeight: size,
       quality: 0.6,
-      maintainAspectRatio: true,
     );
   }
 

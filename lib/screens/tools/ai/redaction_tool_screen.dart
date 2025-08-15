@@ -100,7 +100,6 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryRed.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -168,7 +167,6 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColors.primaryRed.withValues(alpha: 0.3),
-                    style: BorderStyle.solid,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -341,7 +339,6 @@ class _RedactionToolScreenState extends State<RedactionToolScreen> {
           Slider(
             value: _confidence,
             min: 0.1,
-            max: 1.0,
             divisions: 9,
             onChanged: (value) {
               setState(() {

@@ -102,7 +102,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.gradientStart.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Row(
@@ -207,10 +206,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
-          width: 1,
         ),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 8,
             offset: Offset(0, 2),
@@ -272,7 +270,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -296,11 +293,10 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     : 10,
                 barTouchData: const BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
-                  show: true,
                   rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                      ),
                   topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                      ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -380,7 +376,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -411,7 +406,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
                     child: LinearProgressIndicator(
                       value: count / (topScreens.first['count'] as int),
                       backgroundColor:
@@ -450,7 +444,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -532,7 +525,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(
@@ -616,7 +608,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Column(

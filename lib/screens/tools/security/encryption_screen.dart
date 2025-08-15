@@ -526,7 +526,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   Future<void> _pickFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
+        
       );
 
       if (result != null && result.files.single.path != null) {

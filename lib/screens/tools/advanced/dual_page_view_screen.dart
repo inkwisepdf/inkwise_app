@@ -81,7 +81,6 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryOrange.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -148,7 +147,6 @@ class _DualPageViewScreenState extends State<DualPageViewScreen> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: AppColors.primaryOrange.withValues(alpha: 0.3),
-                  style: BorderStyle.solid,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(12),
