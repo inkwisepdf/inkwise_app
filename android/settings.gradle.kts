@@ -3,24 +3,33 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        // Add the Flutter repository - this is essential
+        val flutterRoot = System.getenv("FLUTTER_ROOT") ?: file("local.properties")
+            .takeIf { it.exists() }
+            ?.let { props -> 
+                java.util.Properties().apply { load(java.io.FileInputStream(props)) }
+                    .getProperty("flutter.sdk") 
+            }
+        
+        if (flutterRoot != null) {
+            maven {
+                url = uri("$flutterRoot/packages/flutter_tools/gradle/")
+            }
+        }
     }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "inkwisepdf"
-include(":app")
-
-// Read Flutter SDK path from local.properties
+// Read Flutter SDK path
 val localPropertiesFile = file("local.properties")
 val properties = java.util.Properties()
-
 if (localPropertiesFile.exists()) {
     localPropertiesFile.reader().use { reader ->
         properties.load(reader)
@@ -28,14 +37,20 @@ if (localPropertiesFile.exists()) {
 }
 
 val flutterSdkPath = properties.getProperty("flutter.sdk")
-    ?: throw GradleException("flutter.sdk not set in local.properties")
+    ?: System.getenv("FLUTTER_ROOT")
+    ?: throw GradleException("Flutter SDK not found. Define location with flutter.sdk in local.properties or FLUTTER_ROOT environment variable.")
 
-// Instead of using apply(), use the settings plugin approach
-plugins {
-    id("dev.flutter.flutter-plugin-loader").version("1.0.0")
+// Define the Flutter SDK path as a Gradle property for use in build scripts
+gradle.rootProject {
+    ext["flutter.sdk"] = flutterSdkPath
 }
 
-// Optionally set the Flutter SDK path property (if needed by plugin)
-gradle.rootProject {
-    extensions.extraProperties["flutter.sdk"] = flutterSdkPath
+// Use the new declarative syntax for the Flutter plugin
+include(":app")
+
+// Apply the Flutter plugin using the recommended approach for Kotlin DSL
+gradle.beforeProject {
+    it.apply {
+        from("${flutterSdkPath}/packages/flutter_tools/gradle/app_plugin_loader.gradle")
+    }
 }
