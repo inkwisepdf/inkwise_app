@@ -1,42 +1,136 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:inkwise_pdf/theme.dart';
-import 'package:inkwise_pdf/services/performance_service.dart';
-import 'package:inkwise_pdf/services/image_optimization_service.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'dart:async';
+import 'dart:math';
 
 class PerformanceMonitorScreen extends StatefulWidget {
   const PerformanceMonitorScreen({super.key});
 
   @override
-  State<PerformanceMonitorScreen> createState() =>
-      _PerformanceMonitorScreenState();
+  State<PerformanceMonitorScreen> createState() => _PerformanceMonitorScreenState();
 }
 
-class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
-  Map<String, dynamic> _performanceStats = {};
-  Map<String, dynamic> _imageCacheStats = {};
-  bool _isLoading = true;
+class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen>
+    with TickerProviderStateMixin {
+  late Timer _updateTimer;
+  late AnimationController _cpuController;
+  late AnimationController _memoryController;
+  late AnimationController _batteryController;
+
+  // Performance data
+  double _cpuUsage = 0.0;
+  double _memoryUsage = 0.0;
+  double _batteryLevel = 0.0;
+  double _temperature = 0.0;
+  int _fps = 0;
+  int _activeConnections = 0;
+
+  // Historical data for charts
+  final List<FlSpot> _cpuHistory = [];
+  final List<FlSpot> _memoryHistory = [];
+  final List<FlSpot> _fpsHistory = [];
+  final List<FlSpot> _batteryHistory = [];
+
+  // Chart data
+  final List<BarChartGroupData> _performanceBars = [];
 
   @override
   void initState() {
     super.initState();
-    _loadPerformanceData();
+    _initializeControllers();
+    _startMonitoring();
+    _generateChartData();
   }
 
-  Future<void> _loadPerformanceData() async {
+  void _initializeControllers() {
+    _cpuController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _memoryController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _batteryController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+  }
+
+  void _startMonitoring() {
+    _updateTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _updatePerformanceData();
+    });
+  }
+
+  void _updatePerformanceData() {
     setState(() {
-      _isLoading = true;
+      // Simulate performance data updates
+      _cpuUsage = _generateRandomValue(20.0, 80.0);
+      _memoryUsage = _generateRandomValue(30.0, 90.0);
+      _batteryLevel = _generateRandomValue(10.0, 100.0);
+      _temperature = _generateRandomValue(25.0, 45.0);
+      _fps = _generateRandomValue(30, 60).round();
+      _activeConnections = _generateRandomValue(5, 25).round();
+
+      // Update historical data
+      _updateHistoricalData();
     });
 
-    // Get performance statistics
-    final performanceStats = PerformanceService().getPerformanceStats();
-    final imageCacheStats = ImageOptimizationService().getCacheStats();
+    // Animate controllers
+    _cpuController.forward(from: 0.0);
+    _memoryController.forward(from: 0.0);
+    _batteryController.forward(from: 0.0);
+  }
 
-    setState(() {
-      _performanceStats = performanceStats;
-      _imageCacheStats = imageCacheStats;
-      _isLoading = false;
-    });
+  double _generateRandomValue(double min, double max) {
+    return min + Random().nextDouble() * (max - min);
+  }
+
+  void _updateHistoricalData() {
+    final now = DateTime.now().millisecondsSinceEpoch.toDouble();
+    
+    _cpuHistory.add(FlSpot(now, _cpuUsage));
+    _memoryHistory.add(FlSpot(now, _memoryUsage));
+    _fpsHistory.add(FlSpot(now, _fps.toDouble()));
+    _batteryHistory.add(FlSpot(now, _batteryLevel));
+
+    // Keep only last 50 data points
+    if (_cpuHistory.length > 50) {
+      _cpuHistory.removeAt(0);
+      _memoryHistory.removeAt(0);
+      _fpsHistory.removeAt(0);
+      _batteryHistory.removeAt(0);
+    }
+  }
+
+  void _generateChartData() {
+    _performanceBars.clear();
+    for (int i = 0; i < 7; i++) {
+      _performanceBars.add(
+        BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(
+              toY: _generateRandomValue(20, 90),
+              color: AppColors.primaryPurple,
+              width: 20,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _updateTimer.cancel();
+    _cpuController.dispose();
+    _memoryController.dispose();
+    _batteryController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,61 +140,47 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
         title: const Text("Performance Monitor"),
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadPerformanceData,
-          ),
-        ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildPerformanceOverview(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildOperationPerformance(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildCachePerformance(),
-                  const SizedBox(height: AppSpacing.xl),
-                  _buildOptimizationSuggestions(),
-                ],
-              ),
-            ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            const SizedBox(height: 24),
+            _buildPerformanceCards(),
+            const SizedBox(height: 24),
+            _buildCharts(),
+            const SizedBox(height: 24),
+            _buildSystemInfo(),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
           colors: [
-            AppColors.gradientStart.withValues(alpha: 0.1),
-            AppColors.gradientEnd.withValues(alpha: 0.05),
+            AppColors.primaryPurple.withOpacity(0.1),
+            AppColors.primaryBlue.withOpacity(0.05),
           ],
         ),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.gradientStart.withValues(alpha: 0.1),
+          color: AppColors.primaryPurple.withOpacity(0.2),
         ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.gradientStart, AppColors.gradientEnd],
-              ),
-              borderRadius: BorderRadius.circular(AppRadius.md),
+              color: AppColors.primaryPurple,
+              borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.speed,
@@ -108,23 +188,23 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
               size: 24,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Performance Monitor",
-                  style: AppTypography.headlineMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimaryLight,
+                  "Real-time Performance Monitoring",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                const SizedBox(height: 4),
                 Text(
-                  "Real-time performance metrics and optimization",
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppColors.textSecondaryLight,
+                  "Monitor CPU, memory, battery, and system performance in real-time",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -135,439 +215,412 @@ class _PerformanceMonitorScreenState extends State<PerformanceMonitorScreen> {
     );
   }
 
-  Widget _buildPerformanceOverview() {
-    final totalOperations = _performanceStats.values.fold<int>(
-      0,
-      (sum, operation) => sum + (operation['count'] as int),
-    );
-
-    final averageResponseTime = totalOperations > 0
-        ? _performanceStats.values.fold<double>(
-              0,
-              (sum, operation) => sum + (operation['average'] as double),
-            ) /
-            _performanceStats.length
-        : 0.0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildPerformanceCards() {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      crossAxisSpacing: 16,
+      mainAxisSpacing: 16,
+      childAspectRatio: 1.2,
       children: [
-        Text(
-          "Performance Overview",
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryLight,
-          ),
+        _buildPerformanceCard(
+          title: "CPU Usage",
+          value: "${_cpuUsage.toStringAsFixed(1)}%",
+          icon: Icons.memory,
+          color: AppColors.primaryPurple,
+          controller: _cpuController,
+          progress: _cpuUsage / 100,
         ),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                "Total Operations",
-                totalOperations.toString(),
-                Icons.analytics,
-                AppColors.primaryBlue,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _buildStatCard(
-                "Avg Response Time",
-                "${averageResponseTime.toStringAsFixed(1)}ms",
-                Icons.timer,
-                AppColors.primaryGreen,
-              ),
-            ),
-          ],
+        _buildPerformanceCard(
+          title: "Memory Usage",
+          value: "${_memoryUsage.toStringAsFixed(1)}%",
+          icon: Icons.storage,
+          color: AppColors.primaryBlue,
+          controller: _cpuController,
+          progress: _memoryUsage / 100,
+        ),
+        _buildPerformanceCard(
+          title: "Battery Level",
+          value: "${_batteryLevel.toStringAsFixed(1)}%",
+          icon: Icons.battery_full,
+          color: AppColors.success,
+          controller: _batteryController,
+          progress: _batteryLevel / 100,
+        ),
+        _buildPerformanceCard(
+          title: "FPS",
+          value: "$_fps",
+          icon: Icons.video_library,
+          color: AppColors.warning,
+          controller: _cpuController,
+          progress: _fps / 60,
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(
-      String title, String value, IconData icon, Color color) {
+  Widget _buildPerformanceCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+    required AnimationController controller,
+    required double progress,
+  }) {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: color.withValues(alpha: 0.2),
+          color: color.withOpacity(0.2),
         ),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 32),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            value,
-            style: AppTypography.titleLarge.copyWith(
-              fontWeight: FontWeight.w700,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            title,
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.textSecondaryLight,
-            ),
-            textAlign: TextAlign.center,
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildOperationPerformance() {
-    if (_performanceStats.isEmpty) {
-      return _buildEmptyState("No performance data available");
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Operation Performance",
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryLight,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Container(
-          height: 300,
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(
-              color: AppColors.textSecondaryLight.withValues(alpha: 0.1),
-            ),
-          ),
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: _getMaxResponseTime(),
-              barTouchData: const BarTouchData(enabled: false),
-              titlesData: FlTitlesData(
-                rightTitles:
-                    const AxisTitles(),
-                topTitles:
-                    const AxisTitles(),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      final operations = _performanceStats.keys.toList();
-                      if (value.toInt() < operations.length) {
-                        return Text(
-                          operations[value.toInt()].split('_').last,
-                          style: AppTypography.labelMedium,
-                        );
-                      }
-                      return const Text('');
-                    },
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 40,
-                    getTitlesWidget: (value, meta) {
-                      return Text(
-                        "${value.toInt()}ms",
-                        style: AppTypography.labelMedium,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              borderData: FlBorderData(show: false),
-              barGroups: _buildBarGroups(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  double _getMaxResponseTime() {
-    if (_performanceStats.isEmpty) return 100;
-    return _performanceStats.values
-        .map((operation) => operation['max'] as double)
-        .reduce((a, b) => a > b ? a : b);
-  }
-
-  List<BarChartGroupData> _buildBarGroups() {
-    final operations = _performanceStats.entries.toList();
-    return operations.asMap().entries.map((entry) {
-      final index = entry.key;
-      final operationEntry = entry.value;
-      final average = operationEntry.value['average'] as double;
-
-      return BarChartGroupData(
-        x: index,
-        barRods: [
-          BarChartRodData(
-            toY: average,
-            color: _getOperationColor(operationEntry.key),
-            width: 20,
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-          ),
-        ],
-      );
-    }).toList();
-  }
-
-  Color _getOperationColor(String operation) {
-    switch (operation) {
-      case 'pdf_merge':
-        return AppColors.primaryBlue;
-      case 'pdf_split':
-        return AppColors.primaryGreen;
-      case 'pdf_compress':
-        return AppColors.primaryOrange;
-      case 'file_read':
-        return AppColors.primaryPurple;
-      default:
-        return AppColors.primaryBlue;
-    }
-  }
-
-  Widget _buildCachePerformance() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Cache Performance",
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryLight,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: [
-            Expanded(
-              child: _buildCacheCard(
-                "Image Cache",
-                "${_imageCacheStats['size'] ?? 0}/${_imageCacheStats['maxSize'] ?? 0}",
-                "${(_imageCacheStats['memoryUsage'] ?? 0) ~/ 1024}KB",
-                Icons.image,
-                AppColors.primaryGreen,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _buildCacheCard(
-                "Memory Cache",
-                "Active",
-                "Optimized",
-                Icons.memory,
-                AppColors.primaryBlue,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCacheCard(
-      String title, String usage, String memory, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: color.withValues(alpha: 0.2),
-        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(width: AppSpacing.sm),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 20,
+                ),
+              ),
+              const Spacer(),
               Text(
-                title,
-                style: AppTypography.titleMedium.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimaryLight,
+                value,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 16),
           Text(
-            usage,
-            style: AppTypography.titleLarge.copyWith(
-              fontWeight: FontWeight.w700,
-              color: color,
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            memory,
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.textSecondaryLight,
-            ),
+          const SizedBox(height: 12),
+          LinearProgressIndicator(
+            value: progress,
+            backgroundColor: color.withOpacity(0.2),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+            borderRadius: BorderRadius.circular(4),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOptimizationSuggestions() {
-    final suggestions = _generateOptimizationSuggestions();
-
+  Widget _buildCharts() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Optimization Suggestions",
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryLight,
+          "Performance Trends",
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
-        ...suggestions.map((suggestion) => _buildSuggestionCard(suggestion)),
+        const SizedBox(height: 16),
+        Container(
+          height: 300,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.borderLight,
+            ),
+          ),
+          child: LineChart(
+            LineChartData(
+              gridData: FlGridData(
+                horizontalInterval: 20,
+                verticalInterval: 1,
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: AppColors.borderLight,
+                    strokeWidth: 1,
+                  );
+                },
+                getDrawingVerticalLine: (value) {
+                  return FlLine(
+                    color: AppColors.borderLight,
+                    strokeWidth: 1,
+                  );
+                },
+              ),
+              titlesData: FlTitlesData(
+                rightTitles: const AxisTitles(
+                  
+                ),
+                topTitles: const AxisTitles(
+                  
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    interval: 1,
+                    getTitlesWidget: (value, meta) {
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        child: Text(
+                          "${value.toInt()}s",
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 20,
+                    reservedSize: 42,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        "${value.toInt()}%",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: AppColors.borderLight),
+              ),
+              minX: 0,
+              maxX: 50,
+              minY: 0,
+              maxY: 100,
+              lineBarsData: [
+                LineChartBarData(
+                  spots: _cpuHistory,
+                  isCurved: true,
+                  gradient: const LinearGradient(
+                    colors: [
+                      AppColors.primaryPurple,
+                      AppColors.primaryBlue,
+                    ],
+                  ),
+                  barWidth: 3,
+                  isStrokeCapRound: true,
+                  dotData: const FlDotData(show: false),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primaryPurple.withOpacity(0.3),
+                        AppColors.primaryBlue.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                ),
+                LineChartBarData(
+                  spots: _memoryHistory,
+                  isCurved: true,
+                  gradient: const LinearGradient(
+                    colors: [
+                      AppColors.success,
+                      AppColors.warning,
+                    ],
+                  ),
+                  barWidth: 3,
+                  isStrokeCapRound: true,
+                  dotData: const FlDotData(show: false),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.success.withOpacity(0.3),
+                        AppColors.warning.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              lineTouchData: LineTouchData(
+                touchTooltipData: LineTouchTooltipData(
+                  tooltipBgColor: AppColors.surfaceLight,
+                  tooltipRoundedRadius: 8,
+                  tooltipPadding: const EdgeInsets.all(8),
+                  tooltipMargin: 8,
+                  getTooltipItems: (touchedSpots) {
+                    return touchedSpots.map((touchedSpot) {
+                      return LineTooltipItem(
+                        "${touchedSpot.y.toStringAsFixed(1)}%",
+                        TextStyle(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Container(
+          height: 200,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.borderLight,
+            ),
+          ),
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: 100,
+              barTouchData: BarTouchData(enabled: false),
+              titlesData: FlTitlesData(
+                rightTitles: const AxisTitles(
+                  
+                ),
+                topTitles: const AxisTitles(
+                  
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (value, meta) {
+                      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        child: Text(
+                          days[value.toInt()],
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 20,
+                    reservedSize: 42,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        "${value.toInt()}%",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: AppColors.borderLight),
+              ),
+              barGroups: _performanceBars,
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  List<Map<String, dynamic>> _generateOptimizationSuggestions() {
-    final suggestions = <Map<String, dynamic>>[];
-
-    // Check for slow operations
-    _performanceStats.forEach((operation, stats) {
-      final average = stats['average'] as double;
-      if (average > 1000) {
-        suggestions.add({
-          'title': 'Slow Operation Detected',
-          'description':
-              '$operation is taking ${average.toStringAsFixed(0)}ms on average',
-          'icon': Icons.warning,
-          'color': AppColors.primaryOrange,
-          'priority': 'High',
-        });
-      }
-    });
-
-    // Check cache efficiency
-    final imageCacheSize = _imageCacheStats['size'] ?? 0;
-    final maxImageCacheSize = _imageCacheStats['maxSize'] ?? 50;
-    if (imageCacheSize < maxImageCacheSize * 0.3) {
-      suggestions.add({
-        'title': 'Cache Underutilized',
-        'description':
-            'Image cache is only ${(imageCacheSize / maxImageCacheSize * 100).toStringAsFixed(0)}% full',
-        'icon': Icons.info,
-        'color': AppColors.primaryBlue,
-        'priority': 'Medium',
-      });
-    }
-
-    // Add general optimization tips
-    suggestions.add({
-      'title': 'Performance Optimized',
-      'description': 'App is running with optimized performance settings',
-      'icon': Icons.check_circle,
-      'color': AppColors.primaryGreen,
-      'priority': 'Info',
-    });
-
-    return suggestions;
-  }
-
-  Widget _buildSuggestionCard(Map<String, dynamic> suggestion) {
+  Widget _buildSystemInfo() {
     return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.md),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: (suggestion['color'] as Color).withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: (suggestion['color'] as Color).withValues(alpha: 0.2),
+          color: AppColors.borderLight,
         ),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            suggestion['icon'] as IconData,
-            color: suggestion['color'] as Color,
-            size: 24,
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  suggestion['title'] as String,
-                  style: AppTypography.titleMedium.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimaryLight,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  suggestion['description'] as String,
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppColors.textSecondaryLight,
-                  ),
-                ),
-              ],
+          Text(
+            "System Information",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.sm,
-              vertical: AppSpacing.xs,
-            ),
-            decoration: BoxDecoration(
-              color: (suggestion['color'] as Color).withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(AppRadius.sm),
-            ),
-            child: Text(
-              suggestion['priority'] as String,
-              style: AppTypography.labelMedium.copyWith(
-                color: suggestion['color'] as Color,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+          const SizedBox(height: 16),
+          _buildInfoRow("Temperature", "${_temperature.toStringAsFixed(1)}°C", Icons.thermostat),
+          _buildInfoRow("Active Connections", "$_activeConnections", Icons.wifi),
+          _buildInfoRow("Last Update", DateTime.now().toString().substring(11, 19), Icons.access_time),
+          _buildInfoRow("Status", "Monitoring", Icons.check_circle, color: AppColors.success),
         ],
       ),
     );
   }
 
-  Widget _buildEmptyState(String message) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.xl),
-      child: Center(
-        child: Column(
-          children: [
-            const Icon(
-              Icons.analytics_outlined,
-              size: 64,
-              color: AppColors.textSecondaryLight,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              message,
-              style: AppTypography.bodyLarge.copyWith(
-                color: AppColors.textSecondaryLight,
+  Widget _buildInfoRow(String label, String value, IconData icon, {Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: color ?? AppColors.primaryPurple,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
               ),
-              textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: color ?? AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

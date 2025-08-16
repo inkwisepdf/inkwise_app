@@ -1,367 +1,250 @@
 import 'dart:io';
-import 'dart:math';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
-import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 
 class OfflineTranslationService {
-  // Modern ML components
-  Map<String, dynamic>? _translationModel;
-  Map<String, int>? _vocabulary;
-  Map<String, int>? _tokenizer;
-  Map<String, Map<String, double>>? _wordEmbeddings;
-  bool _isInitialized = false;
-
-  // Supported languages for offline translation
-  static const Map<String, String> _supportedLanguages = {
-    'en': 'English',
-    'es': 'Spanish',
-    'fr': 'French',
-    'de': 'German',
-    'it': 'Italian',
-    'pt': 'Portuguese',
-    'ru': 'Russian',
-    'ja': 'Japanese',
-    'ko': 'Korean',
-    'zh': 'Chinese',
-    'ar': 'Arabic',
-    'hi': 'Hindi',
-    'nl': 'Dutch',
-    'pl': 'Polish',
-    'tr': 'Turkish',
-  };
-
-  // Singleton pattern
-  static final OfflineTranslationService _instance =
-      OfflineTranslationService._internal();
+  static final OfflineTranslationService _instance = OfflineTranslationService._internal();
   factory OfflineTranslationService() => _instance;
   OfflineTranslationService._internal();
 
-  // Initialize the translation service
-  Future<bool> initialize() async {
-    if (_isInitialized) return true;
+  // Mock translation models and vocabulary
+  Map<String, dynamic>? _translationModel;
+  Map<String, int>? _vocabulary;
+  Map<String, Map<String, String>>? _translationDictionary;
+  Map<String, List<String>>? _languageModels;
 
+  /// Initialize the service
+  Future<void> initialize() async {
+    await _loadMockData();
+  }
+
+  /// Load mock data for demonstration
+  Future<void> _loadMockData() async {
+    // Mock translation model parameters
+    _translationModel = {
+      'max_length': 512,
+      'vocab_size': 1000,
+      'embedding_dim': 256,
+      'hidden_dim': 512,
+      'num_layers': 6,
+      'num_heads': 8,
+      'dropout': 0.1,
+    };
+
+    // Mock vocabulary for tokenization
+    _vocabulary = {
+      '<PAD>': 0,
+      '<UNK>': 1,
+      '<START>': 2,
+      '<END>': 3,
+      'the': 4,
+      'a': 5,
+      'is': 6,
+      'and': 7,
+      'of': 8,
+      'to': 9,
+      'in': 10,
+      'for': 11,
+      'with': 12,
+      'on': 13,
+      'at': 14,
+      'by': 15,
+      'from': 16,
+      'up': 17,
+      'about': 18,
+      'into': 19,
+      'through': 20,
+      'during': 21,
+      'before': 22,
+      'after': 23,
+      'above': 24,
+      'below': 25,
+      'between': 26,
+      'among': 27,
+      'within': 28,
+      'without': 29,
+      'against': 30,
+      'toward': 31,
+      'towards': 32,
+      'upon': 33,
+      'across': 34,
+      'behind': 35,
+      'beneath': 36,
+      'beside': 37,
+      'beyond': 38,
+      'inside': 39,
+      'outside': 40,
+      'under': 41,
+      'over': 42,
+      'around': 43,
+      'along': 44,
+      'down': 45,
+      'off': 46,
+      'out': 47,
+      'away': 48,
+      'back': 49,
+      'forward': 50,
+    };
+
+    // Mock translation dictionary
+    _translationDictionary = {
+      'en': {
+        'es': {
+          'hello': 'hola',
+          'world': 'mundo',
+          'good': 'bueno',
+          'morning': 'mañana',
+          'thank': 'gracias',
+          'you': 'tú',
+          'welcome': 'bienvenido',
+          'please': 'por favor',
+          'sorry': 'lo siento',
+          'goodbye': 'adiós',
+        },
+        'fr': {
+          'hello': 'bonjour',
+          'world': 'monde',
+          'good': 'bon',
+          'morning': 'matin',
+          'thank': 'merci',
+          'you': 'vous',
+          'welcome': 'bienvenue',
+          'please': 's\'il vous plaît',
+          'sorry': 'désolé',
+          'goodbye': 'au revoir',
+        },
+        'de': {
+          'hello': 'hallo',
+          'world': 'welt',
+          'good': 'gut',
+          'morning': 'morgen',
+          'thank': 'danke',
+          'you': 'du',
+          'welcome': 'willkommen',
+          'please': 'bitte',
+          'sorry': 'entschuldigung',
+          'goodbye': 'auf wiedersehen',
+        },
+      },
+    };
+
+    // Mock language models
+    _languageModels = {
+      'en': ['the', 'a', 'is', 'and', 'of', 'to', 'in', 'for', 'with', 'on'],
+      'es': ['el', 'la', 'es', 'y', 'de', 'a', 'en', 'por', 'con', 'para'],
+      'fr': ['le', 'la', 'est', 'et', 'de', 'à', 'en', 'pour', 'avec', 'sur'],
+      'de': ['der', 'die', 'ist', 'und', 'von', 'zu', 'in', 'für', 'mit', 'auf'],
+    };
+  }
+
+  /// Translate text from PDF file
+  Future<TranslationResult> translatePDF(File pdfFile,
+      {required String sourceLanguage,
+      required String targetLanguage,
+      bool preserveFormatting = true}) async {
     try {
-      // Load modern ML translation model
-      await _loadModel();
-
-      // Load vocabulary and tokenizer
-      await _loadVocabulary();
-      await _loadTokenizer();
-
-      _isInitialized = true;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // Load modern ML translation model
-  Future<void> _loadModel() async {
-    try {
-      // In a real implementation, you would load the actual model file
-      // For now, we'll create a mock model with modern ML structure
-      _translationModel = {
-        'type': 'neural_translation',
-        'version': '2.0',
-        'architecture': 'transformer',
-        'layers': 6,
-        'embedding_dim': 512,
-        'vocab_size': 50000,
-        'max_length': 512,
-        'dropout': 0.1,
-        'parameters': {
-          'encoder_weights': 'mock_weights',
-          'decoder_weights': 'mock_weights',
-          'attention_weights': 'mock_weights',
-        }
-      };
-
-      // Initialize word embeddings for better translation quality
-      _wordEmbeddings = _initializeWordEmbeddings();
-
-      // Real implementation would be:
-      // final modelFile = await rootBundle.loadString(_modelPath);
-      // _translationModel = json.decode(modelFile);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Load vocabulary
-  Future<void> _loadVocabulary() async {
-    try {
-      // In a real implementation, you would load the vocabulary file
-      // For now, we'll create a mock vocabulary
-      _vocabulary = {
-        '<PAD>': 0,
-        '<UNK>': 1,
-        '<START>': 2,
-        '<END>': 3,
-        'hello': 4,
-        'world': 5,
-        'the': 6,
-        'is': 7,
-        'a': 8,
-        'document': 9,
-        'pdf': 10,
-        'text': 11,
-        'translation': 12,
-        'offline': 13,
-        'model': 14,
-        'ml_algo': 15,
-        'lite': 16,
-        'flutter': 17,
-        'app': 18,
-        'free': 19,
-        'open': 20,
-        'source': 21,
-        'powerful': 22,
-        'feature': 23,
-        'rich': 24,
-        'editor': 25,
-        'tool': 26,
-        'ai': 27,
-        'machine': 28,
-        'learning': 29,
-        'artificial': 30,
-        'intelligence': 31,
-        'neural': 32,
-        'network': 33,
-        'deep': 34,
-        'natural': 35,
-        'language': 36,
-        'processing': 37,
-        'nlp': 38,
-        'computer': 39,
-        'vision': 40,
-        'ocr': 41,
-        'optical': 42,
-        'character': 43,
-        'recognition': 44,
-        'summarization': 45,
-        'extraction': 46,
-        'analysis': 47,
-        'keyword': 48,
-        'density': 49,
-        'frequency': 50,
-        'statistics': 51,
-        'metadata': 52,
-        'content': 53,
-        'cleanup': 54,
-        'redaction': 55,
-        'security': 56,
-        'encryption': 57,
-        'password': 58,
-        'protection': 59,
-        'vault': 60,
-        'secure': 61,
-        'private': 62,
-        'confidential': 63,
-        'sensitive': 64,
-        'data': 65,
-        'information': 66,
-        'file': 67,
-        'folder': 68,
-        'directory': 69,
-        'storage': 70,
-        'local': 71,
-        'cloud': 72,
-        'sync': 73,
-        'backup': 74,
-        'restore': 75,
-        'version': 76,
-        'history': 77,
-        'tracking': 78,
-        'audit': 79,
-        'log': 80,
-        'activity': 81,
-        'user': 82,
-        'session': 83,
-        'analytics': 84,
-        'metrics': 85,
-        'performance': 86,
-        'optimization': 87,
-        'compression': 88,
-        'quality': 89,
-        'resolution': 90,
-        'format': 91,
-        'conversion': 92,
-        'export': 93,
-        'import': 94,
-        'batch': 95,
-        'bulk': 96,
-        'automation': 98,
-        'workflow': 99,
-        'pipeline': 100,
-      };
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Load tokenizer
-  Future<void> _loadTokenizer() async {
-    try {
-      // In a real implementation, you would load the tokenizer file
-      // For now, we'll create a mock tokenizer
-      _tokenizer = {
-        'word': 1,
-        'token': 2,
-        'split': 3,
-        'join': 4,
-        'encode': 5,
-        'decode': 6,
-        'sequence': 7,
-        'padding': 8,
-        'truncation': 9,
-        'max_length': 10,
-      };
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // Initialize word embeddings for modern translation
-  Map<String, Map<String, double>> _initializeWordEmbeddings() {
-    final embeddings = <String, Map<String, double>>{};
-
-    // Create mock embeddings for common words
-    final commonWords = [
-      'hello',
-      'world',
-      'document',
-      'pdf',
-      'text',
-      'translation',
-      'offline',
-      'model',
-      'flutter',
-      'app',
-      'free',
-      'open',
-      'source',
-      'powerful',
-      'feature',
-      'rich',
-      'editor',
-      'tool',
-      'ai',
-      'machine',
-      'learning',
-      'artificial',
-      'intelligence',
-      'neural',
-      'network',
-      'deep',
-      'natural',
-      'language',
-      'processing',
-      'nlp',
-      'computer',
-      'vision',
-      'ocr',
-      'optical',
-      'character',
-      'recognition'
-    ];
-
-    for (final word in commonWords) {
-      embeddings[word] = _generateRandomEmbedding(512);
-    }
-
-    return embeddings;
-  }
-
-  // Generate random embedding vector for mock purposes
-  Map<String, double> _generateRandomEmbedding(int dimension) {
-    final random = Random();
-    final embedding = <String, double>{};
-
-    for (int i = 0; i < dimension; i++) {
-      embedding['dim_$i'] =
-          random.nextDouble() * 2 - 1; // Values between -1 and 1
-    }
-
-    return embedding;
-  }
-
-  // Main translation method
-  Future<String> translatePDF(
-    File pdfFile, {
-    String? sourceLanguage,
-    required String targetLanguage,
-  }) async {
-    try {
-      // Initialize if not already done
-      if (!_isInitialized) {
-        final initialized = await initialize();
-        if (!initialized) {
-          throw Exception('Failed to initialize translation service');
-        }
-      }
-
+      final startTime = DateTime.now();
+      
       // Extract text from PDF
-      final text = await _extractTextFromPDF(pdfFile);
+      String extractedText = await _extractTextFromPDF(pdfFile);
 
-      if (text.isEmpty) {
-        throw Exception('No text found in PDF');
+      if (extractedText.isEmpty) {
+        return TranslationResult(
+          success: false,
+          originalText: '',
+          translatedText: '',
+          sourceLanguage: sourceLanguage,
+          targetLanguage: targetLanguage,
+          processingTime: DateTime.now().difference(startTime),
+          message: 'No text could be extracted from the PDF',
+        );
       }
 
-      // Detect source language if not provided
-      final detectedSourceLang = sourceLanguage ?? await _detectLanguage(text);
-
-      // Translate text using offline model
+      // Perform translation
       final translatedText = await _translateTextOffline(
-        text,
-        sourceLanguage: detectedSourceLang,
+        extractedText,
+        sourceLanguage: sourceLanguage,
         targetLanguage: targetLanguage,
       );
 
-      return translatedText;
+      final endTime = DateTime.now();
+      final processingTime = endTime.difference(startTime);
+
+      return TranslationResult(
+        success: true,
+        originalText: extractedText,
+        translatedText: translatedText,
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+        processingTime: processingTime,
+        message: 'Translation completed successfully',
+      );
     } catch (e) {
-      throw Exception('Failed to translate PDF: $e');
+      return TranslationResult(
+        success: false,
+        originalText: '',
+        translatedText: '',
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+        processingTime: Duration.zero,
+        message: 'Translation failed: $e',
+      );
     }
   }
 
-  // Extract text from PDF
+  /// Extract text from PDF file
   Future<String> _extractTextFromPDF(File pdfFile) async {
     try {
-      // Try to extract text directly first
+      final document = await PdfDocument.openFile(pdfFile.path);
       String extractedText = '';
 
-      final document = await PdfDocument.openFile(pdfFile.path);
-
       for (int i = 1; i <= document.pageCount; i++) {
-        // page.text is not available in pdf_render, will use OCR instead
-        final pageText = null;
-        if (pageText != null) {
-          extractedText += pageText + '\n';
+        final page = await document.getPage(i);
+        
+        // Try to extract text directly first
+        String pageText = '';
+        try {
+          pageText = await _extractTextFromPage(page);
+        } catch (e) {
+          // If no text extracted, use OCR
+          pageText = '';
         }
-        // PdfPage from pdf_render doesn't have a dispose method
+
+        if (pageText.isEmpty) {
+          // Fallback to OCR for this page
+          pageText = await _performOCR(pdfFile);
+        }
+
+        extractedText += '$pageText\n';
       }
 
       await document.dispose();
-
-      // If no text extracted, use OCR
-      if (extractedText.trim().isEmpty) {
-        extractedText = await _performOCR(pdfFile);
-      }
-
-      return extractedText;
+      return extractedText.trim();
     } catch (e) {
-      // Fallback to OCR
+      // If all else fails, use OCR
       return await _performOCR(pdfFile);
     }
   }
 
-  // Perform OCR on PDF
+  /// Extract text from a single page
+  Future<String> _extractTextFromPage(dynamic page) async {
+    // This is a mock implementation since pdf_render doesn't provide text extraction
+    // In a real implementation, you would use a different PDF library that supports text extraction
+    return '';
+  }
+
+  /// Perform OCR on PDF
   Future<String> _performOCR(File pdfFile) async {
     try {
       // Convert PDF pages to images and perform OCR
       final document = await PdfDocument.openFile(pdfFile.path);
       String ocrText = '';
+      final textRecognizer = TextRecognizer();
 
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
@@ -380,7 +263,9 @@ class OfflineTranslationService {
         final tempFile =
             await File(tempPath).writeAsBytes(byteData!.buffer.asUint8List());
 
-        final pageOcr = await FlutterTesseractOcr.extractText(tempPath);
+        final inputImage = InputImage.fromFilePath(tempPath);
+        final recognized = await textRecognizer.processImage(inputImage);
+        final pageOcr = recognized.text;
         ocrText += '$pageOcr\n\n';
 
         await tempFile.delete();
@@ -388,6 +273,7 @@ class OfflineTranslationService {
       }
 
       await document.dispose();
+      await textRecognizer.close();
 
       return ocrText;
     } catch (e) {
@@ -395,9 +281,9 @@ class OfflineTranslationService {
     }
   }
 
-  // Tokenize text
+  /// Tokenize text
   List<int> _tokenizeText(String text) {
-    if (_tokenizer == null) return [];
+    if (_vocabulary == null) return [];
 
     // Simple tokenization for mock purposes
     final words = text.toLowerCase().split(RegExp(r'\s+'));
@@ -419,10 +305,10 @@ class OfflineTranslationService {
     return tokens;
   }
 
-  // Detect language
+  /// Detect language from text
   Future<String> _detectLanguage(String text) async {
     // Simple language detection based on common words
-    final commonWords = {
+    const commonWords = {
       'en': ['the', 'a', 'is', 'and', 'of'],
       'es': ['el', 'la', 'es', 'y', 'de'],
       'fr': ['le', 'la', 'est', 'et', 'de'],
@@ -445,355 +331,666 @@ class OfflineTranslationService {
     return wordCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
-  // Translate text offline
+  /// Translate text offline
   Future<String> _translateTextOffline(String text,
       {required String sourceLanguage, required String targetLanguage}) async {
     try {
       // Tokenize input
       final tokens = _tokenizeText(text);
 
-      // Get input features
-      final inputFeatures = _getTokenFeatures(tokens);
+      // Simple mock translation using dictionary lookup
+      final translatedWords = <String>[];
+      final words = text.split(RegExp(r'\s+'));
 
-      // Run inference
-      final outputTokens =
-          await _runModernInference(inputFeatures, targetLanguage);
-
-      // Decode output
-      final translated = _decodeTokens(outputTokens);
-
-      if (translated.isEmpty) {
-        // Fallback to simple translation
-        return _simpleTranslation(text, sourceLanguage, targetLanguage);
+      for (final word in words) {
+        final cleanWord = word.replaceAll(RegExp(r'[^\w]'), '').toLowerCase();
+        
+        if (_translationDictionary != null &&
+            _translationDictionary!.containsKey(sourceLanguage) &&
+            _translationDictionary![sourceLanguage]!.containsKey(targetLanguage) &&
+            _translationDictionary![sourceLanguage]![targetLanguage]!.containsKey(cleanWord)) {
+          
+          final translation = _translationDictionary![sourceLanguage]![targetLanguage]![cleanWord];
+          translatedWords.add(translation);
+        } else {
+          // Keep original word if no translation found
+          translatedWords.add(word);
+        }
       }
 
-      return translated;
+      return translatedWords.join(' ');
     } catch (e) {
-      // Fallback to simple translation on error
-      return _simpleTranslation(text, sourceLanguage, targetLanguage);
+      return text; // Return original text if translation fails
     }
   }
 
-  // Get token features
-  Map<String, dynamic> _getTokenFeatures(List<int> tokens) {
-    final features = {
-      'tokens': tokens,
-      'embeddings': _getTokenEmbeddings(tokens),
-      'attention_mask': tokens.map((t) => t != 0 ? 1 : 0).toList(),
-      'position_ids': List.generate(tokens.length, (i) => i),
-    };
-
-    return features;
+  /// Get available languages
+  List<String> getAvailableLanguages() {
+    return ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'zh', 'ja', 'ko', 'ar', 'hi'];
   }
 
-  // Get embeddings for tokens
-  List<Map<String, double>> _getTokenEmbeddings(List<int> tokens) {
-    final embeddings = <Map<String, double>>[];
-
-    for (final tokenId in tokens) {
-      // Find word for token ID
-      final word = _getWordFromTokenId(tokenId);
-      final embedding = _wordEmbeddings![word] ?? _generateRandomEmbedding(512);
-      embeddings.add(embedding);
-    }
-
-    return embeddings;
-  }
-
-  // Get word from token ID
-  String _getWordFromTokenId(int tokenId) {
-    if (_vocabulary == null) return '<UNK>';
-
-    for (final entry in _vocabulary!.entries) {
-      if (entry.value == tokenId) {
-        return entry.key;
-      }
-    }
-
-    return '<UNK>';
-  }
-
-  // Run inference using modern ML algorithms
-  Future<List<int>> _runModernInference(
-      Map<String, dynamic> inputFeatures, String targetLanguage) async {
-    // In a real implementation, you would run the modern ML model
-    // For now, we'll return a mock translation using improved algorithms
-
-    // Simulate processing time
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // Use word embeddings for better translation quality
-    final sourceEmbeddings =
-        inputFeatures['embeddings'] as List<Map<String, double>>;
-    final translatedTokens =
-        _translateUsingEmbeddings(sourceEmbeddings, targetLanguage);
-
-    return translatedTokens;
-  }
-
-  // Translate using word embeddings
-  List<int> _translateUsingEmbeddings(
-      List<Map<String, double>> sourceEmbeddings, String targetLanguage) {
-    // Simple translation using embedding similarity
-    final translatedTokens = <int>[];
-
-    for (final embedding in sourceEmbeddings) {
-      // Find most similar word in target language
-      final translatedWord = _findSimilarWord(embedding, targetLanguage);
-      final tokenId =
-          _vocabulary![translatedWord] ?? _vocabulary!['<UNK>'] ?? 1;
-      translatedTokens.add(tokenId);
-    }
-
-    return translatedTokens;
-  }
-
-  // Find similar word using embedding similarity
-  String _findSimilarWord(
-      Map<String, double> sourceEmbedding, String targetLanguage) {
-    // Simple cosine similarity calculation
-    double bestSimilarity = -1;
-    String bestWord = '<UNK>';
-
-    for (final entry in _wordEmbeddings!.entries) {
-      final similarity =
-          _calculateCosineSimilarity(sourceEmbedding, entry.value);
-      if (similarity > bestSimilarity) {
-        bestSimilarity = similarity;
-        bestWord = entry.key;
-      }
-    }
-
-    return bestWord;
-  }
-
-  // Calculate cosine similarity between two embeddings
-  double _calculateCosineSimilarity(
-      Map<String, double> embedding1, Map<String, double> embedding2) {
-    double dotProduct = 0;
-    double norm1 = 0;
-    double norm2 = 0;
-
-    for (final key in embedding1.keys) {
-      final val1 = embedding1[key] ?? 0;
-      final val2 = embedding2[key] ?? 0;
-      dotProduct += val1 * val2;
-      norm1 += val1 * val1;
-      norm2 += val2 * val2;
-    }
-
-    if (norm1 == 0 || norm2 == 0) return 0;
-    return dotProduct / (sqrt(norm1) * sqrt(norm2));
-  }
-
-  // Decode tokens back to text
-  String _decodeTokens(List<int> tokens) {
-    if (_vocabulary == null) return '';
-
-    // Create reverse vocabulary mapping
-    final reverseVocab = <int, String>{};
-    _vocabulary!.forEach((key, value) {
-      reverseVocab[value] = key;
-    });
-
-    // Decode tokens
-    final words = <String>[];
-    for (final token in tokens) {
-      if (token != _vocabulary!['<PAD>'] &&
-          token != _vocabulary!['<START>'] &&
-          token != _vocabulary!['<END>']) {
-        final word = reverseVocab[token] ?? '<UNK>';
-        words.add(word);
-      }
-    }
-
-    return words.join(' ');
-  }
-
-  // Simple translation fallback
-  String _simpleTranslation(
-      String text, String sourceLanguage, String targetLanguage) {
-    // Simple word-by-word translation dictionary
-    final translations = {
-      'en_es': {
-        'hello': 'hola',
-        'world': 'mundo',
-        'document': 'documento',
-        'pdf': 'pdf',
-        'text': 'texto',
-        'translation': 'traducción',
-        'offline': 'sin conexión',
-        'model': 'modelo',
-        'ml_algo': 'ml_algo',
-        'lite': 'lite',
-        'flutter': 'flutter',
-        'app': 'aplicación',
-        'free': 'gratis',
-        'open': 'abierto',
-        'source': 'fuente',
-        'powerful': 'potente',
-        'feature': 'característica',
-        'rich': 'rico',
-        'editor': 'editor',
-        'tool': 'herramienta',
-        'ai': 'ia',
-        'machine': 'máquina',
-        'learning': 'aprendizaje',
-        'artificial': 'artificial',
-        'intelligence': 'inteligencia',
-      },
-      'en_fr': {
-        'hello': 'bonjour',
-        'world': 'monde',
-        'document': 'document',
-        'pdf': 'pdf',
-        'text': 'texte',
-        'translation': 'traduction',
-        'offline': 'hors ligne',
-        'model': 'modèle',
-        'ml_algo': 'ml_algo',
-        'lite': 'lite',
-        'flutter': 'flutter',
-        'app': 'application',
-        'free': 'gratuit',
-        'open': 'ouvert',
-        'source': 'source',
-        'powerful': 'puissant',
-        'feature': 'fonctionnalité',
-        'rich': 'riche',
-        'editor': 'éditeur',
-        'tool': 'outil',
-        'ai': 'ia',
-        'machine': 'machine',
-        'learning': 'apprentissage',
-        'artificial': 'artificiel',
-        'intelligence': 'intelligence',
-      },
-      'en_de': {
-        'hello': 'hallo',
-        'world': 'welt',
-        'document': 'dokument',
-        'pdf': 'pdf',
-        'text': 'text',
-        'translation': 'übersetzung',
-        'offline': 'offline',
-        'model': 'modell',
-        'ml_algo': 'ml_algo',
-        'lite': 'lite',
-        'flutter': 'flutter',
-        'app': 'anwendung',
-        'free': 'kostenlos',
-        'open': 'offen',
-        'source': 'quelle',
-        'powerful': 'leistungsstark',
-        'feature': 'funktion',
-        'rich': 'reich',
-        'editor': 'editor',
-        'tool': 'werkzeug',
-        'ai': 'ki',
-        'machine': 'maschine',
-        'learning': 'lernen',
-        'artificial': 'künstlich',
-        'intelligence': 'intelligenz',
-      },
-    };
-
-    final key = '${sourceLanguage}_$targetLanguage';
-    final translationDict = translations[key];
-
-    if (translationDict == null) {
-      return text; // Return original text if no translation available
-    }
-
-    final words = text.toLowerCase().split(' ');
-    final translatedWords = words.map((word) {
-      return translationDict[word] ?? word;
-    }).toList();
-
-    return translatedWords.join(' ');
-  }
-
-  // Create translated PDF with original layout preserved
-  Future<File> createTranslatedPDF(
-    File originalPDF,
-    String translatedText, {
-    required String targetLanguage,
-  }) async {
-    try {
-      // This would create a new PDF with translated text
-      // while preserving the original layout and formatting
-
-      final tempDir = await getTemporaryDirectory();
-      final outputFile = File(
-          '${tempDir.path}/translated_${DateTime.now().millisecondsSinceEpoch}.pdf');
-
-      // Placeholder implementation - in reality, you would:
-      // 1. Extract original PDF layout
-      // 2. Replace text with translations
-      // 3. Maintain formatting and positioning
-      // 4. Generate new PDF file
-
-      // For now, create a simple text file
-      await outputFile.writeAsString('Translated PDF content: $translatedText');
-
-      return outputFile;
-    } catch (e) {
-      throw Exception('Failed to create translated PDF: $e');
-    }
-  }
-
-  // Get translation statistics
-  Map<String, dynamic> getTranslationStats(
-    String originalText,
-    String translatedText,
-    String sourceLanguage,
-    String targetLanguage,
-  ) {
-    final originalWords = originalText.split(RegExp(r'\s+')).length;
-    final translatedWords = translatedText.split(RegExp(r'\s+')).length;
-    final originalChars = originalText.length;
-    final translatedChars = translatedText.length;
-
+  /// Get language names
+  Map<String, String> getLanguageNames() {
     return {
-      'source_language': sourceLanguage,
-      'target_language': targetLanguage,
-      'original_word_count': originalWords,
-      'translated_word_count': translatedWords,
-      'original_char_count': originalChars,
-      'translated_char_count': translatedChars,
-      'word_ratio': translatedWords / originalWords,
-      'char_ratio': translatedChars / originalChars,
-      'translation_method': 'offline_modern_ml',
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'en': 'English',
+      'es': 'Spanish',
+      'fr': 'French',
+      'de': 'German',
+      'it': 'Italian',
+      'pt': 'Portuguese',
+      'ru': 'Russian',
+      'zh': 'Chinese',
+      'ja': 'Japanese',
+      'ko': 'Korean',
+      'ar': 'Arabic',
+      'hi': 'Hindi',
     };
   }
 
-  // Get supported languages
-  Map<String, String> getSupportedLanguages() {
-    return Map.from(_supportedLanguages);
-  }
-
-  // Check if language is supported
+  /// Check if language is supported
   bool isLanguageSupported(String languageCode) {
-    return _supportedLanguages.containsKey(languageCode);
+    return getAvailableLanguages().contains(languageCode.toLowerCase());
   }
 
-  // Get language name from code
-  String getLanguageName(String languageCode) {
-    return _supportedLanguages[languageCode] ?? languageCode;
+  /// Get translation quality score
+  double getTranslationQuality(String sourceLanguage, String targetLanguage) {
+    // Mock quality scores based on language pair
+    const qualityScores = {
+      'en': {
+        'es': 0.95,
+        'fr': 0.93,
+        'de': 0.91,
+        'it': 0.89,
+        'pt': 0.87,
+      },
+      'es': {
+        'en': 0.94,
+        'fr': 0.88,
+        'de': 0.86,
+        'it': 0.92,
+        'pt': 0.96,
+      },
+      'fr': {
+        'en': 0.92,
+        'es': 0.87,
+        'de': 0.89,
+        'it': 0.94,
+        'pt': 0.85,
+      },
+    };
+
+    return qualityScores[sourceLanguage]?[targetLanguage] ?? 0.8;
   }
 
-  // Dispose resources
-  Future<void> dispose() async {
-    try {
-      // Clean up modern ML resources
-      _translationModel = null;
-      _vocabulary = null;
-      _tokenizer = null;
-      _wordEmbeddings = null;
-      _isInitialized = false;
-    } catch (e) {
-      // Error disposing translation service
+  /// Batch translate multiple texts
+  Future<List<TranslationResult>> batchTranslate(
+      List<String> texts,
+      {required String sourceLanguage,
+      required String targetLanguage}) async {
+    final results = <TranslationResult>[];
+
+    for (final text in texts) {
+      try {
+        final translatedText = await _translateTextOffline(
+          text,
+          sourceLanguage: sourceLanguage,
+          targetLanguage: targetLanguage,
+        );
+
+        results.add(TranslationResult(
+          success: true,
+          originalText: text,
+          translatedText: translatedText,
+          sourceLanguage: sourceLanguage,
+          targetLanguage: targetLanguage,
+          processingTime: Duration.zero,
+          message: 'Translation completed',
+        ));
+      } catch (e) {
+        results.add(TranslationResult(
+          success: false,
+          originalText: text,
+          translatedText: '',
+          sourceLanguage: sourceLanguage,
+          targetLanguage: targetLanguage,
+          processingTime: Duration.zero,
+          message: 'Translation failed: $e',
+        ));
+      }
     }
+
+    return results;
+  }
+
+  /// Preprocess text for better translation
+  String _preprocessText(String text) {
+    // Remove extra whitespace
+    text = text.replaceAll(RegExp(r'\s+'), ' ');
+    
+    // Normalize punctuation
+    text = text.replaceAll(RegExp(r'[^\w\s\.\,\!\?\;\:\-\(\)]'), '');
+    
+    // Normalize line breaks
+    text = text.replaceAll(RegExp(r'\n+'), ' ');
+    
+    return text.trim();
+  }
+
+  /// Postprocess translated text
+  String _postprocessText(String text, String originalText) {
+    // Preserve original formatting where possible
+    // This is a simplified implementation
+    
+    // Preserve paragraph breaks
+    final paragraphs = originalText.split('\n\n');
+    if (paragraphs.length > 1) {
+      final translatedParagraphs = text.split('. ');
+      if (translatedParagraphs.length >= paragraphs.length) {
+        return translatedParagraphs.take(paragraphs.length).join('.\n\n');
+      }
+    }
+    
+    return text;
+  }
+}
+
+/// Translation result containing all relevant information
+class TranslationResult {
+  final bool success;
+  final String originalText;
+  final String translatedText;
+  final String sourceLanguage;
+  final String targetLanguage;
+  final Duration processingTime;
+  final String message;
+
+  TranslationResult({
+    required this.success,
+    required this.originalText,
+    required this.translatedText,
+    required this.sourceLanguage,
+    required this.targetLanguage,
+    required this.processingTime,
+    required this.message,
+  });
+
+  @override
+  String toString() {
+    return 'TranslationResult(success: $success, from: $sourceLanguage, to: $targetLanguage, time: ${processingTime.inMilliseconds}ms)';
+  }
+}
+Now let me show you the next file:
+
+📄 2. Updated file_service.dart
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:cross_file/cross_file.dart';
+
+class FileService {
+  static final FileService _instance = FileService._internal();
+  factory FileService() => _instance;
+  FileService._internal();
+
+  /// Get application documents directory
+  Future<Directory> getDocumentsDirectory() async {
+    return await getApplicationDocumentsDirectory();
+  }
+
+  /// Get temporary directory
+  Future<Directory> getTemporaryDirectory() async {
+    return await getTemporaryDirectory();
+  }
+
+  /// Get application support directory
+  Future<Directory> getApplicationSupportDirectory() async {
+    return await getApplicationSupportDirectory();
+  }
+
+  /// Create directory if it doesn't exist
+  Future<Directory> createDirectoryIfNotExists(String path) async {
+    final directory = Directory(path);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+    return directory;
+  }
+
+  /// Check if file exists
+  Future<bool> fileExists(String filePath) async {
+    final file = File(filePath);
+    return await file.exists();
+  }
+
+  /// Check if directory exists
+  Future<bool> directoryExists(String directoryPath) async {
+    final directory = Directory(directoryPath);
+    return await directory.exists();
+  }
+
+  /// Get file size in bytes
+  Future<int> getFileSize(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        return await file.length();
+      }
+      return 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  /// Get file size in human readable format
+  String getFileSizeReadable(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+
+  /// Get file extension
+  String getFileExtension(String filePath) {
+    final fileName = filePath.split('/').last;
+    final parts = fileName.split('.');
+    return parts.length > 1 ? '.${parts.last.toLowerCase()}' : '';
+  }
+
+  /// Get file name without extension
+  String getFileNameWithoutExtension(String filePath) {
+    final fileName = filePath.split('/').last;
+    final parts = fileName.split('.');
+    return parts.length > 1 ? parts.take(parts.length - 1).join('.') : fileName;
+  }
+
+  /// Get file name with extension
+  String getFileName(String filePath) {
+    return filePath.split('/').last;
+  }
+
+  /// Get directory path
+  String getDirectoryPath(String filePath) {
+    final parts = filePath.split('/');
+    parts.removeLast();
+    return parts.join('/');
+  }
+
+  /// Copy file
+  Future<File> copyFile(String sourcePath, String destinationPath) async {
+    final sourceFile = File(sourcePath);
+    final destinationFile = File(destinationPath);
+    
+    // Create destination directory if it doesn't exist
+    final destinationDir = Directory(getDirectoryPath(destinationPath));
+    if (!await destinationDir.exists()) {
+      await destinationDir.create(recursive: true);
+    }
+    
+    return await sourceFile.copy(destinationPath);
+  }
+
+  /// Move file
+  Future<File> moveFile(String sourcePath, String destinationPath) async {
+    final sourceFile = File(sourcePath);
+    final destinationFile = File(destinationPath);
+    
+    // Create destination directory if it doesn't exist
+    final destinationDir = Directory(getDirectoryPath(destinationPath));
+    if (!await destinationDir.exists()) {
+      await destinationDir.create(recursive: true);
+    }
+    
+    return await sourceFile.rename(destinationPath);
+  }
+
+  /// Delete file
+  Future<bool> deleteFile(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        await file.delete();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Delete directory and all contents
+  Future<bool> deleteDirectory(String directoryPath) async {
+    try {
+      final directory = Directory(directoryPath);
+      if (await directory.exists()) {
+        await directory.delete(recursive: true);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// List files in directory
+  Future<List<FileSystemEntity>> listDirectory(String directoryPath) async {
+    try {
+      final directory = Directory(directoryPath);
+      if (await directory.exists()) {
+        return await directory.list().toList();
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// List only files in directory
+  Future<List<File>> listFiles(String directoryPath) async {
+    try {
+      final entities = await listDirectory(directoryPath);
+      final files = <File>[];
+      
+      for (final entity in entities) {
+        if (entity is File) {
+          files.add(entity);
+        }
+      }
+      
+      return files;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// List only directories in directory
+  Future<List<Directory>> listDirectories(String directoryPath) async {
+    try {
+      final entities = await listDirectory(directoryPath);
+      final directories = <Directory>[];
+      
+      for (final entity in entities) {
+        if (entity is Directory) {
+          directories.add(entity);
+        }
+      }
+      
+      return directories;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Read file as string
+  Future<String> readFileAsString(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        return await file.readAsString();
+      }
+      throw Exception('File does not exist: $filePath');
+    } catch (e) {
+      throw Exception('Failed to read file: $e');
+    }
+  }
+
+  /// Read file as bytes
+  Future<Uint8List> readFileAsBytes(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        return await file.readAsBytes();
+      }
+      throw Exception('File does not exist: $filePath');
+    } catch (e) {
+      throw Exception('Failed to read file: $e');
+    }
+  }
+
+  /// Write string to file
+  Future<File> writeFileAsString(String filePath, String content) async {
+    try {
+      final file = File(filePath);
+      
+      // Create directory if it doesn't exist
+      final directory = Directory(getDirectoryPath(filePath));
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      
+      return await file.writeAsString(content);
+    } catch (e) {
+      throw Exception('Failed to write file: $e');
+    }
+  }
+
+  /// Write bytes to file
+  Future<File> writeFileAsBytes(String filePath, Uint8List bytes) async {
+    try {
+      final file = File(filePath);
+      
+      // Create directory if it doesn't exist
+      final directory = Directory(getDirectoryPath(filePath));
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      
+      return await file.writeAsBytes(bytes);
+    } catch (e) {
+      throw Exception('Failed to write file: $e');
+    }
+  }
+
+  /// Append string to file
+  Future<File> appendToFile(String filePath, String content) async {
+    try {
+      final file = File(filePath);
+      
+      // Create directory if it doesn't exist
+      final directory = Directory(getDirectoryPath(filePath));
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      
+      return await file.writeAsString(content, mode: FileMode.append);
+    } catch (e) {
+      throw Exception('Failed to append to file: $e');
+    }
+  }
+
+  /// Share file using SharePlus
+  Future<void> shareFile(File file, {String? text}) async {
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path)],
+          text: text ?? 'Shared from Inkwise PDF',
+        ),
+      );
+    } catch (e) {
+      throw Exception('Failed to share file: $e');
+    }
+  }
+
+  /// Share multiple files
+  Future<void> shareFiles(List<File> files, {String? text}) async {
+    try {
+      final xFiles = files.map((file) => XFile(file.path)).toList();
+      await SharePlus.instance.share(
+        ShareParams(
+          files: xFiles,
+          text: text ?? 'Shared from Inkwise PDF',
+        ),
+      );
+    } catch (e) {
+      throw Exception('Failed to share files: $e');
+    }
+  }
+
+  /// Share text
+  Future<void> shareText(String text, {String? subject}) async {
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          text: text,
+          subject: subject,
+        ),
+      );
+    } catch (e) {
+      throw Exception('Failed to share text: $e');
+    }
+  }
+
+  /// Create backup of file
+  Future<File> createBackup(String filePath) async {
+    try {
+      final sourceFile = File(filePath);
+      if (!await sourceFile.exists()) {
+        throw Exception('Source file does not exist: $filePath');
+      }
+
+      final backupDir = await getApplicationDocumentsDirectory();
+      final backupPath = '${backupDir.path}/backups';
+      final backupDirFile = Directory(backupPath);
+      
+      if (!await backupDirFile.exists()) {
+        await backupDirFile.create(recursive: true);
+      }
+
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = getFileName(filePath);
+      final backupFileName = 'backup_${timestamp}_$fileName';
+      final backupPathFull = '$backupPath/$backupFileName';
+
+      return await sourceFile.copy(backupPathFull);
+    } catch (e) {
+      throw Exception('Failed to create backup: $e');
+    }
+  }
+
+  /// Get file information
+  Future<FileInfo> getFileInfo(String filePath) async {
+    try {
+      final file = File(filePath);
+      if (!await file.exists()) {
+        throw Exception('File does not exist: $filePath');
+      }
+
+      final stat = await file.stat();
+      
+      return FileInfo(
+        path: filePath,
+        name: getFileName(filePath),
+        nameWithoutExtension: getFileNameWithoutExtension(filePath),
+        extension: getFileExtension(filePath),
+        size: stat.size,
+        sizeReadable: getFileSizeReadable(stat.size),
+        modified: stat.modified,
+        accessed: stat.accessed,
+        created: stat.changed,
+        isFile: stat.type == FileSystemEntityType.file,
+        isDirectory: stat.type == FileSystemEntityType.directory,
+      );
+    } catch (e) {
+      throw Exception('Failed to get file info: $e');
+    }
+  }
+
+  /// Search for files by pattern
+  Future<List<File>> searchFiles(String directoryPath, String pattern) async {
+    try {
+      final files = await listFiles(directoryPath);
+      final matchingFiles = <File>[];
+      
+      for (final file in files) {
+        final fileName = getFileName(file.path);
+        if (fileName.toLowerCase().contains(pattern.toLowerCase())) {
+          matchingFiles.add(file);
+        }
+      }
+      
+      return matchingFiles;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Get available disk space
+  Future<int> getAvailableDiskSpace() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final stat = await directory.stat();
+      return stat.size;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  /// Clean temporary files
+  Future<void> cleanTempFiles() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final files = await listFiles(tempDir.path);
+      
+      for (final file in files) {
+        try {
+          await file.delete();
+        } catch (e) {
+          // Ignore errors for individual file deletion
+        }
+      }
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+  }
+
+  /// Validate file path
+  bool isValidFilePath(String filePath) {
+    // Basic validation - check for invalid characters
+    final invalidChars = RegExp(r'[<>:"|?*]');
+    return !invalidChars.hasMatch(filePath);
+  }
+
+  /// Sanitize file name
+  String sanitizeFileName(String fileName) {
+    // Remove or replace invalid characters
+    return fileName.replaceAll(RegExp(r'[<>:"|?*]'), '_');
+  }
+}
+
+/// File information container
+class FileInfo {
+  final String path;
+  final String name;
+  final String nameWithoutExtension;
+  final String extension;
+  final int size;
+  final String sizeReadable;
+  final DateTime modified;
+  final DateTime accessed;
+  final DateTime created;
+  final bool isFile;
+  final bool isDirectory;
+
+  FileInfo({
+    required this.path,
+    required this.name,
+    required this.nameWithoutExtension,
+    required this.extension,
+    required this.size,
+    required this.sizeReadable,
+    required this.modified,
+    required this.accessed,
+    required this.created,
+    required this.isFile,
+    required this.isDirectory,
+  });
+
+  @override
+  String toString() {
+    return 'FileInfo(name: $name, size: $sizeReadable, modified: $modified)';
   }
 }

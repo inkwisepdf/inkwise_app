@@ -7,6 +7,7 @@ import 'package:inkwise_pdf/theme.dart';
 import 'package:inkwise_pdf/services/file_service.dart';
 import 'package:inkwise_pdf/services/pdf_text_service.dart';
 import 'package:inkwise_pdf/screens/pdf_edit_screen.dart';
+import 'package:inkwise_pdf/models/text_search_result.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   const PdfViewerScreen({super.key});
@@ -28,18 +29,21 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   String _searchText = '';
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _pageController = TextEditingController();
-  
+
   // Search functionality
   List<TextSearchResult> _searchResults = [];
   int _currentSearchIndex = -1;
   bool _isSearching = false;
-  
+
   // Text selection
   String? _selectedText;
-  
+
   // Text service
   final PDFTextService _textService = PDFTextService();
-  
+
+  // File service
+  final FileService _fileService = FileService();
+
   @override
   void initState() {
     super.initState();
@@ -158,7 +162,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withValues(alpha: 0.1),
+              color: AppColors.primaryBlue.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(
@@ -171,15 +175,15 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Text(
             "No PDF Selected",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             "Select a PDF file to view and edit",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondaryLight,
-                ),
+              color: AppColors.textSecondaryLight,
+            ),
           ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
@@ -261,9 +265,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           children: [
             Expanded(
               child: Text(
-                _currentSearchIndex >= 0 
-                  ? '${_currentSearchIndex + 1} of ${_searchResults.length} matches - Page ${_searchResults[_currentSearchIndex].pageNumber}'
-                  : '${_searchResults.length} matches found',
+                _currentSearchIndex >= 0
+                    ? '${_currentSearchIndex + 1} of ${_searchResults.length} matches - Page ${_searchResults[_currentSearchIndex].pageNumber}'
+                    : '${_searchResults.length} matches found',
                 style: const TextStyle(color: Colors.white, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
@@ -280,8 +284,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               iconSize: 16,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
-              onPressed: _currentSearchIndex < _searchResults.length - 1 
-                ? _nextSearchResult : null,
+              onPressed: _currentSearchIndex < _searchResults.length - 1
+                  ? _nextSearchResult : null,
               icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
             ),
             IconButton(
@@ -312,9 +316,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           children: [
             Expanded(
               child: Text(
-                _selectedText!.length > 100 
-                  ? '${_selectedText!.substring(0, 100)}...'
-                  : _selectedText!,
+                _selectedText!.length > 100
+                    ? '${_selectedText!.substring(0, 100)}...'
+                    : _selectedText!,
                 style: const TextStyle(color: Colors.white, fontSize: 12),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -351,7 +355,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withValues(alpha: 0.1),
+              color: AppColors.primaryBlue.withOpacity(0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
@@ -425,7 +429,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withValues(alpha: 0.1),
+              color: AppColors.primaryBlue.withOpacity(0.1),
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
@@ -575,7 +579,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         ),
         const SizedBox(height: 8),
         FloatingActionButton.small(
-          onPressed: () => FileService.shareFile(_pdfFile!),
+          onPressed: () => _fileService.shareFile(_pdfFile!),
           heroTag: 'share',
           child: const Icon(Icons.share),
         ),
@@ -635,7 +639,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           _currentSearchIndex = -1;
           _selectedText = null;
         });
-        
+
         _pdfController?.dispose();
         _pdfDocument?.close();
         await _initializePdfController();
@@ -709,13 +713,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                 _performSearch(_searchText);
               }
             },
-            child: _isSearching 
-              ? const SizedBox(
-                  width: 16, 
-                  height: 16, 
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('Search'),
+            child: _isSearching
+                ? const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+                : const Text('Search'),
           ),
         ],
       ),
@@ -734,7 +738,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     try {
       // Use the text service to search for the term
       final results = await _textService.searchText(_pdfFile!, searchTerm);
-      
+
       setState(() {
         _searchResults = results;
       });
@@ -742,7 +746,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       if (_searchResults.isNotEmpty) {
         _currentSearchIndex = 0;
         _goToSearchResult(_currentSearchIndex);
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -809,23 +813,23 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       setState(() {
         _isLoading = true;
       });
-      
+
       // Extract text from the current page
       final pageText = await _textService.extractPageText(_pdfFile!, pageNumber);
-      
+
       setState(() {
-        _selectedText = pageText.isNotEmpty 
-          ? pageText 
-          : 'No text found on page $pageNumber';
+        _selectedText = pageText.isNotEmpty
+            ? pageText
+            : 'No text found on page $pageNumber';
         _isLoading = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(pageText.isNotEmpty 
-              ? 'Text extracted from page $pageNumber' 
-              : 'No text found on page $pageNumber'),
+            content: Text(pageText.isNotEmpty
+                ? 'Text extracted from page $pageNumber'
+                : 'No text found on page $pageNumber'),
             duration: const Duration(seconds: 2),
           ),
         );
@@ -834,7 +838,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       setState(() {
         _isLoading = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error extracting text: $e')),
@@ -846,7 +850,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void _copySelectedText() {
     if (_selectedText != null && _selectedText!.isNotEmpty) {
       Clipboard.setData(ClipboardData(text: _selectedText!));
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -868,9 +872,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       });
 
       final allText = await _textService.extractAllText(_pdfFile!);
-      
+
       await Clipboard.setData(ClipboardData(text: allText));
-      
+
       setState(() {
         _isLoading = false;
       });
@@ -899,7 +903,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   void _handleMenuAction(String action) {
     switch (action) {
       case 'share':
-        FileService.shareFile(_pdfFile!);
+        _fileService.shareFile(_pdfFile!);
         break;
       case 'info':
         _showFileInfo();
@@ -918,7 +922,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   void _openEditMode() {
     if (_pdfFile == null) return;
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -934,7 +938,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     showDialog(
       context: context,
       builder: (context) => FutureBuilder<String>(
-        future: FileService.getFileSize(_pdfFile!),
+        future: _fileService.getFileSize(_pdfFile!),
         builder: (context, snapshot) {
           return AlertDialog(
             title: const Text('File Information'),

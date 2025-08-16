@@ -6,22 +6,23 @@ plugins {
 
 android {
     namespace = "com.example.inkwise_pdf"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.inkwise_pdf"
-        minSdk = flutter.minSdkVersion
+        minSdk = maxOf(flutter.minSdkVersion, 21)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Enable multidex for core library desugaring
+        multiDexEnabled = true
     }
 
     buildTypes {
         getByName("release") {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -29,10 +30,69 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+    
+    // Use Java 17 toolchain
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    
+    // Ensure all tasks use the same JVM target - Java 17
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+        
+        // Force Java 17 toolchain
+        javaCompiler.set(javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        })
+    }
+    
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+    
+    // Enable R8 optimization for better APK size
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            isMinifyEnabled = false
+        }
+    }
+    
+    // Enable build features for better performance
+    buildFeatures {
+        buildConfig = true
+        viewBinding = false
+        dataBinding = false
+    }
+    
+    // Packaging options to avoid conflicts
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/notice.txt"
+            excludes += "META-INF/ASL2.0"
+            excludes += "META-INF/*.kotlin_module"
+        }
     }
 }
 
@@ -41,11 +101,24 @@ flutter {
 }
 
 dependencies {
-    // Flutter dependencies are handled by the Flutter plugin
-    // Rely on Flutter Gradle plugin to inject embedding artifacts
-    // (removed explicit embedding dependencies to avoid hash/version mismatches)
+    // Core library desugaring for flutter_local_notifications compatibility
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     
-    // Alternative OCR implementation using Google ML Kit (already in dependencies)
-    // This will provide OCR functionality without the problematic tesseract dependency
+    // Multidex support
+    implementation("androidx.multidex:multidex:2.0.1")
+    
+    // Material Design components for theme support
+    implementation("com.google.android.material:material:1.11.0")
+    
+    // AndroidX core libraries for better compatibility
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    
+    // Lifecycle components for better app lifecycle management
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    
+    // Activity and Fragment for better component support
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 }
-

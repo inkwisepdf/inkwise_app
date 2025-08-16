@@ -22,18 +22,19 @@ class PDFEditScreen extends StatefulWidget {
 
 class _PDFEditScreenState extends State<PDFEditScreen> {
   final PDFEditService _editService = PDFEditService();
+  final FileService _fileService = FileService();
   final List<TextEdit> _pendingEdits = [];
   final List<Rect> _textAreas = [];
-  
+
   bool _isLoading = false;
   bool _isEditMode = false;
   bool _isSelectingArea = false;
   int _currentPage = 1;
-  
+
   Uint8List? _previewImage;
   Rect? _selectedArea;
   Offset? _dragStart;
-  
+
   final TextEditingController _editTextController = TextEditingController();
   double _fontSize = 12.0;
   Color _textColor = Colors.black;
@@ -144,9 +145,9 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
             ? 'Drag to select text area to edit'
             : 'Tap "Select Area" to choose text to edit, or tap existing highlighted areas',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.w500,
-            ),
+          color: AppColors.primaryBlue,
+          fontWeight: FontWeight.w500,
+        ),
         textAlign: TextAlign.center,
       ),
     );
@@ -169,20 +170,20 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
             ),
             child: _previewImage != null
                 ? Image.memory(
-                    _previewImage!,
-                    fit: BoxFit.contain,
-                  )
+              _previewImage!,
+              fit: BoxFit.contain,
+            )
                 : Container(
-                    width: 400,
-                    height: 600,
-                    color: Colors.white,
-                    child: const Center(
-                      child: Text('PDF Page Preview'),
-                    ),
-                  ),
+              width: 400,
+              height: 600,
+              color: Colors.white,
+              child: const Center(
+                child: Text('PDF Page Preview'),
+              ),
+            ),
           ),
         ),
-        
+
         // Edit Mode Overlay
         if (_isEditMode)
           Positioned.fill(
@@ -203,7 +204,7 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
               ),
             ),
           ),
-        
+
         // Loading Overlay
         if (_isLoading)
           Container(
@@ -238,8 +239,8 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
                   icon: Icon(_isSelectingArea ? Icons.close : Icons.crop_free),
                   label: Text(_isSelectingArea ? 'Cancel' : 'Select Area'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _isSelectingArea 
-                        ? Colors.red 
+                    backgroundColor: _isSelectingArea
+                        ? Colors.red
                         : AppColors.primaryBlue,
                     foregroundColor: Colors.white,
                   ),
@@ -651,7 +652,7 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  FileService.shareFile(editedFile);
+                  _fileService.shareFile(editedFile);
                 },
                 child: const Text('Share'),
               ),
@@ -707,7 +708,7 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
       final tempFile = File('${tempDir.path}/edited_page_$_currentPage.png');
       await tempFile.writeAsBytes(_previewImage!);
 
-      await FileService.shareFile(tempFile);
+      await _fileService.shareFile(tempFile);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -745,25 +746,25 @@ class _PDFEditScreenState extends State<PDFEditScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('1. Turn on Edit Mode', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('   • Tap the edit icon in the top bar'),
+              Text('   â€¢ Tap the edit icon in the top bar'),
               SizedBox(height: 8),
               Text('2. Select Text Area', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('   • Tap "Select Area" button'),
-              Text('   • Drag to select the text you want to edit'),
+              Text('   â€¢ Tap "Select Area" button'),
+              Text('   â€¢ Drag to select the text you want to edit'),
               SizedBox(height: 8),
               Text('3. Enter New Text', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('   • Type your replacement text'),
-              Text('   • Adjust font size and color'),
-              Text('   • Tap "Add Edit"'),
+              Text('   â€¢ Type your replacement text'),
+              Text('   â€¢ Adjust font size and color'),
+              Text('   â€¢ Tap "Add Edit"'),
               SizedBox(height: 8),
               Text('4. Preview & Save', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('   • Tap preview icon to see changes'),
-              Text('   • Tap save icon to create edited PDF'),
+              Text('   â€¢ Tap preview icon to see changes'),
+              Text('   â€¢ Tap save icon to create edited PDF'),
               SizedBox(height: 8),
               Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('   • Tap existing edits to modify them'),
-              Text('   • Use "Clear All Edits" to start over'),
-              Text('   • Share button shares the edited page'),
+              Text('   â€¢ Tap existing edits to modify them'),
+              Text('   â€¢ Use "Clear All Edits" to start over'),
+              Text('   â€¢ Share button shares the edited page'),
             ],
           ),
         ),
@@ -841,8 +842,8 @@ class EditOverlayPainter extends CustomPainter {
   @override
   bool shouldRepaint(EditOverlayPainter oldDelegate) {
     return oldDelegate.textAreas != textAreas ||
-           oldDelegate.pendingEdits != pendingEdits ||
-           oldDelegate.selectedArea != selectedArea;
+        oldDelegate.pendingEdits != pendingEdits ||
+        oldDelegate.selectedArea != selectedArea;
   }
 }
 

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
-import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 
@@ -18,6 +18,7 @@ class OCRService {
     try {
       final PdfDocument document = await PdfDocument.openFile(pdfFile.path);
       String extractedText = '';
+      final textRecognizer = TextRecognizer();
 
       for (int i = 1; i <= document.pageCount; i++) {
         final page = await document.getPage(i);
@@ -36,8 +37,9 @@ class OCRService {
         await imageFile.writeAsBytes(imageBytes!.buffer.asUint8List());
 
         // Perform OCR
-        final pageText = await FlutterTesseractOcr.extractText(imageFile.path,
-            language: language);
+        final inputImage = InputImage.fromFilePath(imageFile.path);
+        final recognized = await textRecognizer.processImage(inputImage);
+        final pageText = recognized.text;
         extractedText += '$pageText\n';
 
         // Clean up
@@ -45,6 +47,7 @@ class OCRService {
       }
 
       await document.dispose(); // Use dispose for cleanup
+      await textRecognizer.close();
       return extractedText.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
@@ -78,8 +81,11 @@ class OCRService {
       await imageFile.writeAsBytes(imageBytes!.buffer.asUint8List());
 
       // Perform OCR
-      extractedText = await FlutterTesseractOcr.extractText(imageFile.path,
-          language: language);
+      final inputImage = InputImage.fromFilePath(imageFile.path);
+      final recognizer = TextRecognizer();
+      final recognized = await recognizer.processImage(inputImage);
+      extractedText = recognized.text;
+      await recognizer.close();
 
       // Clean up
       await imageFile.delete();
@@ -95,10 +101,11 @@ class OCRService {
   Future<String> extractTextFromImage(File imageFile,
       {String language = 'eng'}) async {
     try {
-      final extractedText = await FlutterTesseractOcr.extractText(
-          imageFile.path,
-          language: language);
-      return extractedText.trim();
+      final inputImage = InputImage.fromFilePath(imageFile.path);
+      final recognizer = TextRecognizer();
+      final recognized = await recognizer.processImage(inputImage);
+      await recognizer.close();
+      return recognized.text.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
     }
@@ -115,13 +122,15 @@ class OCRService {
       await tempFile.writeAsBytes(imageBytes);
 
       // Perform OCR
-      final extractedText = await FlutterTesseractOcr.extractText(tempFile.path,
-          language: language);
+      final inputImage = InputImage.fromFilePath(tempFile.path);
+      final recognizer = TextRecognizer();
+      final recognized = await recognizer.processImage(inputImage);
+      await recognizer.close();
 
       // Clean up
       await tempFile.delete();
 
-      return extractedText.trim();
+      return recognized.text.trim();
     } catch (e) {
       throw Exception('OCR extraction failed: $e');
     }
@@ -130,67 +139,14 @@ class OCRService {
   /// Get available OCR languages
   List<String> getAvailableLanguages() {
     return [
-      'eng', // English
-      'spa', // Spanish
-      'fra', // French
-      'deu', // German
-      'ita', // Italian
-      'por', // Portuguese
-      'rus', // Russian
-      'chi_sim', // Chinese Simplified
-      'chi_tra', // Chinese Traditional
-      'jpn', // Japanese
-      'kor', // Korean
-      'ara', // Arabic
-      'hin', // Hindi
-      'nld', // Dutch
-      'swe', // Swedish
-      'nor', // Norwegian
-      'dan', // Danish
-      'fin', // Finnish
-      'pol', // Polish
-      'tur', // Turkish
+      'Latin',
     ];
   }
 
   /// Detect language from text
   Future<String> detectLanguage(String text) async {
-    // Simple language detection based on character sets
-    if (RegExp(r'[\u4e00-\u9fff]').hasMatch(text)) {
-      return 'chi_sim'; // Chinese
-    }
-    if (RegExp(r'[\u3040-\u309f\u30a0-\u30ff]').hasMatch(text)) {
-      return 'jpn'; // Japanese
-    }
-    if (RegExp(r'[\uac00-\ud7af]').hasMatch(text)) {
-      return 'kor'; // Korean
-    }
-    if (RegExp(r'[\u0600-\u06ff]').hasMatch(text)) {
-      return 'ara'; // Arabic
-    }
-    if (RegExp(r'[\u0400-\u04ff]').hasMatch(text)) {
-      return 'rus'; // Russian
-    }
-
-    // Check for European languages
-    final textLower = text.toLowerCase();
-    if (textLower.contains('ñ') ||
-        textLower.contains('á') ||
-        textLower.contains('é')) {
-      return 'spa'; // Spanish
-    }
-    if (textLower.contains('ä') ||
-        textLower.contains('ö') ||
-        textLower.contains('ü')) {
-      return 'deu'; // German
-    }
-    if (textLower.contains('à') ||
-        textLower.contains('ç') ||
-        textLower.contains('é')) {
-      return 'fra'; // French
-    }
-
-    return 'eng'; // Default to English
+    // Simple heuristic; ML Kit text recognition does not expose language per block here
+    return 'Latin';
   }
 
   /// Preprocess image for better OCR results
@@ -228,12 +184,10 @@ class OCRService {
     }
   }
 
-  /// Extract text with confidence scores
+  /// Extract text with confidence scores (mock confidence since ML Kit API doesn't provide overall score)
   Future<List<OCRResult>> extractTextWithConfidence(File imageFile,
       {String language = 'eng'}) async {
     try {
-      // This would require a more advanced OCR implementation
-      // For now, return basic result
       final text = await extractTextFromImage(imageFile, language: language);
       return [
         OCRResult(
@@ -277,16 +231,18 @@ class OCRService {
 
       await testFile.writeAsBytes(img.encodePng(testImage));
 
-      final result = await FlutterTesseractOcr.extractText(testFile.path);
+      final input = InputImage.fromFilePath(testFile.path);
+      final recognizer = TextRecognizer();
+      final recognized = await recognizer.processImage(input);
+      await recognizer.close();
       await testFile.delete();
 
-      return result.isNotEmpty;
+      return recognized.text.isNotEmpty;
     } catch (e) {
       return false;
     }
   }
 }
-
 /// OCR result with confidence and bounding box information
 class OCRResult {
   final String text;
